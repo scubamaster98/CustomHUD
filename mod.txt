@@ -1,8 +1,8 @@
 {
     "name": "CustomHUD",
-    "description": "STOLEN CODE",
+    "description": "powered by dogshit",
     "blt_version": 2,
-    "priority": 369
+    "priority": 300
 		"hooks": [
 		{ "hook_id": "lib/setups/setup", "script_path": "Menu.lua" },
 

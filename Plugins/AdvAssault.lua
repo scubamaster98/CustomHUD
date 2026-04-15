@@ -46,13 +46,8 @@ if string.lower(RequiredScript) == "lib/managers/hud/hudassaultcorner" then
 		if self._assault_locked == status then return end
 		local assault_panel = self._hud_panel:child("assault_panel")
 		local icon_assaultbox = assault_panel and assault_panel:child("icon_assaultbox")
-		local image
+		local image = "guis/textures/pd2/hud_icon_assaultbox" -- shit fix
 		self._assault_locked = status
-		if status then
-			image = "guis/textures/pd2/hud_icon_padlockbox"
-		else
-			image = "guis/textures/pd2/hud_icon_assaultbox"
-		end
 		if icon_assaultbox and image then
 			icon_assaultbox:set_image(image)
 		end

@@ -1,7 +1,7 @@
 --TODO: Dynamic updates
 
 local menu_prefix = "customHUD_menu_"
-local localization_file = ModPath .. "localization/menu.json"
+local localization_file = ModPath .. "Localization/menu.json"
 local settings_file = ModPath .. "saved_settings.json"
 
 Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_CustomHUD", function(menu_manager, nodes)
