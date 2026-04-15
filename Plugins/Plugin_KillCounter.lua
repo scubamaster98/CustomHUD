@@ -1,8 +1,6 @@
 if RequiredScript == "lib/units/enemies/cop/copdamage" then
 
---This needs fixing for DoT kills (then again, so does the games own kill counter) as client somehow and a lot of testing
-
---[[
+--[[ This needs fixing for DoT kills (then again, so does the games own kill counter) as client somehow and a lot of testing
 local chk_killshot_original = CopDamage.chk_killshot
 
 function CopDamage:chk_killshot(attacker_unit, variant)
@@ -70,7 +68,7 @@ end
 
 		if attacker then
 			if attacker:in_slot(3) or attacker:in_slot(5) then	
-				--Human team mate
+				--Human teammate
 				killer = attacker
 			elseif attacker:in_slot(2) then
 				--Player
@@ -155,7 +153,7 @@ end
 		return _on_damage_received_original(self, data, ...)
 	end
 
-	--TODO: Add sync damage checks for non-local bots and players
+	--Add sync damage checks for non-local bots and players
 
 	
 end
@@ -177,15 +175,15 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 	HUDManager.SHOW_BOT_KILLS = true
 
 	HUDManager.increment_teammate_kill_count = HUDManager.increment_teammate_kill_count or function (self, i, is_special)
-		--TODO: Add call for default HUD
+		--Add call for default HUD
 	end
 	
 	HUDManager.reset_teammate_kill_count = HUDManager.reset_teammate_kill_count or function(self, i)
-		--TODO: Add call for default HUD
+		--Add call for default HUD
 	end
 	
 	HUDManager.increment_teammate_kill_count_detailed = HUDManager.increment_teammate_kill_count_detailed or function(self, i, unit, weapon_type, weapon_slot)
-		--TODO: Add call for default HUD
+		--Add call for default HUD
 	end
 
 end

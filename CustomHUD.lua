@@ -1,6 +1,3 @@
---This file is mostly legacy stuff, things to be rewritten and ported into new version. It can still be used safely, but is optional and may not be the best choice
-
-
 if RequiredScript == "lib/managers/hud/hudassaultcorner" then
 
 	local init_original = HUDAssaultCorner.init
@@ -9,9 +6,9 @@ if RequiredScript == "lib/managers/hud/hudassaultcorner" then
 		init_original(self, ...)
 		
 		local assault_panel = self._hud_panel:child("assault_panel")
-		assault_panel:set_right(self._hud_panel:w() / 2 + 133)
-		local buffs_panel = self._hud_panel:child("buffs_panel")
-		buffs_panel:set_x(assault_panel:left() + self._bg_box:left() - 3 - 200)
+		assault_panel:set_right(self._hud_panel:w() / 2 + 133) -- sets banner to middle i think
+		--local buffs_panel = self._hud_panel:child("buffs_panel")
+		--buffs_panel:set_x(assault_panel:left() + self._bg_box:left() - 3 - 200) crashes game
 		
 		local point_of_no_return_panel = self._hud_panel:child("point_of_no_return_panel")
 		point_of_no_return_panel:set_right(self._hud_panel:w() / 2 + 133)
@@ -26,7 +23,7 @@ if RequiredScript == "lib/managers/hud/hudassaultcorner" then
 end
 	
 if RequiredScript == "lib/managers/hud/hudobjectives" then
-	
+-- idk
 	HUDObjectives._TEXT_MARGIN = 8
 
 	function HUDObjectives:init(hud)
@@ -97,7 +94,7 @@ if RequiredScript == "lib/managers/hud/hudobjectives" then
 
 		self._bg_box:set_w(HUDObjectives._TEXT_MARGIN * 2 + width)
 		self._bg_box:stop()
-		--self._amount_text:animate(callback(self, self, "_animate_new_objective"))
+		--self._amount_text:animate(callback(self, self, "_animate_new_objective")) i dont think i did this
 		--self._objective_text:animate(callback(self, self, "_animate_new_objective"))
 		self._bg_box:animate(callback(self, self, "_animate_update_objective"))
 	end
@@ -167,8 +164,9 @@ if RequiredScript == "lib/managers/hud/hudobjectives" then
 end	
 	
 if RequiredScript == "lib/managers/hud/hudheisttimer" then
-	
+-- moves heist timer to the left, but it breaks when it reaches 1 hour
 	function HUDHeistTimer:init(hud, tweak_hud, ...)
+		tweak_hud = tweak_data.hud -- i think this code was broken from the very beginning
 		self._enabled = not tweak_hud.no_timer
 	
 		self._hud_panel = hud.panel

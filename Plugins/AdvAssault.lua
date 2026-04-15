@@ -1,14 +1,13 @@
+-- fully compatible with customhud.lua
+
 if string.lower(RequiredScript) == "lib/managers/hud/hudassaultcorner" then
 	local init_original = HUDAssaultCorner.init
 	local _start_assault_original = HUDAssaultCorner._start_assault
 	 
 	function HUDAssaultCorner:init(...)
 		init_original(self, ...)
-				   
 		local assault_panel = self._hud_panel:child("assault_panel")
-				   
 		local point_of_no_return_panel = self._hud_panel:child("point_of_no_return_panel")
-				   
 		local casing_panel = self._hud_panel:child("casing_panel")
 	end
 
@@ -32,7 +31,7 @@ if string.lower(RequiredScript) == "lib/managers/hud/hudassaultcorner" then
 	function HUDAssaultCorner:hide_casing(...) end
 	
 	function HUDAssaultCorner:_start_assault(text_list, ...)
-		if Network:is_server() then
+		if Network:is_server() then -- checks if ur host, if u arent, dont do assault stuff. dont remove, it will show blank banner if client
 			for i, string_id in ipairs(text_list) do
 				if string_id == "hud_assault_assault" then
 					text_list[i] = "hud_adv_assault"
@@ -46,7 +45,7 @@ if string.lower(RequiredScript) == "lib/managers/hud/hudassaultcorner" then
 		if self._assault_locked == status then return end
 		local assault_panel = self._hud_panel:child("assault_panel")
 		local icon_assaultbox = assault_panel and assault_panel:child("icon_assaultbox")
-		local image = "guis/textures/pd2/hud_icon_assaultbox" -- shit fix
+		local image = "guis/textures/pd2/hud_icon_assaultbox" -- shit fix, and this probably isnt needed anymore, removing later
 		self._assault_locked = status
 		if icon_assaultbox and image then
 			icon_assaultbox:set_image(image)
@@ -78,15 +77,14 @@ elseif string.lower(RequiredScript) == "lib/managers/localizationmanager" then
 			local spawns = managers.groupai:state():_get_difficulty_dependent_value(tweak_data.group_ai.besiege.assault.force_pool) * managers.groupai:state():_get_balancing_multiplier(tweak_data.group_ai.besiege.assault.force_pool_balance_mul)
 			local spawns_left = "Spawns Left: " .. math.round(math.max(spawns - managers.groupai:state()._task_data.assault.force_spawned, 0))
 			local time_left = managers.groupai:state()._task_data.assault.phase_end_t + math.lerp(managers.groupai:state():_get_difficulty_dependent_value(tweak_data.group_ai.besiege.assault.sustain_duration_min), managers.groupai:state():_get_difficulty_dependent_value(tweak_data.group_ai.besiege.assault.sustain_duration_max), math.random()) * managers.groupai:state():_get_balancing_multiplier(tweak_data.group_ai.besiege.assault.sustain_duration_balance_mul) + tweak_data.group_ai.besiege.assault.fade_duration * 2
-			if time_left < 0 then
+			if time_left < 0 then -- i dont think this actually works, instead it freezes the banner until assault ends
 				time_left = "OVERDUE"
 			else
 				time_left = "Time Left: " .. string.format("%.2f", time_left + 350 - managers.groupai:state()._t)
 			end
-			local sep = "          " .. self:text("hud_assault_end_line") .. "          "
-			local text = phase .. sep .. spawns_left .. sep .. time_left
+			local sep = "          " .. self:text("hud_assault_end_line") .. "          " -- (sep)arator?
+			local text = phase .. sep .. spawns_left .. sep .. time_left -- phase, separator, spawns, separator, time left
 			return text
 		end
 	end
 end
-

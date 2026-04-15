@@ -1,9 +1,5 @@
 if not CustomHUDMenu.settings.enable_teammatepanels then return end
 
---TODO: Setting update for interaction, but probably not necessary as they are temporary anyway
---TODO: Clean up interaction activation/deactivation animation, probably a lot of unnecessary rearranges going on
---TODO: Add back the interaction progress bar bitmap
-
 printf = printf or function(...) end
 
 if RequiredScript == "lib/managers/hud/hudteammate" then
@@ -3213,6 +3209,10 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 	
 	function HUDManager:set_player_carry_info(carry_id, value)
 		self._teammate_panels[HUDManager.PLAYER_PANEL]:set_carry_info(carry_id, value)
+	end
+
+	function HUDManager:set_player_armor(data)
+		self:set_teammate_armor(HUDManager.PLAYER_PANEL, data) --remove u are hurt take cover
 	end
 	
 	function HUDManager:set_teammate_weapon(i, index, id, silencer)
