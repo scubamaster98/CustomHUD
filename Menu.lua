@@ -1,4 +1,5 @@
 --TODO: Dynamic updates
+--figure out how to add new settings
 
 local menu_prefix = "customHUD_menu_"
 local localization_file = ModPath .. "Localization/menu.json"
@@ -27,7 +28,7 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 					data.change_clbk(id, item:value() == "on")
 				end
 			elseif item_type == "slider" then
-				MenuHelper:AddSlider({ id = id, title = title, desc = desc, callback = clbk_id, min = item_data.min, max = item_data.max, step = item_data.step, show_value = true, menu_id = prefixed_menu_id, priority = -i, value = default or 0 })
+    MenuHelper:AddSlider({ id = id, title = title, desc = desc, callback = clbk_id, min = item_data.min, max = item_data.max, step = item_data.step, show_value = false, menu_id = prefixed_menu_id, priority = -i, value = default or 0 }) -- changed show_value to false
 				
 				MenuCallbackHandler[clbk_id] = function(self, item)
 					if item_data.round then item:set_value(math.round(item:value())) end
@@ -288,7 +289,7 @@ CustomHUDMenu = {
 			line_height = 12,			--Size of each line in chat (and hence the text size)
 			width = 350,				--Width of the chat window
 			height = 100,				--Height of the chat window
-			use_mouse = false,		--For scolling and stuff. Experimental, you have been warned
+			use_mouse = false,		--For scolling and stuff. Experimental
 			x_offset = 100,			--% offset from left of HUD panel
 			y_offset = 50,				--% offset from top of HUD panel
 			fade_delay = 6,			--Fade delay for chat window after inactivity
