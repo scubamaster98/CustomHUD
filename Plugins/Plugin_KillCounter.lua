@@ -68,13 +68,13 @@ end
 
 		if attacker then
 			if attacker:in_slot(3) or attacker:in_slot(5) then	
-				--Human teammate
+				--Teammate
 				killer = attacker
 			elseif attacker:in_slot(2) then
 				--Player
 				killer = attacker
 			elseif attacker:in_slot(16) then
-				--Bot/joker
+				--Bot/Joker
 				killer = attacker
 			elseif attacker:in_slot(12) then
 				--Enemy
@@ -152,10 +152,7 @@ end
 		
 		return _on_damage_received_original(self, data, ...)
 	end
-
 	--Add sync damage checks for non-local bots and players
-
-	
 end
 
 if RequiredScript == "lib/units/equipment/sentry_gun/sentrygunbase" then
@@ -173,17 +170,17 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 
 	HUDManager.KILL_COUNTER_PLUGIN = true
 	HUDManager.SHOW_BOT_KILLS = true
-
+--i dont like how this looks
 	HUDManager.increment_teammate_kill_count = HUDManager.increment_teammate_kill_count or function (self, i, is_special)
-		--Add call for default HUD
+
 	end
 	
 	HUDManager.reset_teammate_kill_count = HUDManager.reset_teammate_kill_count or function(self, i)
-		--Add call for default HUD
+
 	end
 	
 	HUDManager.increment_teammate_kill_count_detailed = HUDManager.increment_teammate_kill_count_detailed or function(self, i, unit, weapon_type, weapon_slot)
-		--Add call for default HUD
+
 	end
 
 end

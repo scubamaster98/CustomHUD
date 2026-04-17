@@ -191,9 +191,9 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self:clear_special_equipment(true)
 		self:teammate_progress(false, "", 0, false)
 		self:remove_carry_info()
-		--self:set_cable_ties_amount(0)	--Unncessary/dangerous?
-		--self:set_deployable_equipment_amount(1, { amount = 0 })	--Unncessary/dangerous?
-		--self:set_grenades_amount({ amount = 0 })	--Unnecessary/dangerous?
+		--[[self:set_cable_ties_amount(0)
+		self:set_deployable_equipment_amount(1, { amount = 0 })
+		self:set_grenades_amount({ amount = 0 })]]
 		
 		self:arrange()
 	end
@@ -1085,7 +1085,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			end
 		end
 	end
--- voice chat icon
+--voice chat icon
 	function PlayerInfoComponent.Callsign:_animate_voice_com(icon)
 		self._animating_voice_com = true
 		local x = self._panel:w() / 2
@@ -1125,7 +1125,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			h = size,
 			w = size,
 		})
--- change 64 to 128 if it looks wrong
+--change 64 to 128 if it looks wrong
 		self._health_radial = self._panel:bitmap({
 			name = "health_radial",
 			texture = "guis/textures/pd2/hud_health",
@@ -1138,7 +1138,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			w = size,
 			layer = health_bg:layer() + 1,
 		})
--- modify #, 0, -#, # to 64 or 128 if u want anim
+--modify #, 0, -#, # to 64 or 128 if u want anim
 		self._health_radial_old = self._panel:bitmap({
 			name = "health_radial_old",
 			texture = "guis/textures/pd2/hud_health",
@@ -1230,7 +1230,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			layer = downs_bg:layer() + 1,
 			blend_mode = "normal",
 		})
--- text to 0 so panel isnt empty and down counter to middle of health
+--sets text to 0 so panel isnt empty and down counter to middle of healthbar (claude)
 		self._downs_counter:set_text("0")
 		self._downs_panel:set_center(size / 2, size / 2)
 		
@@ -1257,11 +1257,11 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			font = tweak_data.hud_players.timer_font,
 			layer = self._condition_icon:layer() + 1,
 		})
-		-- keep for support for versions with swansong
+		--keep for versions with swansong
 		self._custom_radial_icon = self._panel:bitmap({
 			name = "custom_radial_icon",
 			texture = "guis/textures/pd2/hud_swansong",
-			--texture_rect = { 0, 0, 64, 64 },
+			--texture_rect = { 0, 0, 64, 64 }, --not sure why its like this, dont know if it works
 			render_template = "VertexColorTexturedRadial",
 			blend_mode = "add",
 			color = Color(1, 0, 0, 0),
@@ -2107,9 +2107,9 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		local visible = false
 		
 		local component_order = { self._icon_panel, self._fire_mode_panel, self._ammo_panel }
-		--if self._statistics_panel then
-		--	table.insert(component_order, self._statistics_panel)
-		--end
+		--[[if self._statistics_panel then
+			table.insert(component_order, self._statistics_panel)
+		end]]
 		
 		for _, component in ipairs(component_order) do
 			if component:visible() then
@@ -2736,7 +2736,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			w = 0,
 		})
 		
-		--TODO: Check killcount plugin, add stuff if so
+		--Check killcount plugin, add stuff if so
 	--[[
 			if HUDManager.KILL_COUNT_PLUGIN then
 				local kill_count_panel = parent:panel({
@@ -2791,7 +2791,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			end
 	]]
 
-	--TODO: Update statisticspanel width
+	--Update statisticspanel width
 		self:arrange()
 	end
 	

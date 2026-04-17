@@ -1,5 +1,3 @@
---TODO: Add bots? Add player support for standalone version?
-
 if RequiredScript == "lib/units/beings/player/huskplayermovement" then
 
 	local _start_bleedout_original = HuskPlayerMovement._start_bleedout
@@ -55,17 +53,17 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 	
 		return set_mugshot_custody_original(self, id, ...)
 	end
-	
+--i dont like how this looks
 	HUDManager.set_player_revives = HUDManager.set_player_revives or function(self, i, value)
-		--TODO
+
 	end
 	
 	HUDManager.increment_teammate_downs = HUDManager.increment_teammate_downs or function(self, i)
-		--TODO
+
 	end
 	
 	HUDManager.reset_teammate_downs = HUDManager.reset_teammate_downs or function(self, i)
-		--TODO
+
 	end
 	
 end

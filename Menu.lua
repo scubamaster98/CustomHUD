@@ -1,4 +1,4 @@
---TODO: Dynamic updates
+--Dynamic updates
 --figure out how to add new settings
 
 local menu_prefix = "customHUD_menu_"
@@ -222,7 +222,7 @@ end)
 
 
 CustomHUDMenu = {
-	--Default settings, will be written to initial settings file and then ignored
+	--Default settings, written to initial settings file and then ignored
 	settings = {
 		enable_teammatepanels = false,
 		enable_chat = false,
@@ -287,12 +287,12 @@ CustomHUDMenu = {
 		
 		hudchat = {
 			line_height = 12,			--Size of each line in chat (and hence the text size)
-			width = 350,				--Width of the chat window
-			height = 100,				--Height of the chat window
-			use_mouse = false,		--For scolling and stuff. Experimental
+			width = 350,				--Width of the window
+			height = 100,				--Height of the window
+			use_mouse = false,		--For scrolling and stuff. Experimental
 			x_offset = 100,			--% offset from left of HUD panel
 			y_offset = 50,				--% offset from top of HUD panel
-			fade_delay = 6,			--Fade delay for chat window after inactivity
+			fade_delay = 6,			--Fade delay for window after inactivity
 		},
 	},
 	

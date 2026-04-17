@@ -44,12 +44,7 @@ if string.lower(RequiredScript) == "lib/managers/hud/hudassaultcorner" then
 	function HUDAssaultCorner:locked_assault(status)
 		if self._assault_locked == status then return end
 		local assault_panel = self._hud_panel:child("assault_panel")
-		local icon_assaultbox = assault_panel and assault_panel:child("icon_assaultbox")
-		local image = "guis/textures/pd2/hud_icon_assaultbox" -- shit fix, and this probably isnt needed anymore, removing later
 		self._assault_locked = status
-		if icon_assaultbox and image then
-			icon_assaultbox:set_image(image)
-		end
 	end
 
 elseif string.lower(RequiredScript) == "lib/managers/hudmanagerpd2" then
@@ -82,7 +77,7 @@ elseif string.lower(RequiredScript) == "lib/managers/localizationmanager" then
 			else
 				time_left = "Time Left: " .. string.format("%.2f", time_left + 350 - managers.groupai:state()._t)
 			end
-			local sep = "          " .. self:text("hud_assault_end_line") .. "          " -- (sep)arator?
+			local sep = "          " .. self:text("hud_assault_end_line") .. "          " -- separator?
 			local text = phase .. sep .. spawns_left .. sep .. time_left -- phase, separator, spawns, separator, time left
 			return text
 		end
