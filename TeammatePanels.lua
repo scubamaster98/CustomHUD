@@ -1,5 +1,4 @@
 if not CustomHUDMenu.settings.enable_teammatepanels then return end
---add state icons to ai
 
 printf = printf or function(...) end
 
@@ -191,9 +190,9 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self:clear_special_equipment(true)
 		self:teammate_progress(false, "", 0, false)
 		self:remove_carry_info()
-		--[[self:set_cable_ties_amount(0)
-		self:set_deployable_equipment_amount(1, { amount = 0 })
-		self:set_grenades_amount({ amount = 0 })]]
+		--self:set_cable_ties_amount(0)
+		--self:set_deployable_equipment_amount(1, { amount = 0 })
+		--self:set_grenades_amount({ amount = 0 })
 		
 		self:arrange()
 	end
@@ -1033,7 +1032,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	PlayerInfoComponent.Callsign = PlayerInfoComponent.Callsign or class(PlayerInfoComponent.Base)
 	function PlayerInfoComponent.Callsign:init(panel, owner, size, settings)
 		PlayerInfoComponent.Callsign.super.init(self, panel, owner, "callsign", size, size)
-	
+
 		self._settings = settings
 		
 		self._icon = self._panel:bitmap({
@@ -1043,22 +1042,54 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			color = Color.white,
 			h = size * 0.75,
 			w = size * 0.75,
+			--layer = 10, --copied from wolfhud, see if i need it later
 		})
+--thanks wolfhud
+		self._condition_icon = self._panel:bitmap({
+			name = "condition_icon",
+			visible = false,
+			color = Color.white,
+			h = size,
+			w = size,
+			layer = 11,
+		})
+
 		self._icon:set_center(self._panel:w() / 2, self._panel:h() / 2)
 		
 		self._owner:register_listener("Callsign", { "callsign" }, callback(self, self, "set_id"), false)
 		self._owner:register_listener("Callsign", { "voice_com" }, callback(self, self, "set_voice_com_active"), false)
+		self._owner:register_listener("Callsign", { "condition" }, callback(self, self, "set_condition"), false)
 		self._owner:register_listener("Callsign", { "ai_stopped" }, callback(self, self, "set_ai_stopped"), false)
 	end
 	
 	function PlayerInfoComponent.Callsign:destroy()
-		self._owner:unregister_listener("Callsign", { "callsign", "voice_com", "ai_stopped" })
+		self._owner:unregister_listener("Callsign", { "callsign", "voice_com", "condition", "ai_stopped" })
 		PlayerInfoComponent.Callsign.super.destroy(self)
 	end
-	
+
+	function PlayerInfoComponent.Callsign:set_is_ai(state)
+		if PlayerInfoComponent.PlayerStatus.super.set_is_ai(self, state) then
+			
+			self._owner:arrange()
+		end
+	end
+
 	function PlayerInfoComponent.Callsign:update_settings()
 		if self:set_enabled("setting", self._settings.callsign) then
 			self._owner:arrange()
+		end
+	end
+	
+	function PlayerInfoComponent.Callsign:set_enabled(reason, status)
+		PlayerInfoComponent.Callsign.super.set_enabled(self, reason, status)
+		if not self._panel:visible() then
+			self._panel:set_visible(true)
+			self._icon:set_alpha(0)
+			self._disabled = true
+			return true
+		else
+			self._panel:set_alpha(1)
+			self._disabled = false
 		end
 	end
 	
@@ -1085,7 +1116,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			end
 		end
 	end
---voice chat icon
+--vc icon
 	function PlayerInfoComponent.Callsign:_animate_voice_com(icon)
 		self._animating_voice_com = true
 		local x = self._panel:w() / 2
@@ -1110,7 +1141,18 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		icon:set_size(self:w(), self:h())
 		self._animating_voice_com = false
 	end
-	
+
+	function PlayerInfoComponent.Callsign:set_condition(icon_data)
+		local visible = (icon_data ~= "mugshot_normal" and self._is_ai)
+		
+		if visible then
+			local icon, texture_rect = tweak_data.hud_icons:get_icon_data(icon_data)
+			self._condition_icon:set_image(icon, unpack(texture_rect))
+		end
+		
+		self._condition_icon:set_visible(visible)
+	end
+
 	PlayerInfoComponent.PlayerStatus = PlayerInfoComponent.PlayerStatus or class(PlayerInfoComponent.Base)
 	function PlayerInfoComponent.PlayerStatus:init(panel, owner, width, height, settings)
 		PlayerInfoComponent.PlayerStatus.super.init(self, panel, owner, "player_status", width, height)
@@ -1230,7 +1272,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			layer = downs_bg:layer() + 1,
 			blend_mode = "normal",
 		})
---sets text to 0 so panel isnt empty and down counter to middle of healthbar (claude)
+--ty claude
 		self._downs_counter:set_text("0")
 		self._downs_panel:set_center(size / 2, size / 2)
 		
@@ -1257,11 +1299,11 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			font = tweak_data.hud_players.timer_font,
 			layer = self._condition_icon:layer() + 1,
 		})
-		--keep for versions with swansong
+		--keep for support for versions with swansong
 		self._custom_radial_icon = self._panel:bitmap({
 			name = "custom_radial_icon",
 			texture = "guis/textures/pd2/hud_swansong",
-			--texture_rect = { 0, 0, 64, 64 }, --not sure why its like this, dont know if it works
+			--texture_rect = { 0, 0, 64, 64 },
 			render_template = "VertexColorTexturedRadial",
 			blend_mode = "add",
 			color = Color(1, 0, 0, 0),
@@ -1744,7 +1786,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	end
 	
 	function PlayerInfoComponent.CenterPanel:_interaction_start(id, timer)
-		if self._settings.interaction and self._settings.interaction_duration <= timer then
+		if self._settings.interaction and type(self._settings.interaction_duration) == "number" and type(timer) == "number" and self._settings.interaction_duration <= timer then
 			self._panel:stop()
 			self._panel:animate(callback(self, self, "_fade_in_interaction"))
 		end
@@ -1758,7 +1800,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	function PlayerInfoComponent.CenterPanel:_fade_in_interaction(panel)
 		coroutine.yield()
 		
-		self:arrange() -- delete later
+		self:arrange() --maybe can delete
 		
 		if self._interaction:visible() then
 			local rate = 2
@@ -2107,9 +2149,9 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		local visible = false
 		
 		local component_order = { self._icon_panel, self._fire_mode_panel, self._ammo_panel }
-		--[[if self._statistics_panel then
-			table.insert(component_order, self._statistics_panel)
-		end]]
+		--if self._statistics_panel then
+		--	table.insert(component_order, self._statistics_panel)
+		--end
 		
 		for _, component in ipairs(component_order) do
 			if component:visible() then
@@ -2663,6 +2705,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		while timer > t do		
 			local time_left = timer - t
 			local r = t / timer
+			--local r = math.clamp(t / timer, 0, 1) --wolfhud code that i will see if its better or not "clamped CustomHUD interaction ratio between 0 and 1"
 			
 			self._progress_timer:set_text(string.format("%.1fs", time_left))
 			self._progress_bar:set_w(self._progress_bar_bg:w() * r)
@@ -3083,7 +3126,7 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 	end
 	
 	function HUDManager:set_player_armor(data)
-		self:set_teammate_armor(HUDManager.PLAYER_PANEL, data) --remove u are hurt
+		self:set_teammate_armor(HUDManager.PLAYER_PANEL, data) --remove u are hurt take cover
 	end
 	
 	function HUDManager:set_teammate_weapon(i, index, id, silencer)

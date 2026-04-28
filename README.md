@@ -16,6 +16,8 @@ Update 2 Overhaul - [Healthbars](https://github.com/MarcusPy/PAYDAY-2-2013-Updat
 
 GageHUD - numberic suspicion (dead mod)
 
+WolfHUD - [some code](https://github.com/Kamikaze94/WolfHUD)
+
 # Known bugs:
 
 Callsigns change size after VC activation and deactivation

@@ -1,9 +1,9 @@
 {
     "name": "CustomHUD",
-    "description": "Customizable",
+    "description": "Garbage HUD Mod",
 	"author" : "s",
 	"color" : "1 0 1",
-    "version": "1.3.1",
+    "version": "1.4",
     "priority": "360",
 		"hooks": [
 		{ "hook_id": "core/lib/managers/menu/items/coremenuitemslider", "script_path": "coremenuitemslider.lua" },
