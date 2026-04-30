@@ -2,7 +2,7 @@
 
 A HUD mod for old versions of PAYDAY 2 (primarily for u37.1)
 
-Should work on every other version above it just fine, below not so much.
+Should work on every other version above it just fine.
 
 # Credits:
 
@@ -20,6 +20,10 @@ WolfHUD - [some code](https://github.com/Kamikaze94/WolfHUD)
 
 # Known bugs:
 
-Callsigns change size after VC activation and deactivation
+Callsigns change size after VC activation and deactivation (and drop-in too apparently?)
 
 Host name can have lowercase after drop-in (base game bug?)
+
+Some interactions being wrong on teammate panels
+
+Down counter being visible when teammates are in custody and stamina being visible when you are in custody

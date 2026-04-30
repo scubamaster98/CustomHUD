@@ -1,23 +1,23 @@
 {
 	"customHUD_menu_main_title" : "CustomHUD",
-	"customHUD_menu_main_desc" : "Settings will need a level restart to apply",
-	"customHUD_menu_enable_teammatepanels_title" : "Enable Custom teammate panels",
+	"customHUD_menu_main_desc" : "Settings need a level restart to apply",
+	"customHUD_menu_enable_teammatepanels_title" : "Enable CustomHUD",
 	"customHUD_menu_enable_teammatepanels_desc" : "",
-	"customHUD_menu_enable_chat_title" : "Enable Custom chat box",
+	"customHUD_menu_enable_chat_title" : "Enable Custom Chat Box",
 	"customHUD_menu_enable_chat_desc" : "",
-	"customHUD_menu_hudchat_title" : "Custom chat box settings",
+	"customHUD_menu_hudchat_title" : "Custom Chat Box Settings",
 	"customHUD_menu_hudchat_desc" : "",
 	"customHUD_menu_teammatepanels_title" : "Teammate/Player Panel Settings",
 	"customHUD_menu_teammatepanels_desc" : "",
-	"customHUD_menu_player_title" : "Player panel",
+	"customHUD_menu_player_title" : "Player Panel",
 	"customHUD_menu_player_desc" : "",
-	"customHUD_menu_teammate_title" : "Teammate panel",
+	"customHUD_menu_teammate_title" : "Teammate Panel",
 	"customHUD_menu_teammate_desc" : "",
 	
-	"customHUD_menu_option_off" : "Off", 
-	"customHUD_menu_option_on" : "On", 
-	"customHUD_menu_option_selected" : "Selected only", 
-	"customHUD_menu_option_unselected" : "Unselected only", 
+	"customHUD_menu_option_off" : "Off",
+	"customHUD_menu_option_on" : "On",
+	"customHUD_menu_option_selected" : "Selected only",
+	"customHUD_menu_option_unselected" : "Unselected only",
 
 	"customHUD_menu_accuracy_desc" : "",
 	"customHUD_menu_accuracy_title" : "Show Accuracy",
@@ -75,11 +75,11 @@
 	"customHUD_menu_height_desc" : "",
 	"customHUD_menu_height_title" : "Box height",
 	"customHUD_menu_x_offset_desc" : "",
-	"customHUD_menu_x_offset_title" : "Horizontal position"
+	"customHUD_menu_x_offset_title" : "Horizontal position",
 	"customHUD_menu_y_offset_desc" : "",
-	"customHUD_menu_y_offset_title" : "Vertical position"
+	"customHUD_menu_y_offset_title" : "Vertical position",
 	"customHUD_menu_fade_delay_desc" : "",
-	"customHUD_menu_fade_delay_title" : "Fade delay"
+	"customHUD_menu_fade_delay_title" : "Fade delay",
 	"customHUD_menu_use_mouse_desc" : "Enable mouse in chat",
 	"customHUD_menu_use_mouse_title" : "Enable mouse"
 }

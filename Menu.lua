@@ -28,7 +28,7 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 					data.change_clbk(id, item:value() == "on")
 				end
 			elseif item_type == "slider" then
-    MenuHelper:AddSlider({ id = id, title = title, desc = desc, callback = clbk_id, min = item_data.min, max = item_data.max, step = item_data.step, show_value = false, menu_id = prefixed_menu_id, priority = -i, value = default or 0 }) -- changed show_value to false
+    MenuHelper:AddSlider({ id = id, title = title, desc = desc, callback = clbk_id, min = item_data.min, max = item_data.max, step = item_data.step, show_value = true, menu_id = prefixed_menu_id, priority = -i, value = default or 0 })
 				
 				MenuCallbackHandler[clbk_id] = function(self, item)
 					if item_data.round then item:set_value(math.round(item:value())) end
