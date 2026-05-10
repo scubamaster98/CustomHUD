@@ -13,7 +13,7 @@ function GroupAIStateBase:_upd_criminal_suspicion_progress(...)
 						if not obs_susp_data._subdued_civ then
 							obs_susp_data._alerted_civ = nil
 							obs_susp_data._subdued_civ = true
-							waypoint.bitmap:set_color(Color(0.0, 1.0, 0.0)) -- green arrow
+							waypoint.bitmap:set_color(Color(0.0, 1.0, 0.0))
 							waypoint.arrow:set_color(Color(0.2, 0, 0.9, 0))
 						end
 					elseif obs_susp_data.alerted then

@@ -3,7 +3,7 @@
     "description": "Garbage HUD Mod",
 	"author" : "s",
 	"color" : "1 0 1",
-    "version": "1.4",
+    "version": "1.5",
     "priority": "360",
 		"hooks": [
 		{ "hook_id": "core/lib/managers/menu/items/coremenuitemslider", "script_path": "coremenuitemslider.lua" },
@@ -34,16 +34,7 @@
 		{ "hook_id": "lib/managers/hud/hudsuspicion", "script_path": "Plugins/NumberSus.lua" },
 		{ "hook_id": "lib/managers/hud/hudinteraction", "script_path": "Plugins/InteractionTimer.lua"},
 		{ "hook_id": "lib/units/beings/player/states/playerstandard", "script_path": "Plugins/DoubletapGrenades.lua" },
-		{ "hook_id": "lib/managers/menumanager", "script_path": "Plugins/offlinechat.lua" },
-
-		{ "hook_id": "lib/states/ingameaccesscamera", "script_path": "Misc/autocams.lua" },
-		{ "hook_id": "lib/units/beings/player/states/playerstandard", "script_path": "Misc/autouse.lua" },
-		{ "hook_id": "lib/states/missionendstate", "script_path": "Misc/speedyxp.lua" },
-		{ "hook_id": "lib/tweak_data/guitweakdata", "script_path": "Misc/crimenet.lua" },
-		{ "hook_id": "lib/tweak_data/narrativetweakdata", "script_path": "Misc/jobheat.lua" },
-		{ "hook_id": "lib/managers/menu/stageendscreengui", "script_path": "Misc/skip.lua" },
-		{ "hook_id": "lib/managers/menu/lootdropscreengui", "script_path": "Misc/skip.lua" },
-		{ "hook_id": "lib/states/ingamewaitingforplayers", "script_path": "Misc/skip.lua" }   
+		{ "hook_id": "lib/managers/menumanager", "script_path": "Plugins/offlinechat.lua" }
 
 	],
 
@@ -52,24 +43,6 @@
         ],
 
     "keybinds": [
-        {
-            "keybind_id": "save_pre",
-            "name": "Save Preplanning",
-            "description": "Saves your Preplanning",
-            "script_path": "Misc/PreplanningSave.lua",
-            "run_in_menu": false,
-            "run_in_game": true,
-            "localized": false
-        },
-        {
-            "keybind_id": "load_pre",
-            "name": "Load Preplanning",
-            "description": "Loads your Preplanning",
-            "script_path": "Misc/PreplanningLoad.lua",
-            "run_in_menu": false,
-            "run_in_game": true,
-            "localized": false
-        },
         {
             "keybind_id": "force_ready",
             "name": "Force Ready",

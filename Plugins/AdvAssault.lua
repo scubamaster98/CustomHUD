@@ -29,7 +29,7 @@ if string.lower(RequiredScript) == "lib/managers/hud/hudassaultcorner" then
 	function HUDAssaultCorner:hide_casing(...) end
 	
 	function HUDAssaultCorner:_start_assault(text_list, ...)
-		if Network:is_server() then --checks if ur host, if u arent, dont do assault stuff. dont remove, it will show blank banner if client
+		if Network:is_server() then --dont remove, it will show blank banner if client
 			for i, string_id in ipairs(text_list) do
 				if string_id == "hud_assault_assault" then
 					text_list[i] = "hud_adv_assault"

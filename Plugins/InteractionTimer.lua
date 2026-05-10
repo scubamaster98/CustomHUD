@@ -13,9 +13,9 @@ function HUDInteraction:init(hud, child_name)
 		valign = "center",
 		align = "center",
 		layer = 2,
-		color = Color.white, -- here you can change font color
-		font = tweak_data.menu.pd2_large_font, -- here you can change font
-		font_size = tweak_data.hud_present.text_size + 2, -- here you can change font size
+		color = Color.white,
+		font = tweak_data.menu.pd2_large_font,
+		font_size = tweak_data.hud_present.text_size + 2,
 		h = 64
 	})
 	self._interact_timer_text:set_y(self._hud_panel:h() / 2)

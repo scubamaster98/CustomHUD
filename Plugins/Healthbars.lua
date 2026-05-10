@@ -9,14 +9,14 @@ local CharacterData = {
 	[ "heavy_swat" ] 			= "HEAVY SWAT",
 	[ "fbi_swat" ] 				= "FBI SWAT",
 	[ "fbi_heavy_swat" ] 			= "FBI HEAVY SWAT",
-	[ "city_swat" ] 			= "CITY SWAT/MURKYWATER",
+	[ "city_swat" ] 			= "CITY SWAT/MURKY",
 	[ "sniper" ] 				= "SNIPER",
 	[ "gangster" ] 				= "GANGSTER",
 	[ "biker" ] 				= "BIKER",
 	[ "biker_escape" ] 			= "BIKER",
 	[ "mobster" ] 				= "RUSSIAN MOBSTER",
 	[ "mobster_boss" ] 			= "THE COMMISSAR",
-	[ "hector_boss" ] 			= "ARMOURED HECTOR",
+	[ "hector_boss" ] 			= "ARMORED HECTOR",
 	[ "hector_boss_no_armor" ] 		= "HECTOR",
 	[ "tank" ] 				= "BULLDOZER",
 	[ "spooc" ] 				= "CLOAKER",
@@ -31,9 +31,9 @@ local CharacterData = {
 	[ "russian" ] 				= "DALLAS",
 	[ "german" ] 				= "WOLF",
 	[ "spanish" ] 				= "CHAINS",
-	[ "american" ] 				= "HOXTON",
+	[ "american" ] 				= "HOUSTON",
 	[ "jowi" ] 				= "JOHN WICK",
-	[ "old_hoxton" ] 			= "OLD HOX",
+	[ "old_hoxton" ] 			= "HOXTON",
 	[ "clover" ] 				= "CLOVER",
 	[ "female_1" ] 				= "CLOVER",
 	[ "dragan" ] 				= "DRAGAN",
@@ -266,29 +266,21 @@ if RequiredScript == "lib/units/beings/player/states/playerstandard" then
 				unit = unit:parent()
 			end
 			
-			if alive( unit ) and unit:character_damage() and not unit:character_damage()._dead and not managers.enemy:is_civilian( unit ) and unit:base() and unit:base()._tweak_table then
+			if alive( unit ) and unit:character_damage() and not unit:character_damage()._dead and not managers.enemy:is_civilian( unit ) and unit:base() and unit:base()._tweak_table and CharacterData[unit:base()._tweak_table] ~= nil then
 				
 				self._last_unit = unit
 				managers.hud:set_unit_health_visible( true )
 				managers.hud:set_unit_health( unit:character_damage()._health or 0 , unit:character_damage()._HEALTH_INIT or 0 , unit:base()._tweak_table or "cop" )
 				
 			else
-			
-				if self._last_unit and alive( self._last_unit ) then
-					managers.hud:set_unit_health( self._last_unit:character_damage()._health or 0 , self._last_unit:character_damage()._HEALTH_INIT or 0 , self._last_unit:base()._tweak_table or "cop" )
-					managers.hud:set_unit_health_visible( false )
-					return
-				end
+-- 				managers.hud:set_unit_health( unit:character_damage()._health or 0 , unit:character_damage()._HEALTH_INIT or 0 , unit:base()._tweak_table or "cop" )
+				managers.hud:set_unit_health_visible( false )
 				
 			end
 			
 		else
-		
-			if self._last_unit and alive( self._last_unit ) then
-				managers.hud:set_unit_health( self._last_unit:character_damage()._health or 0 , self._last_unit:character_damage()._HEALTH_INIT or 0 , self._last_unit:base()._tweak_table or "cop" )
-				managers.hud:set_unit_health_visible( false )
-				return
-			end
+-- 			managers.hud:set_unit_health( unit:character_damage()._health or 0 , unit:character_damage()._HEALTH_INIT or 0 , unit:base()._tweak_table or "cop" )
+			managers.hud:set_unit_health_visible( false )
 			
 		end
 
