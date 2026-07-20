@@ -24,6 +24,12 @@ James - slider fix
 
 and some more people i might've forgotten (my bad)
 
+# Todo:
+
+Fix bugs
+
+Auto updates
+
 # Known bugs:
 
 Callsigns change size after VC activation and deactivation (and drop-in too apparently?)
