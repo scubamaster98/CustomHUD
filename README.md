@@ -4,9 +4,13 @@ A HUD mod for old versions of PAYDAY 2 (primarily for u37.1)
 
 Should work on every other version above it just fine.
 
+Currently incompatible with u1-u23 (most likely)
+
 # Credits:
 
 Seven - [Original mod(s)](https://bitbucket.org/pjal3urb/pd2-mods/src/master/)
+
+WolfHUD - [some code](https://github.com/Kamikaze94/WolfHUD)
 
 FishTaco - [Real ammo](https://modworkshop.net/mod/15108)
 
@@ -16,14 +20,16 @@ Update 2 Overhaul - [Healthbars](https://github.com/MarcusPy/PAYDAY-2-2013-Updat
 
 GageHUD - numberic suspicion (dead mod)
 
-WolfHUD - [some code](https://github.com/Kamikaze94/WolfHUD)
+James - slider fix
+
+and some more people i might've forgotten (my bad)
 
 # Known bugs:
 
 Callsigns change size after VC activation and deactivation (and drop-in too apparently?)
 
-Host name can have lowercase after drop-in (base game bug?)
-
 Some interactions being wrong on teammate panels
 
-Down counter being visible when teammates are in custody and stamina being visible when you are in custody
+Down counter being visible when teammates are in custody
+
+Stamina being visible when you are in custody

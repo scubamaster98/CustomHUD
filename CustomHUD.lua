@@ -1,5 +1,7 @@
 if not CustomHUDMenu.settings.enable_teammatepanels then return end
 --search CFG or FIX for some stuff
+--fix incorrect localization for certain interactions
+--maybe replace callsign with the infamy icon(s) if the player has an infamy
 printf = printf or function(...) end
 
 if RequiredScript == "lib/managers/hud/hudteammate" then
@@ -720,7 +722,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	
 	function PlayerInfoComponent.PlayerInfo:set_name(name)
 		if name then
-			self._components.name:set_text(utf8.to_upper(name)) --CFG: capital for urself, replace with (name) if u want lowercase characters instead
+			self._components.name:set_text(utf8.to_upper(name))
 			self:arrange()
 		end
 	end
@@ -2644,6 +2646,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			self:arrange()
 		end
 	end
+	
 	function PlayerInfoComponent.Interaction:start(id, timer)
 		self._panel:stop()
 		
