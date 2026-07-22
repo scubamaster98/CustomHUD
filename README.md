@@ -1,14 +1,14 @@
-# CustomHUD
+# About
 
-A HUD mod for old versions of PAYDAY 2 (primarily for u37.1)
+CustomHUD is a HUD mod for old versions of PAYDAY 2 (primarily for u37.1)
 
-Should work on every other version above it just fine.
+It should work on every other version above it just fine.
 
 Currently incompatible with u1-u23 (most likely)
 
-# Credits:
+## Credits
 
-Seven - [Original mod(s)](https://bitbucket.org/pjal3urb/pd2-mods/src/master/)
+Seven - [Original CustomHUD (and more)](https://bitbucket.org/pjal3urb/pd2-mods/src/master/)
 
 WolfHUD - [some code](https://github.com/Kamikaze94/WolfHUD)
 
@@ -24,17 +24,19 @@ James - slider fix
 
 and some more people i might've forgotten (my bad)
 
-# Todo:
+### Todo
 
 Fix bugs
 
 Auto updates
 
-# Known bugs:
+Maybe replace callsign with the infamy icon(s) if the player has an infamy
 
-Callsigns change size after VC activation and deactivation (and drop-in too apparently?)
+#### Known bugs
 
-Some interactions being wrong on teammate panels
+(Potentially fixed) Callsigns change size after VC activation and deactivation (and drop-in too apparently?)
+
+Some interaction text being wrong on teammate panels
 
 Down counter being visible when teammates are in custody
 

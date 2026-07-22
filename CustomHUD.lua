@@ -1,7 +1,5 @@
 if not CustomHUDMenu.settings.enable_teammatepanels then return end
---search CFG or FIX for some stuff
---fix incorrect localization for certain interactions
---maybe replace callsign with the infamy icon(s) if the player has an infamy
+--search CFG/FIX for stuff
 printf = printf or function(...) end
 
 if RequiredScript == "lib/managers/hud/hudteammate" then
