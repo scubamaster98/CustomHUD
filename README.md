@@ -24,7 +24,7 @@ James - slider fix
 
 and some more people i might've forgotten (my bad)
 
-### Todo
+## Todo
 
 Fix bugs
 
@@ -32,7 +32,7 @@ Auto updates
 
 Maybe replace callsign with the infamy icon(s) if the player has an infamy
 
-#### Known bugs
+## Known bugs
 
 (Potentially fixed) Callsigns change size after VC activation and deactivation (and drop-in too apparently?)
 
