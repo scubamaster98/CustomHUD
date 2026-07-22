@@ -1120,21 +1120,14 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._animating_voice_com = true
 		local x = self._panel:w() / 2
 		local y = self._panel:h() / 2
-		icon:set_image("guis/textures/pd2/jukebox_playing", 0, 0, 16, 16 )
-		
+		icon:set_image("guis/textures/pd2/jukebox_playing", 0, 0, 16, 16)
+		icon:set_size(self:w(), self:h())
+		icon:set_center(x, y)
+
 		while self._voice_com_active do
-			local T = 2
-			local t = 0
-			
-			while t < T do
-				local r = (math.sin(t * 360)) * 0.15
-				icon:set_size(self:w() * (1+r), self:h() * (1+r))
-				icon:set_center(x, y)
-				
-				t = t + coroutine.yield()
-			end
+			coroutine.yield()
 		end
-		
+
 		icon:set_image("guis/textures/pd2/hud_tabs", 84, 34, 19, 19)
 		icon:set_center(x, y)
 		icon:set_size(self:w(), self:h())
@@ -1406,14 +1399,9 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			self._downs_counter:set_text(tostring(self._player_lives - 1))
 
 			self._downs_counter:set_color((self._player_lives <= 1) and Color.red or Color.black)
---CFG: comment out below for no anim
-			if self._player_lives == 1 then
-				self._downs_counter:stop()
-				self._downs_counter:animate(callback(self, self, "_animate_low_life"), self._downs_panel:h() * 0.50, self._downs_panel:h() * 0.80)
-			else
+
 				self._downs_counter:stop()
 				self._downs_counter:set_font_size(self._downs_panel:h() * 0.65)
-			end
 		end
 	end
 	
@@ -1528,17 +1516,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		
 		timer:set_text("0")
 	end
-	
-	function PlayerInfoComponent.PlayerStatus:_animate_low_life(text, min_size, max_size)
-		local t = 0
-		
-		while alive(text) do
-			local r = math.sin(t * 360) * 0.5 + 0.5
-			text:set_font_size(math.lerp(min_size, max_size, r))
-			t = t + coroutine.yield()
-		end
-	end
-	
+
 	function PlayerInfoComponent.PlayerStatus:_animate_health_damage(o, old, new)
 		local decrease = old > new
 		local dr = old - new
