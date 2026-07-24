@@ -381,7 +381,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	end
 
 	function HUDTeammateCustom:set_name(name)
-		if self._last_name ~= name then	--Gotta be a better place for this
+		if self._last_name ~= name then
 			self._last_name = name
 			self:reset_kill_count()
 			self:reset_accuracy()
@@ -1041,7 +1041,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			w = size * 0.75,
 			layer = 10,
 		})
---ty wolfhud
+
 		self._condition_icon = self._panel:bitmap({
 			name = "condition_icon",
 			visible = false,
@@ -1170,20 +1170,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			w = size,
 			layer = health_bg:layer() + 1,
 		})
---CFG: modify #, 0, -#, # to 64 or 128 if u want anim
-		self._health_radial_old = self._panel:bitmap({
-			name = "health_radial_old",
-			texture = "guis/textures/pd2/hud_health",
-			texture_rect = { 0, 0, -0, 0 },
-			render_template = "VertexColorTexturedRadial",
-			blend_mode = "add",
-			alpha = 0.4,
-			color = Color(1, 1, 1),
-			h = size,
-			w = size,
-			layer = health_bg:layer() + 1,
-		})
---FIX: change 64 to 128 if it looks wrong
+--same fix
 		self._stored_health_radial = self._panel:bitmap({
 			name = "stored_health_radial",
 			texture = "guis/textures/pd2/hud_health",
@@ -1196,7 +1183,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			w = size,
 			layer = self._health_radial:layer() - 1,
 		})
---FIX: change 64 to 128 if it looks wrong
+--same fix
 		self._armor_radial = self._panel:bitmap({
 			name = "armor_radial",
 			texture = "guis/textures/pd2/hud_shield",
@@ -1209,7 +1196,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			w = size,
 			layer = self._stored_health_radial:layer() + 1,
 		})
---FIX: change 64 to 128 if it looks wrong
+--same fix
 		self._stamina_radial = self._panel:bitmap({
 			name = "stamina_radial",
 			texture = "guis/textures/pd2/hud_shield",
@@ -1362,13 +1349,8 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	end
 
 	function PlayerInfoComponent.PlayerStatus:set_health(current, total)
-		local old_ratio = self._health_ratio
 		self._health_ratio = current / total
-
-		if old_ratio ~= self._health_ratio then
-			self._health_radial:stop()
-			self._health_radial:animate(callback(self, self, "_animate_health_damage"), old_ratio, self._health_ratio)
-		end
+		self._health_radial:set_color(Color(self._health_ratio, 1, 1))
 	end
 
 	function PlayerInfoComponent.PlayerStatus:set_stored_health(amount)
@@ -1513,29 +1495,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		end
 
 		timer:set_text("0")
-	end
-
-	function PlayerInfoComponent.PlayerStatus:_animate_health_damage(o, old, new)
-		local decrease = old > new
-		local dr = old - new
-		local T = math.clamp(math.abs(dr), 0.1, 0.3)
-		local t = T
-
-		self._health_radial_old:set_color(Color(old, 1, 1))
-
-		while t > 0 do
-			t = math.max(0, t - coroutine.yield())
-			local r = new + t/T * dr
-
-			self:set_stored_health_max(1-r)
-			self._health_radial:set_color(Color(r, 1, 1))
-			self._stored_health_radial:set_rotation(-r * 360)
-			if not decrease then
-				self._health_radial_old:set_color(Color(r, 1, 1))
-			end
-		end
-
-		self._health_radial_old:set_color(Color(new, 1, 1))
 	end
 
 	PlayerInfoComponent.Carry = PlayerInfoComponent.Carry or class(PlayerInfoComponent.Base)
@@ -3196,31 +3155,7 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 	end
 
 end
---bug with long objective text
-if RequiredScript == "lib/managers/hud/hudassaultcorner" then
 
-	local init_original = HUDAssaultCorner.init
-
-	function HUDAssaultCorner:init(...)
-		init_original(self, ...)
-
-		local assault_panel = self._hud_panel:child("assault_panel")
-		assault_panel:set_right(self._hud_panel:w() / 2 + 133)
-		--local buffs_panel = self._hud_panel:child("buffs_panel") --CFG: for versions that have winters
-		--buffs_panel:set_x(assault_panel:left() + self._bg_box:left() - 3 - 200)
-
-		local point_of_no_return_panel = self._hud_panel:child("point_of_no_return_panel")
-		point_of_no_return_panel:set_right(self._hud_panel:w() / 2 + 133)
-
-		local casing_panel = self._hud_panel:child("casing_panel")
-		casing_panel:set_right(self._hud_panel:w() / 2 + 133)
-
-		local hostages_panel = self._hud_panel:child("hostages_panel")
-		hostages_panel:set_alpha(0)
-	end
-
-end
---ty wolfhud
 if RequiredScript == "lib/managers/hud/hudobjectives" then
 
 	HUDObjectives._TEXT_MARGIN = 8
