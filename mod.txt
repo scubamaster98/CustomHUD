@@ -4,7 +4,7 @@
 	"author" : "s",
 	"color" : "1 0 1",
 	"contact" : "https://github.com/scubamaster98/CustomHUD",
-    "version": "1.5",
+    "version": "1.6",
     "priority": "360",
 		"hooks": [
 		{ "hook_id": "core/lib/managers/menu/items/coremenuitemslider", "script_path": "coremenuitemslider.lua" },

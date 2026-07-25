@@ -32,6 +32,12 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			self:set_latency(latency)
 			self._next_latency_update_t = t + 1
 		end
+
+		local peer_id = self._is_player and managers.network:session():local_peer():id() or self._peer_id
+		if peer_id then
+			local in_custody = managers.trade:is_peer_in_custody(peer_id)
+			self:call_listeners("custody", in_custody)
+		end
 	end
 
 	function HUDTeammateCustom:arrange()
@@ -1042,6 +1048,8 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			layer = 10,
 		})
 
+		self._icon_size = size * 0.75
+
 		self._condition_icon = self._panel:bitmap({
 			name = "condition_icon",
 			visible = false,
@@ -1119,7 +1127,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		local x = self._panel:w() / 2
 		local y = self._panel:h() / 2
 		icon:set_image("guis/textures/pd2/jukebox_playing", 0, 0, 16, 16)
-		icon:set_size(self:w(), self:h())
+		icon:set_size(self._icon_size, self._icon_size)
 		icon:set_center(x, y)
 
 		while self._voice_com_active do
@@ -1128,7 +1136,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 
 		icon:set_image("guis/textures/pd2/hud_tabs", 84, 34, 19, 19)
 		icon:set_center(x, y)
-		icon:set_size(self:w(), self:h())
+		icon:set_size(self._icon_size, self._icon_size)
 		self._animating_voice_com = false
 	end
 
@@ -1191,7 +1199,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			render_template = "VertexColorTexturedRadial",
 			blend_mode = "add",
 			color = Color(1, 1, 1),
-			layer = self._stored_health_radial:layer() + 1,
 			h = size,
 			w = size,
 			layer = self._stored_health_radial:layer() + 1,
@@ -1266,8 +1273,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			name = "condition_timer",
 			visible = false,
 			color = Color.white,
-			w = size,
-			h = size,
 			align = "center",
 			vertical = "center",
 			h = size,
@@ -1289,7 +1294,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			layer = self._condition_icon:layer(),
 		})
 
-		local tweak = tweak_data.upgrades
 		self._health_ratio = 1
 		self._stored_health = 0
 		self._stored_health_max = 0
@@ -1305,6 +1309,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._owner:register_listener("PlayerStatus", { "set_revives" }, callback(self, self, "set_revives"), false)
 		self._owner:register_listener("PlayerStatus", { "increment_downs" }, callback(self, self, "increment_downs"), false)
 		self._owner:register_listener("PlayerStatus", { "reset_downs" }, callback(self, self, "reset_downs"), false)
+		self._owner:register_listener("PlayerStatus", { "custody" }, callback(self, self, "set_in_custody"), false)
 		self._owner:register_listener("PlayerStatus", { "armor" }, callback(self, self, "set_armor"), false)
 		self._owner:register_listener("PlayerStatus", { "stamina" }, callback(self, self, "set_stamina"), false)
 		self._owner:register_listener("PlayerStatus", { "stamina_max" }, callback(self, self, "set_stamina_max"), false)
@@ -1319,6 +1324,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	function PlayerInfoComponent.PlayerStatus:destroy()
 		self._owner:unregister_listener("PlayerStatus", {
 			"health", "stored_health", "stored_health_max", "set_revives", "increment_downs", "reset_downs",
+			"custody",
 			"armor",
 			"stamina", "stamina_max",
 			"damage_taken",
@@ -1391,6 +1397,11 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 
 	function PlayerInfoComponent.PlayerStatus:reset_downs()
 		self:set_downs(0)
+	end
+	
+	function PlayerInfoComponent.PlayerStatus:set_in_custody(status)
+		self._downs_panel:set_visible(not status and self._player_lives > 0)
+		self._stamina_radial:set_visible(not status and self._is_local_player)
 	end
 
 	function PlayerInfoComponent.PlayerStatus:set_armor(current, total)

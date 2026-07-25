@@ -34,10 +34,4 @@ Maybe replace callsign with the infamy icon(s) if the player has an infamy
 
 ## Known bugs
 
-(Potentially fixed) Callsigns change size after VC activation and deactivation (and drop-in too apparently?)
-
 Some interaction text being wrong on teammate panels
-
-Down counter being visible when teammates are in custody
-
-Stamina being visible when you are in custody
