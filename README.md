@@ -4,7 +4,7 @@ CustomHUD is a HUD mod for old versions of PAYDAY 2 (primarily for u37.1)
 
 It should work on every other version above it just fine.
 
-Currently incompatible with u1-u23 (most likely)
+Currently incompatible with u0-u23 (most likely)
 
 ## Credits
 
@@ -26,12 +26,12 @@ and some more people i might've forgotten (my bad)
 
 ## Todo
 
-Fix bugs
+• Fix bugs
 
-Auto updates
+• Auto updates
 
-Maybe replace callsign with the infamy icon(s) if the player has an infamy
+• Maybe replace callsign with the infamy icon(s) if the player has an infamy
 
 ## Known bugs
 
-Some interaction text being wrong on teammate panels
+• Some interaction text being wrong on teammate panels

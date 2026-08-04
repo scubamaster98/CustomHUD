@@ -1,5 +1,5 @@
 if not CustomHUDMenu.settings.enable_teammatepanels then return end
---search CFG/FIX for stuff
+--search FIX for stuff
 printf = printf or function(...) end
 
 if RequiredScript == "lib/managers/hud/hudteammate" then
@@ -31,12 +31,16 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 
 			self:set_latency(latency)
 			self._next_latency_update_t = t + 1
-		end
+	end
 
-		local peer_id = self._is_player and managers.network:session():local_peer():id() or self._peer_id
-		if peer_id then
-			local in_custody = managers.trade:is_peer_in_custody(peer_id)
-			self:call_listeners("custody", in_custody)
+		local session = managers.network:session()
+		if session and managers.trade then
+			local local_peer = session:local_peer()
+			local peer_id = self._is_player and local_peer and local_peer:id() or self._peer_id
+			if peer_id then
+				local in_custody = managers.trade:is_peer_in_custody(peer_id)
+				self:call_listeners("custody", in_custody)
+			end
 		end
 	end
 
@@ -2802,7 +2806,6 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 			local is_player = i == HUDManager.PLAYER_PANEL
 			local align
 
-			--if j < 4 or is_player or j <= math.ceil(num_panels / 2) then
 			if j <= 7 or is_player then
 				align = "left"
 			else
@@ -2812,7 +2815,6 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 			local teammate = HUDTeammateCustom:new(i, teammates_panel, is_player, align)
 
 			self._hud.teammate_panels_data[i] = {
-				--taken = is_player and (num_panels > HUDManager.PLAYER_PANEL),
 				taken = false,
 				special_equipments = {},
 			}
@@ -2993,7 +2995,7 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 	end
 
 	function HUDManager:set_player_armor(data)
-		self:set_teammate_armor(HUDManager.PLAYER_PANEL, data) --CFG: remove u are hurt take cover
+		self:set_teammate_armor(HUDManager.PLAYER_PANEL, data) --removes you are hurt take cover
 	end
 
 	function HUDManager:set_teammate_weapon(i, index, id, silencer)
