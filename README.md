@@ -1,10 +1,12 @@
 # About
 
-CustomHUD is a HUD mod for old versions of PAYDAY 2 (primarily for u37.1)
+CustomHUD is a HUD mod for old versions of PAYDAY 2. (primarily for u37.1)
 
-It should work on every other version above it just fine.
+Originally fixed and fully functional since 12/02/2024.
 
-Currently incompatible with u0-u23 (most likely)
+It should work on every other version above it just fine. If it doesn't, it's recommended to use the version from "compat" branch.
+
+Currently incompatible with u0-u23 (and possibly a few more versions after it)
 
 ## Credits
 
@@ -12,7 +14,7 @@ Seven - [Original CustomHUD (and more)](https://bitbucket.org/pjal3urb/pd2-mods/
 
 WolfHUD - [some code](https://github.com/Kamikaze94/WolfHUD)
 
-FishTaco - [Real ammo](https://modworkshop.net/mod/15108)
+FishTaco - [Real ammo (this mod was also in WolfHUD)](https://modworkshop.net/mod/15108)
 
 this guy - [Interaction timer](https://modworkshop.net/mod/25282)
 

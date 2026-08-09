@@ -4,8 +4,16 @@
 	"author" : "s",
 	"color" : "1 0 1",
 	"contact" : "https://github.com/scubamaster98/CustomHUD",
-    "version": "1.6.1",
+    "version": "1.6.2",
     "priority": "360",
+	"updates" : [
+		{
+			"identifier" : "cushudmain",
+			"host": {
+				"meta": "https://raw.githubusercontent.com/scubamaster98/CustomHUD/meta/meta.json"
+			}
+		}
+	],
 		"hooks": [
 		{ "hook_id": "core/lib/managers/menu/items/coremenuitemslider", "script_path": "coremenuitemslider.lua" },
 		{ "hook_id": "lib/setups/setup", "script_path": "Menu.lua" },
@@ -36,7 +44,6 @@
 		{ "hook_id": "lib/managers/hud/hudinteraction", "script_path": "Plugins/InteractionTimer.lua"},
 		{ "hook_id": "lib/units/beings/player/states/playerstandard", "script_path": "Plugins/DoubletapGrenades.lua" },
 		{ "hook_id": "lib/managers/menumanager", "script_path": "Plugins/offlinechat.lua" }
-
 	],
 
     "persist_scripts" : [
