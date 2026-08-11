@@ -4,8 +4,16 @@
 	"author" : "s",
 	"color" : "1 0 1",
 	"contact" : "https://github.com/scubamaster98/CustomHUD",
-    "version": "compat-1.0",
+    "version": "1.0",
     "priority": "360",
+	"updates" : [
+		{
+			"identifier" : "cushudcompat",
+			"host": {
+				"meta": "https://raw.githubusercontent.com/scubamaster98/CustomHUD/meta/meta.json"
+			}
+		}
+	],
 		"hooks": [
 		{ "hook_id": "core/lib/managers/menu/items/coremenuitemslider", "script_path": "coremenuitemslider.lua" },
 		{ "hook_id": "lib/setups/setup", "script_path": "Menu.lua" },

@@ -14,7 +14,7 @@ Seven - [Original CustomHUD (and more)](https://bitbucket.org/pjal3urb/pd2-mods/
 
 ~~WolfHUD - [some code](https://github.com/Kamikaze94/WolfHUD)~~ no wolfhud code is used in this branch
 
-FishTaco - [Real ammo](https://modworkshop.net/mod/15108)
+FishTaco - [Real ammo (this mod was also in WolfHUD)](https://modworkshop.net/mod/15108)
 
 ~~this guy - [Interaction timer](https://modworkshop.net/mod/25282)~~ not present
 
@@ -35,7 +35,5 @@ Auto updates
 Some interaction text being wrong on teammate panels
 
 Callsigns change size after VC activation and deactivation (and drop-in too apparently?)
-
-Host name can be lowercase
 
 Few more i probably missed
