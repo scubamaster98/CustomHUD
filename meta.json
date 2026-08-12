@@ -1,7 +1,7 @@
 [
     {
         "ident" : "cushudmain",
-        "version" : "1.6.2",
+        "version" : "1.6.3",
         "patchnotes_url" : "https://github.com/scubamaster98/CustomHUD/commits/main/",
         "download_url" : "https://github.com/scubamaster98/CustomHUD/archive/refs/heads/main.zip"
     },
