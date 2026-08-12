@@ -1,5 +1,5 @@
 if not CustomHUDMenu.settings.enable_teammatepanels then return end
---search FIX for stuff
+
 printf = printf or function(...) end
 
 if RequiredScript == "lib/managers/hud/hudteammate" then
@@ -387,7 +387,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		if not override then
 			self:reset()
 		end
-
 	end
 
 	function HUDTeammateCustom:set_name(name)
@@ -2755,7 +2754,7 @@ end
 
 if RequiredScript == "lib/managers/hudmanagerpd2" then
 
-	HUDManager.CUSTOM_TEAMMATE_PANELS = true	--External flag
+	HUDManager.CUSTOM_TEAMMATE_PANELS = true
 
 	local update_original = HUDManager.update
 	local add_weapon_original = HUDManager.add_weapon
@@ -2765,15 +2764,6 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 	local set_mugshot_voice_original = HUDManager.set_mugshot_voice
 	local set_teammate_carry_info_original = HUDManager.set_teammate_carry_info
 	local remove_teammate_carry_info_original = HUDManager.remove_teammate_carry_info
-
-	function HUDManager:set_teammate_ammo_amount(id, selection_index, max_clip, current_clip, current_left, max, ...)
-		local total_left = current_left - current_clip
-		if total_left >= 0 then
-			current_left = total_left
-			max = max - current_clip
-		end
-		return set_teammate_ammo_amount_orig(self, id, selection_index, max_clip, current_clip, current_left, max, ...)
-	end
 
 	function HUDManager:_create_teammates_panel(hud, ...)
 		hud = hud or managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
@@ -2800,7 +2790,6 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 		local j = 1
 		HUDManager.PLAYER_PANEL = math.max(CriminalsManager.MAX_NR_CRIMINALS, HUDManager.PLAYER_PANEL)
 		local num_panels = HUDManager.PLAYER_PANEL
-		--local num_panels = math.max(CriminalsManager.MAX_NR_CRIMINALS, HUDManager.PLAYER_PANEL) --4
 
 		for i = 1, num_panels do
 			local is_player = i == HUDManager.PLAYER_PANEL
@@ -2861,6 +2850,15 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 		self:set_teammate_weapon_firemode(HUDManager.PLAYER_PANEL, data.inventory_index, active_mode)
 
 		return add_weapon_original(self, data, ...)
+	end
+	
+	function HUDManager:set_teammate_ammo_amount(id, selection_index, max_clip, current_clip, current_left, max, ...)
+		local total_left = current_left - current_clip
+		if total_left >= 0 then
+			current_left = total_left
+			max = max - current_clip
+		end
+		return set_teammate_ammo_amount_orig(self, id, selection_index, max_clip, current_clip, current_left, max, ...)
 	end
 
 	function HUDManager:set_stamina_value(...)
@@ -3019,7 +3017,6 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 			outfit = peer and peer:blackmarket_outfit()
 
 			if outfit then
-				--Weapon
 				for selection, data in ipairs({ outfit.secondary, outfit.primary }) do
 					local weapon_id = managers.weapon_factory:get_weapon_id_by_factory_id(data.factory_id)
 					local silencer = managers.weapon_factory:has_perk("silencer", data.factory_id, data.blueprint)
@@ -3351,5 +3348,4 @@ if RequiredScript == "lib/managers/hud/hudtemp" then
 		init_original(self, ...)
 		self._temp_panel:set_alpha(0)
 	end
-
 end

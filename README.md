@@ -28,11 +28,11 @@ and some more people i might've forgotten (my bad)
 
 ## Todo
 
-• Fix bugs
+• Fix any remaining bugs
 
-• Auto updates
+• Maybe improve compatibility
 
-• Maybe replace callsign with the infamy icon(s) if the player has an infamy
+• Maybe replace callsign with the infamy icon(s) if the player has an infamy (with support for Infamy 4.0 mod)
 
 ## Known bugs
 
