@@ -221,17 +221,17 @@ end)
 CustomHUDMenu = {
 	--Default settings, written to initial settings file and then ignored
 	settings = {
-		enable_teammatepanels = false,
-		enable_chat = false,
+		enable_teammatepanels = true,
+		enable_chat = true,
 		
 		teammatepanels = {
-			MAX_WEAPONS = 2,	--Number of carried guns (fuck with this at your own risk)
+			MAX_WEAPONS = 2,	--Number of carried guns (don't change this)
 			
 			player = {
-				scale = 1,	--Scale of all elements of the panel
-				opacity = 1.0,	--Transparency/alpha of panel (1 is solid, 0 is invisible)
-				name = false,	--Show name
-				rank = false,	--Show infamy/level
+				scale = 0.8,	--Scale of all elements of the panel
+				opacity = 0.8,	--Transparency/alpha of panel (1 is solid, 0 is invisible)
+				name = true,	--Show name
+				rank = true,	--Show infamy/level
 				character = false,	--Show character name
 				latency = false,	--Show latency (not used by local player)
 				build = false,	--Show build; skill/perk breakdown (not used by local player)
@@ -255,8 +255,8 @@ CustomHUDMenu = {
 			},
 			
 			teammate = {
-				scale = 0.8,	--Scale of all elements of the panel
-				opacity = 1.0,	--Transparency/alpha of panel (1 is solid, 0 is invisible)
+				scale = 0.7,	--Scale of all elements of the panel
+				opacity = 0.7,	--Transparency/alpha of panel (1 is solid, 0 is invisible)
 				name = true,	--Show name
 				rank = true,	--Show infamy/level
 				character = false,	--Show character name
@@ -283,13 +283,13 @@ CustomHUDMenu = {
 		},
 		
 		hudchat = {
-			line_height = 12,			--Size of each line in chat (and hence the text size)
-			width = 350,				--Width of the window
-			height = 100,				--Height of the window
-			use_mouse = false,		--For scrolling and stuff. Experimental
+			line_height = 14,			--Size of each line in chat (and hence the text size)
+			width = 420,				--Width of the chat window
+			height = 120,				--Height of the chat window
+			use_mouse = true,		--For scrolling and stuff. Experimental
 			x_offset = 100,			--% offset from left of HUD panel
-			y_offset = 50,				--% offset from top of HUD panel
-			fade_delay = 6,			--Fade delay for window after inactivity
+			y_offset = 80,				--% offset from top of HUD panel
+			fade_delay = 8,			--Fade delay for chat window after inactivity
 		},
 	},
 	

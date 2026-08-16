@@ -60,7 +60,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 				end
 			end
 
-
 			h = h + h_row
 			w = math.max(w, w_row)
 		end
@@ -88,7 +87,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	end
 
 	function HUDTeammateCustom:update_settings()
-		self._component_layout = nil	--Prevent constant rearranging during setting change
+		self._component_layout = nil
 
 		for i, component in ipairs(self._all_components) do
 			component:update_settings()
@@ -99,7 +98,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			self._scale = self._settings.scale
 
 			for i, component in ipairs(self._all_components) do
-				--component:rescale(self._scale)	--TODO: Implement rescale function for components
+
 			end
 		end
 
@@ -157,7 +156,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._component_layout = {}
 
 		if self._is_player then
-			table.insert(self._component_layout, { self._carry })	--1st row
+			table.insert(self._component_layout, { self._carry })
 		end
 
 		local top_components = { }
@@ -166,17 +165,17 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		end
 		table.insert(top_components, self._player_info)
 		table.insert(top_components, self._latency)
-		table.insert(self._component_layout, top_components)	--2nd row
+		table.insert(self._component_layout, top_components)
 
-		table.insert(self._component_layout, { self._build })	--3rd row
+		table.insert(self._component_layout, { self._build })
 
 		local center_components = { self._player_status, self._center_panel }
 		if not self._is_player then
 			table.insert(center_components, self._carry)
 		end
-		table.insert(self._component_layout, center_components)	--4th row
+		table.insert(self._component_layout, center_components)
 
-		table.insert(self._component_layout, { self._kills, self._accuracy })	--5th row
+		table.insert(self._component_layout, { self._kills, self._accuracy })
 
 		self:arrange()
 	end
@@ -570,11 +569,11 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		end
 	end
 
-	function PlayerInfoComponent.Base:update_settings()	--Override for classes with settings
+	function PlayerInfoComponent.Base:update_settings()
 
 	end
 
-	function PlayerInfoComponent.Base:set_is_ai(state)	--Override for classes that change behavior for AI/non-AI
+	function PlayerInfoComponent.Base:set_is_ai(state)
 		local state = state and true or false
 
 		if self._is_ai ~= state then
@@ -583,7 +582,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		end
 	end
 
-	function PlayerInfoComponent.Base:set_is_local_player(state)	--Override for classes that change behavior for player/teammate
+	function PlayerInfoComponent.Base:set_is_local_player(state)
 		local state = state and true or false
 
 		if self._is_local_player ~= state then
@@ -650,7 +649,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 
 		return texture, name_text
 	end
-
 
 	PlayerInfoComponent.PlayerInfo = PlayerInfoComponent.PlayerInfo or class(PlayerInfoComponent.Base)
 	function PlayerInfoComponent.PlayerInfo:init(panel, owner, height, settings)
@@ -773,7 +771,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		end
 	end
 
-
 	PlayerInfoComponent.Latency = PlayerInfoComponent.Latency or class(PlayerInfoComponent.Base)
 	function PlayerInfoComponent.Latency:init(panel, owner, height, settings)
 		PlayerInfoComponent.Latency.super.init(self, panel, owner, "latency", height*2, height)
@@ -822,7 +819,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	function PlayerInfoComponent.Latency:set_latency(value)
 		self._text:set_text(string.format("%.0fms", value))
 	end
-
 
 	PlayerInfoComponent.Build = PlayerInfoComponent.Build or class(PlayerInfoComponent.Base)
 	function PlayerInfoComponent.Build:init(panel, owner, height, settings)
@@ -896,7 +892,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			self._owner:arrange()
 		end
 	end
-
 
 	PlayerInfoComponent.KillCounter = PlayerInfoComponent.KillCounter or class(PlayerInfoComponent.Base)
 	function PlayerInfoComponent.KillCounter:init(panel, owner, height, settings)
@@ -980,7 +975,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		end
 	end
 
-
 	PlayerInfoComponent.AccuracyCounter = PlayerInfoComponent.AccuracyCounter or class(PlayerInfoComponent.Base)
 	function PlayerInfoComponent.AccuracyCounter:init(panel, owner, height, settings)
 		PlayerInfoComponent.AccuracyCounter.super.init(self, panel, owner, "accuracy_counter", 0, height)
@@ -1043,7 +1037,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			self._owner:arrange()
 		end
 	end
-
 
 	PlayerInfoComponent.Callsign = PlayerInfoComponent.Callsign or class(PlayerInfoComponent.Base)
 	function PlayerInfoComponent.Callsign:init(panel, owner, size, settings)
@@ -1126,7 +1119,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._animating_voice_com = false
 	end
 
-
 	PlayerInfoComponent.PlayerStatus = PlayerInfoComponent.PlayerStatus or class(PlayerInfoComponent.Base)
 	function PlayerInfoComponent.PlayerStatus:init(panel, owner, width, height, settings)
 		PlayerInfoComponent.PlayerStatus.super.init(self, panel, owner, "player_status", width, height)
@@ -1188,7 +1180,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			render_template = "VertexColorTexturedRadial",
 			blend_mode = "add",
 			color = Color(1, 1, 1),
-			layer = self._stored_health_radial:layer() + 1,
 			h = size,
 			w = size,
 			layer = self._stored_health_radial:layer() + 1,
@@ -1323,7 +1314,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 
 		self._radial_ability_icon:set_center(self._radial_ability:center())
 
-		local tweak = tweak_data.upgrades
 		self._health_ratio = 1
 		self._stored_health = 0
 		self._stored_health_max = 0
@@ -1723,7 +1713,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		end
 	end
 
-
 	PlayerInfoComponent.CenterPanel = PlayerInfoComponent.CenterPanel or class(PlayerInfoComponent.Base)
 	function PlayerInfoComponent.CenterPanel:init(panel, owner, height, settings)
 		PlayerInfoComponent.Weapon.super.init(self, panel, owner, "center_panel", 0, height)
@@ -1870,7 +1859,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			self:arrange()
 		end
 	end
-
 
 	PlayerInfoComponent.Weapons = PlayerInfoComponent.Weapons or class(PlayerInfoComponent.Base)
 	function PlayerInfoComponent.Weapons:init(panel, owner, height, settings)
@@ -2019,7 +2007,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		return ratio, component
 	end
 
-
 	PlayerInfoComponent.Weapon = PlayerInfoComponent.Weapon or class(PlayerInfoComponent.Base)
 	function PlayerInfoComponent.Weapon:init(panel, owner, slot, height, settings)
 		PlayerInfoComponent.Weapon.super.init(self, panel, owner, "weapon_" .. tostring(slot), 0, height)
@@ -2138,7 +2125,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	end
 
 	function PlayerInfoComponent.Weapon:update_settings()
-		--TODO: Figure out WTF was I thinking with this?
 
 		local selected = {
 			[self._icon_panel] = true,
@@ -2253,7 +2239,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 
 		self:update_settings()
 	end
-
 
 	PlayerInfoComponent.Equipment = PlayerInfoComponent.Equipment or class(PlayerInfoComponent.Base)
 	function PlayerInfoComponent.Equipment:init(panel, owner, height, settings)
@@ -2598,7 +2583,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		amount_text:set_center(amount_bg:center())
 	end
 
-
 	PlayerInfoComponent.Interaction = PlayerInfoComponent.Interaction or class(PlayerInfoComponent.Base)
 	function PlayerInfoComponent.Interaction:init(panel, owner, height, settings)
 		PlayerInfoComponent.Interaction.super.init(self, panel, owner, "interaction", 0, height)
@@ -2806,7 +2790,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			w = 0,
 		})
 
-	--TODO: Update statisticspanel width
 		self:arrange()
 	end
 
@@ -2847,7 +2830,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._icon_panel:child("amount"):set_text(tostring(count))
 	end
 
-
 	PlayerInfoComponent.Melee = PlayerInfoComponent.Melee or class(PlayerInfoComponent.Base)
 	PlayerInfoComponent.Armor = PlayerInfoComponent.Armor or class(PlayerInfoComponent.Base)
 	PlayerInfoComponent.Deployable = PlayerInfoComponent.Deployable or class(PlayerInfoComponent.Base)
@@ -2856,7 +2838,7 @@ end
 
 if RequiredScript == "lib/managers/hudmanagerpd2" then
 
-	HUDManager.CUSTOM_TEAMMATE_PANELS = true	--External flag
+	HUDManager.CUSTOM_TEAMMATE_PANELS = true
 
 	local update_original = HUDManager.update
 	local add_weapon_original = HUDManager.add_weapon
@@ -3004,7 +2986,6 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 		return remove_teammate_carry_info_original(self, i, ...)
 	end
 
-	--HARD OVERRIDE (4 -> HUDManager.PLAYER_PANEL)
 	function HUDManager:reset_player_hpbar()
 		local crim_entry = managers.criminals:character_static_data_by_name(managers.criminals:local_character_name())
 		if not crim_entry then
@@ -3015,7 +2996,6 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 		self:set_teammate_name(HUDManager.PLAYER_PANEL, managers.network:session():local_peer():name())
 	end
 
-	--HARD OVERRIDE: Replaced because original function dumps all over basic OO-programming practices...
 	function HUDManager:set_ai_stopped(ai_id, stopped)
 		local panel = self._teammate_panels[ai_id]
 
@@ -3024,7 +3004,6 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 		end
 
 		panel:set_ai_stopped(stopped)
-
 
 		local name = panel:get_name()
 
@@ -3115,7 +3094,6 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 			outfit = peer and peer:blackmarket_outfit()
 
 			if outfit then
-				--Weapon
 				for selection, data in ipairs({ outfit.secondary, outfit.primary }) do
 					local weapon_id = managers.weapon_factory:get_weapon_id_by_factory_id(data.factory_id)
 					local silencer = managers.weapon_factory:has_perk("silencer", data.factory_id, data.blueprint)
@@ -3154,7 +3132,6 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 			self._teammate_panels[i]:set_specialization(index, level)
 		end
 	end
-
 
 	BagPresenter = BagPresenter or class()
 
