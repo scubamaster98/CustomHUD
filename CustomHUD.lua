@@ -1248,6 +1248,8 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			layer = downs_bg:layer() + 1,
 			blend_mode = "normal",
 		})
+--ty claude
+		self._downs_panel:set_center(size / 2, size / 2)
 
 		self._condition_icon = self._panel:bitmap({
 			name = "condition_icon",
@@ -1276,7 +1278,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._custom_radial_icon = self._panel:bitmap({
 			name = "custom_radial_icon",
 			texture = "guis/textures/pd2/hud_swansong",
-			--texture_rect = { 0, 0, 64, 64 },
 			render_template = "VertexColorTexturedRadial",
 			blend_mode = "add",
 			color = Color(1, 0, 0, 0),
@@ -3128,20 +3129,12 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 		self._teammate_panels[i]:set_accuracy(value)
 	end
 
-	function HUDManager:set_teammate_weapon_accuracy(i, slot, value)
-
-	end
-
 	function HUDManager:increment_teammate_kill_count(i, is_special)
 		self._teammate_panels[i]:increment_kill_count(is_special)
 	end
 
 	function HUDManager:reset_teammate_kill_count(i)
 		self._teammate_panels[i]:reset_kill_count()
-	end
-
-	function HUDManager:increment_teammate_kill_count_detailed(i, unit, weapon_type, weapon_slot)
-
 	end
 
 	function HUDManager:set_player_revives(i, value)
