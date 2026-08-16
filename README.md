@@ -1,12 +1,20 @@
 # About
 
+This is the u19-u29 branch of CustomHUD, it's based on the compat branch version. It's specifically made to work for these versions, however this is not guaranteed to work on every one of those versions.
+
+Versions tested: u28 (solo)
+
 CustomHUD is a HUD mod for old versions of PAYDAY 2. (primarily for u37.1)
 
 Originally fixed and fully functional since 12/02/2024.
 
-It should work on every other version above it just fine. If it doesn't, it's recommended to use the version from "compat" branch.
+## Untested things
 
-Currently incompatible with u0-u23 (and possibly a few more versions after it)
+• Playing with other people
+
+• Playing on versions u19-u27 and u29
+
+• Voice chat icon display
 
 ## Credits
 
@@ -15,8 +23,6 @@ Seven - [Original CustomHUD (and more)](https://bitbucket.org/pjal3urb/pd2-mods/
 WolfHUD - [some code](https://github.com/Kamikaze94/WolfHUD)
 
 FishTaco - [Real ammo (this mod was also in WolfHUD)](https://modworkshop.net/mod/15108)
-
-this guy - [Interaction timer](https://modworkshop.net/mod/25282)
 
 Update 2 Overhaul - [Healthbars](https://github.com/MarcusPy/PAYDAY-2-2013-Update-2-Overhaul)
 
@@ -29,10 +35,6 @@ and some more people i might've forgotten (my bad)
 ## Todo
 
 • Fix any remaining bugs
-
-• Maybe improve compatibility
-
-• Maybe replace callsign with the infamy icon(s) if the player has an infamy (with support for Infamy 4.0 mod)
 
 ## Known bugs
 
