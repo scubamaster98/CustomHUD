@@ -4,9 +4,11 @@ CustomHUD is a HUD mod for old versions of PAYDAY 2. (primarily for u37.1)
 
 Originally fixed and fully functional since 12/02/2024.
 
-It should work on every other version above it just fine. If it doesn't, it's recommended to use the version from "compat" branch.
+CustomHUD should work on versions newer than U37.1 just fine. If it doesn't, it's recommended to use the version from the "compat" branch.
 
-Currently incompatible with u0-u23 (and possibly a few more versions after it)
+For versions below this, there's currently a version of this hud for U19-u29, although it hasn't been fully tested. U30-U36 is unknown, but this branch should work for those versions too. Support for versions below U19 is still being looked into.
+
+In short, this HUD is potentially compatible from U19+.
 
 ## Credits
 
