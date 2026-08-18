@@ -10,6 +10,6 @@ function PlayerStandard:_check_action_throw_grenade(t, input, ...)
 			return
 		end
 	end
-	
+
 	return _check_action_throw_grenade_original(self, t, input, ...)
 end
