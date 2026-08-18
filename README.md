@@ -1,6 +1,6 @@
 # About
 
-This is the u19-u29 branch of CustomHUD, it's based on the compat branch version. It's specifically made to work for these versions, however this is not guaranteed to work on every one of those versions.
+This is the U19-U29 branch of CustomHUD, it's based on the compat branch version. It's specifically made to work for these versions, however this is not guaranteed to work on every one of those versions. Probably not working on U19-U21 for now.
 
 Versions tested: u28 (solo)
 
@@ -12,7 +12,7 @@ Originally fixed and fully functional since 12/02/2024.
 
 • Playing with other people
 
-• Playing on versions u19-u27 and u29
+• Playing on versions U19-U27 and U29
 
 • Voice chat icon display
 
