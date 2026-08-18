@@ -14,7 +14,13 @@
     {
         "ident" : "cushud1929",
         "version" : "1.0.1",
-        "patchnotes_url" : "https://github.com/scubamaster98/CustomHUD/commits/u19-u29//",
+        "patchnotes_url" : "https://github.com/scubamaster98/CustomHUD/commits/u19-u29/",
         "download_url" : "https://github.com/scubamaster98/CustomHUD/archive/refs/heads/u19-u29.zip"
+    },
+    {
+        "ident" : "cushud018",
+        "version" : "1.0",
+        "patchnotes_url" : "https://github.com/scubamaster98/CustomHUD/commits/u0-u18/",
+        "download_url" : "https://github.com/scubamaster98/CustomHUD/archive/refs/heads/u0-u18.zip"
     }
 ]
