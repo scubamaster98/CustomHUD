@@ -245,22 +245,6 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 		})
 
 		local x_offset = 0
-		--[[local t = managers.game_play_central and managers.game_play_central:get_heist_timer() or 0 --u37.1 doesnt support this
-		local minutes = math.floor(t/60)
-		local hours = math.floor(minutes/60)
-		local time_string = hours > 0 and string.format("%d:%02d:%02d", hours, minutes%60, t%60) or string.format("%2d:%02d", minutes%60, t%60)
-
-		local time_text = msg_panel:text({
-			name = "time",
-			text = time_string,
-			font = tweak_data.menu.pd2_small_font,
-			font_size = self._settings.line_height * 0.95,
-			h = self._settings.line_height,
-			x = x_offset,
-		})
-		local _, _, w, _ = time_text:text_rect()
-		time_text:set_w(w)
-		x_offset = x_offset + w + 2]]
 
 		if icon then
 			local texture, texture_rect = tweak_data.hud_icons:get_icon_data(icon)

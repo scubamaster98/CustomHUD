@@ -44,7 +44,7 @@
 	"customHUD_menu_name_desc" : "",
 	"customHUD_menu_opacity_title" : "Opacity",
 	"customHUD_menu_opacity_desc" : "Transparency/alpha of panel (1 is solid, 0 is invisible)",
-	"customHUD_menu_rank_title" : "Show Level/Infamy",
+	"customHUD_menu_rank_title" : "Show Level",
 	"customHUD_menu_rank_desc" : "",
 	"customHUD_menu_scale_title" : "Size Scale",
 	"customHUD_menu_scale_desc" : "Scale of all elements of the panel.",
