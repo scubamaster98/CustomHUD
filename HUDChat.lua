@@ -5,12 +5,16 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 	local setup_endscreen_hud_original = HUDManager.setup_endscreen_hud
 
 	function HUDManager:setup_endscreen_hud(...)
-		self._hud_chat_ingame:disconnect_mouse()
+		if self._hud_chat_ingame then
+			self._hud_chat_ingame:disconnect_mouse()
+		end
 		return setup_endscreen_hud_original(self, ...)
 	end
 
 	function HUDManager:change_custom_chat_settings(...)
-		self._hud_chat_ingame:change_settings(...)
+		if self._hud_chat_ingame then
+			self._hud_chat_ingame:change_settings(...)
+		end
 	end
 end
 
