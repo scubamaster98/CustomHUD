@@ -1,7 +1,7 @@
 if string.lower(RequiredScript) == "lib/managers/hud/hudassaultcorner" then
 	local init_original = HUDAssaultCorner.init
 	local _start_assault_original = HUDAssaultCorner._start_assault
-	 
+
 	function HUDAssaultCorner:init(...)
 		init_original(self, ...)
 		local assault_panel = self._hud_panel:child("assault_panel")
@@ -27,7 +27,7 @@ if string.lower(RequiredScript) == "lib/managers/hud/hudassaultcorner" then
 	function HUDAssaultCorner:set_control_info(...) end
 	function HUDAssaultCorner:show_casing(...) end
 	function HUDAssaultCorner:hide_casing(...) end
-	
+
 	function HUDAssaultCorner:_start_assault(text_list, ...)
 		if Network:is_server() then --dont remove, it will show blank banner if client
 			for i, string_id in ipairs(text_list) do
@@ -38,7 +38,7 @@ if string.lower(RequiredScript) == "lib/managers/hud/hudassaultcorner" then
 		end
 		return _start_assault_original(self, text_list, ...)
 	end
-	
+
 	function HUDAssaultCorner:locked_assault(status)
 		if self._assault_locked == status then return end
 		local assault_panel = self._hud_panel:child("assault_panel")

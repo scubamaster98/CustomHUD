@@ -1260,7 +1260,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			blend_mode = "normal",
 		})
 --ty claude
-		self._downs_counter:set_text("0")
+		self._downs_counter:set_text("0") --this is so counter isnt empty for teammates
 		self._downs_panel:set_center(size / 2, size / 2)
 
 		self._condition_icon = self._panel:bitmap({

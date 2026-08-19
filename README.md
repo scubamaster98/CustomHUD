@@ -6,7 +6,7 @@ Originally fixed and fully functional since 12/02/2024.
 
 CustomHUD should work on versions newer than U37.1 just fine. If it doesn't, it's recommended to use the version from the "compat" branch.
 
-For versions below this, there's currently a version of this hud for U19-u29, although it hasn't been fully tested. U30-U36 is unknown, but this branch should work for those versions too. Support for versions below U19 is still being looked into.
+There are other branches for this mod, made to support other, older versions of the game.
 
 In short, this HUD is potentially compatible from U19+.
 
