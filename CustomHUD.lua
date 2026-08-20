@@ -875,7 +875,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 
 		self._icon = self._panel:bitmap({
 			name = "icon",
-			texture = "guis/textures/pd2/cn_miniskull",
+			texture = "guis/textures/pd2/cn_miniskull", --might not exist below u24?
 			color = Color.white,
 			h = height,
 			w = height,

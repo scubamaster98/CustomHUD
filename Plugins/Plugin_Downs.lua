@@ -8,10 +8,9 @@ if RequiredScript == "lib/units/beings/player/huskplayermovement" then
 		if crim_data and crim_data.panel_id then
 			managers.hud:increment_teammate_downs(crim_data.panel_id)
 		end
-	
+
 		return _start_bleedout_original(self, ...)
 	end
-
 end
 
 if RequiredScript == "lib/network/handlers/unitnetworkhandler" then
@@ -26,44 +25,42 @@ if RequiredScript == "lib/network/handlers/unitnetworkhandler" then
 				managers.hud:reset_teammate_downs(crim_data.panel_id)
 			end
 		end
-		
+
 		return sync_doctor_bag_taken_original(self, unit, amount, sender, ...)
 	end
-
 end
 
 if RequiredScript == "lib/managers/hudmanagerpd2" then
-	
+
 	HUDManager.DOWNS_COUNTER_PLUGIN = true
-	
+
 	local set_player_health_original = HUDManager.set_player_health
 	local set_mugshot_custody_original = HUDManager.set_mugshot_custody
-	
+
 	function HUDManager:set_player_health(data, ...)
 		self:set_player_revives(HUDManager.PLAYER_PANEL, data.revives)
 		return set_player_health_original(self, data, ...)
 	end
-	
+
 	function HUDManager:set_mugshot_custody(id, ...)
 		local data = self:_get_mugshot_data(id)
 		if data then
 			local i = managers.criminals:character_data_by_name(data.character_name_id).panel_id
 			managers.hud:reset_teammate_downs(i)
 		end
-	
+
 		return set_mugshot_custody_original(self, id, ...)
 	end
 --i dont like how this looks
 	HUDManager.set_player_revives = HUDManager.set_player_revives or function(self, i, value)
 
 	end
-	
+
 	HUDManager.increment_teammate_downs = HUDManager.increment_teammate_downs or function(self, i)
 
 	end
-	
+
 	HUDManager.reset_teammate_downs = HUDManager.reset_teammate_downs or function(self, i)
 
 	end
-	
 end
