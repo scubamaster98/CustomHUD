@@ -60,6 +60,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 				end
 			end
 
+
 			h = h + h_row
 			w = math.max(w, w_row)
 		end
@@ -155,7 +156,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._component_layout = {}
 
 		if self._is_player then
-			table.insert(self._component_layout, { self._carry }) --1st row
+			table.insert(self._component_layout, { self._carry })	--1st row
 		end
 
 		local top_components = { }
@@ -302,6 +303,19 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	function HUDTeammateCustom:set_ammo_amount_by_type(slot, mag_max, mag_current, total_current, total_max)
 		local slot_index = { primary = 2, secondary = 1, }
 		self:call_listeners("ammo_amount", slot_index[slot], mag_current, mag_max, total_current, total_max)
+	end
+
+	function HUDTeammateCustom:set_grenades(data)
+		self:call_listeners("throwable", data.icon)
+		self:set_grenades_amount(data)
+	end
+
+	function HUDTeammateCustom:set_grenades_amount(data)
+		if data.has_cooldown then
+			self:set_ability_cooldown(data)
+		elseif data.amount then
+			self:call_listeners("throwable_amount", data.amount)
+		end
 	end
 
 	function HUDTeammateCustom:set_cable_tie(data)
@@ -472,6 +486,10 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		return self._last_name
 	end
 
+	function HUDTeammateCustom:set_ability_cooldown(data)
+		self:call_listeners("ability_cooldown", data.cooldown)
+	end
+
 	--Failsafe for unhandled functions
 	for id, ptr in pairs(HUDTeammate) do
 		if type(ptr) == "function" then
@@ -584,12 +602,14 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			weapon = tweak_data.weapon,
 			melee = tweak_data.blackmarket.melee_weapons,
 			armor = tweak_data.blackmarket.armors,
+			throwable = tweak_data.blackmarket.projectiles,
 			deployables = tweak_data.blackmarket.deployables,
 		}
 		local texture_path = {
 			weapon = "textures/pd2/blackmarket/icons/weapons/",
 			melee = "textures/pd2/blackmarket/icons/melee_weapons/",
 			armor = "textures/pd2/blackmarket/icons/armors/",
+			throwable = "textures/pd2/blackmarket/icons/grenades/",
 			deployables = "textures/pd2/blackmarket/icons/deployables/",
 		}
 
@@ -1031,7 +1051,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			self._icon:animate(callback(self, self, "_animate_voice_com"))
 		end
 	end
---note: possibly dangerous to keep around for these old versions as i believe these dont have this icon.. unable to test, although itll probably just result in a missing texture
+--note: possibly dangerous to keep around for these old versions as i believe these dont have this icon.. unable to test
 	function PlayerInfoComponent.Callsign:_animate_voice_com(icon)
 		self._animating_voice_com = true
 		local x = self._panel:w() / 2
@@ -2102,7 +2122,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		PlayerInfoComponent.Equipment.super.init(self, panel, owner, "equipment", 0, height)
 
 		self._settings = settings
-		self._equipment_types = { "deployables", "cable_ties" }
+		self._equipment_types = { "deployables", "cable_ties", "throwables" }
 
 		local bg = self._panel:rect({
 			name = "bg",
@@ -2143,15 +2163,18 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 
 		self:set_enabled("active", false)
 
+		self._owner:register_listener("Equipment", { "throwable" }, callback(self, self, "set_throwable"), false)
+		self._owner:register_listener("Equipment", { "throwable_amount" }, callback(self, self, "set_throwable_amount"), false)
 		self._owner:register_listener("Equipment", { "cable_tie" }, callback(self, self, "set_cable_tie"), false)
 		self._owner:register_listener("Equipment", { "cable_tie_amount" }, callback(self, self, "set_cable_tie_amount"), false)
 		self._owner:register_listener("Equipment", { "deployable" }, callback(self, self, "set_deployable"), false)
 		self._owner:register_listener("Equipment", { "deployable_amount" }, callback(self, self, "set_deployable_amount"), false)
 		self._owner:register_listener("Equipment", { "deployable_amount_from_string" }, callback(self, self, "set_deployable_amount_from_string"), false)
+		self._owner:register_listener("Equipment", { "ability_cooldown" }, callback(self, self, "set_ability_cooldown"), false)
 	end
 
 	function PlayerInfoComponent.Equipment:destroy()
-		self._owner:unregister_listener("Equipment", { "deployable_amount_from_string", "deployable_amount", "deployable", "cable_tie_amount", "cable_tie" })
+		self._owner:unregister_listener("Equipment", { "deployable_amount_from_string", "deployable_amount", "deployable", "cable_tie_amount", "cable_tie", "throwable_amount", "throwable", "ability_cooldown" })
 		PlayerInfoComponent.Equipment.super.destroy(self)
 	end
 
@@ -2223,6 +2246,22 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self:arrange()
 	end
 
+	function PlayerInfoComponent.Equipment:set_throwable(icon)
+		local texture, texture_rect = tweak_data.hud_icons:get_icon_data(icon)
+		self._panel:child("throwables"):child("icon"):set_image(texture, unpack(texture_rect))
+	end
+
+	function PlayerInfoComponent.Equipment:set_throwable_amount(amount)
+		local panel = self._panel:child("throwables")
+		local text = panel:child("amount")
+		text:set_text(string.format("%02.0f", amount))
+		text:set_range_color(0, amount < 10 and 1 or 0, Color.white:with_alpha(0.5))
+		if panel:visible() ~= (amount > 0) then
+			panel:set_visible(amount > 0)
+			self:arrange()
+		end
+	end
+
 	function PlayerInfoComponent.Equipment:set_deployable(icon)
 		local texture, texture_rect = tweak_data.hud_icons:get_icon_data(icon)
 		self._panel:child("deployables"):child("icon"):set_image(texture, unpack(texture_rect))
@@ -2251,6 +2290,10 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		text:set_text(data.amount_str)
 		panel:set_visible(visible)
 		self:arrange()
+	end
+
+	function PlayerInfoComponent.Equipment:set_ability_cooldown(cooldown)
+		self:set_throwable_amount(cooldown and math.ceil(cooldown) or 0)
 	end
 
 	PlayerInfoComponent.SpecialEquipment = PlayerInfoComponent.SpecialEquipment or class(PlayerInfoComponent.Base)
@@ -2570,6 +2613,101 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._progress_bar:set_w(self._progress_bar_bg:w())
 		self._progress_bar:set_gradient_points({ 0, Color(r_max, g_min, b), 0.5, Color(r_max, g_max, b), 1, Color(r_min, g_max, b) })
 	end
+	--Unused, remember to update arrange handling
+	PlayerInfoComponent.Throwable = PlayerInfoComponent.Throwable or class(PlayerInfoComponent.Base)
+	function PlayerInfoComponent.Throwable:init(panel, owner, height)
+		PlayerInfoComponent.Throwable.super.init(self, panel, owner, "throwable", 0, height)
+
+		self._icon_panel = self._panel:panel({
+			name = "icon_panel",
+			w = self._panel:h() * 2,
+			h = self._panel:h(),
+		})
+
+		local icon = self._icon_panel:bitmap({
+			name = "icon",
+			w = self._icon_panel:w(),
+			h = self._icon_panel:h(),
+		})
+
+		local label = self._icon_panel:text({
+			name = "label",
+			text = "N/A",
+			color = Color.white,
+			align = "center",
+			vertical = "top",
+			h = self._icon_panel:h(),
+			w = self._icon_panel:w(),
+			font_size = self._icon_panel:h() * 0.2,
+			font = tweak_data.hud_players.name_font,
+			layer = weapon_icon:layer() + 1,
+			wrap = true,
+			word_wrap = true,
+		})
+
+		local amount = self._icon_panel:text({
+			name = "amount",
+			text = "0",
+			color = Color.white,
+			layer = weapon_icon:layer() + 1,
+			w = self._icon_panel:w(),
+			h = self._icon_panel:h() * 0.35,
+			vertical = "center",
+			align = "right",
+			font_size = self._icon_panel:h() * 0.35,
+			font = tweak_data.hud_players.ammo_font
+		})
+		amount:set_bottom(self._icon_panel:h())
+	end
+
+	function PlayerInfoComponent.Throwable:add_statistics_panel()
+		self._statistics_panel = self._panel:panel({
+			name = "statistics_panel",
+			h = self._panel:h(),
+			w = 0,
+		})
+
+	--Update statisticspanel width
+		self:arrange()
+	end
+
+	function PlayerInfoComponent.Throwable:arrange()
+		local MARGIN = self._panel:h() * 0.1
+
+		local w = 0
+		local h = self:h()
+
+		if self._icon_panel:visible() then
+			self._icon_panel:set_left(w)
+			w = w + MARGIN + self._icon_panel:w()
+		end
+
+		if self._statistics_panel and self._statistics_panel:visible() then
+			self._statistics_panel:set_left(w)
+			w = w + MARGIN + self._statistics_panel:w()
+		end
+
+		if w > 0 then
+			w = w - MARGIN
+		end
+
+		PlayerInfoComponent.Throwable.super.arrange(self, w, h)
+		if self._owner then
+			self._owner:arrange()
+		end
+	end
+
+	function PlayerInfoComponent.Throwable:set_icon(id)
+		local texture, text = PlayerInfoComponent.Base.get_item_icon_data("throwable", id)
+
+		self._icon_panel:child("icon"):set_image(texture)
+		self._icon_panel:child("label"):set_text(text)
+	end
+
+	function PlayerInfoComponent.Throwable:set_amount(count)
+		self._icon_panel:child("amount"):set_text(tostring(count))
+	end
+
 
 	PlayerInfoComponent.Melee = PlayerInfoComponent.Melee or class(PlayerInfoComponent.Base)
 	PlayerInfoComponent.Armor = PlayerInfoComponent.Armor or class(PlayerInfoComponent.Base)
