@@ -1,6 +1,6 @@
 # About
 
-This is the u0-u18 branch of CustomHUD, it's based on the u28 branch version. It's specifically made to work for these versions, however this is not guaranteed to work on every one of those versions.
+This is the u0-u21 branch of CustomHUD. It's specifically made to work for these versions, however this is not guaranteed to work on every one of those versions.
 
 Versions tested: u17 (solo)
 
@@ -12,7 +12,7 @@ Originally fixed and fully functional since 12/02/2024.
 
 • Playing with other people
 
-• Playing on versions u0-u16 and u18
+• Playing on versions u0-u16 and u18-u21
 
 • Voice chat icon display
 

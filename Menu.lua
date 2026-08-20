@@ -1,6 +1,4 @@
---Dynamic updates
 --figure out how to add new settings
-
 local menu_prefix = "customHUD_menu_"
 local localization_file = ModPath .. "Localization/menu.json"
 local settings_file = ModPath .. "saved_settings.json"
@@ -232,7 +230,7 @@ CustomHUDMenu = {
 				scale = 0.85,	--Scale of all elements of the panel
 				opacity = 0.85,	--Transparency/alpha of panel (1 is solid, 0 is invisible)
 				name = true,	--Show name
-				rank = true,	--Show infamy/level
+				rank = true,	--Show level
 				character = false,	--Show character name
 				latency = false,	--Show latency (not used by local player)
 				build = false,	--Show build; skill/perk breakdown (not used by local player)
@@ -245,7 +243,7 @@ CustomHUDMenu = {
 				special_equipment_rows = 3,	--Number of special equipment items in each column
 				interaction = false,	--Show interaction timer and type (not used by local player)
 				interaction_duration = 0, --Minimum interaction timer to show it (not used by local player)
-				weapon_icon = 0,	--Show/hide weapon icon. 0: off, 1: on, 2: selected only, 3: unselected only
+				weapon_icon = 1,	--Show/hide weapon icon. 0: off, 1: on, 2: selected only, 3: unselected only
 				weapon_ammo = 1,	--Show/hide weapon ammo. 0: off, 1: on, 2: selected only, 3: unselected only
 				weapon_ammo_aggregate = false,	--Aggregate weapon ammo or show magazine/total separately
 				weapon_fire_mode = 1,	--Show/hide weapon fire mode. 0: off, 1: on, 2: selected only, 3: unselected only (not used by teammates)
@@ -259,7 +257,7 @@ CustomHUDMenu = {
 				scale = 0.75,	--Scale of all elements of the panel
 				opacity = 0.75,	--Transparency/alpha of panel (1 is solid, 0 is invisible)
 				name = true,	--Show name
-				rank = true,	--Show infamy/level
+				rank = true,	--Show level
 				character = false,	--Show character name
 				latency = true,	--Show latency (not used by player panel)
 				build = true,	--Show build; skill/perk breakdown (not used by local player)
@@ -272,7 +270,7 @@ CustomHUDMenu = {
 				special_equipment_rows = 3,	--Number of special equipment items in each column
 				interaction = true,	--Show interaction timer and type (not used by local player)
 				interaction_duration = 1, --Minimum interaction timer to show it (not used by local player)
-				weapon_icon = 2,	--Show/hide weapon icon. 0: off, 1: on, 2: selected only, 3: unselected only
+				weapon_icon = 1,	--Show/hide weapon icon. 0: off, 1: on, 2: selected only, 3: unselected only
 				weapon_ammo = 1,	--Show/hide weapon ammo. 0: off, 1: on, 2: selected only, 3: unselected only
 				weapon_ammo_aggregate = true,	--Aggregate weapon ammo or show magazine/total separately
 				weapon_fire_mode = 1,	--Show/hide weapon fire mode. 0: off, 1: on, 2: selected only, 3: unselected only (not used by teammates)
@@ -289,7 +287,7 @@ CustomHUDMenu = {
 			height = 120,				--Height of the chat window
 			use_mouse = true,		--For scrolling and stuff. Experimental
 			x_offset = 100,			--% offset from left of HUD panel
-			y_offset = 80,				--% offset from top of HUD panel
+			y_offset = 95,				--% offset from top of HUD panel
 			fade_delay = 8,			--Fade delay for chat window after inactivity
 		},
 	},

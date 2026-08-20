@@ -2708,7 +2708,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._icon_panel:child("amount"):set_text(tostring(count))
 	end
 
-
 	PlayerInfoComponent.Melee = PlayerInfoComponent.Melee or class(PlayerInfoComponent.Base)
 	PlayerInfoComponent.Armor = PlayerInfoComponent.Armor or class(PlayerInfoComponent.Base)
 	PlayerInfoComponent.Deployable = PlayerInfoComponent.Deployable or class(PlayerInfoComponent.Base)
@@ -2875,7 +2874,6 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 		return remove_teammate_carry_info_original(self, i, ...)
 	end
 
-	--HARD OVERRIDE (4 -> HUDManager.PLAYER_PANEL)
 	function HUDManager:reset_player_hpbar()
 		local crim_entry = managers.criminals:character_static_data_by_name(managers.criminals:local_character_name())
 		if not crim_entry then
