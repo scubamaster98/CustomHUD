@@ -156,7 +156,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._component_layout = {}
 
 		if self._is_player then
-			table.insert(self._component_layout, { self._carry })	--1st row
+			table.insert(self._component_layout, { self._carry }) --1st row
 		end
 
 		local top_components = { }
@@ -1051,12 +1051,11 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			self._icon:animate(callback(self, self, "_animate_voice_com"))
 		end
 	end
---note: possibly dangerous to keep around for these old versions as i believe these dont have this icon.. unable to test
 	function PlayerInfoComponent.Callsign:_animate_voice_com(icon)
 		self._animating_voice_com = true
 		local x = self._panel:w() / 2
 		local y = self._panel:h() / 2
-		icon:set_image("guis/textures/pd2/jukebox_playing", 0, 0, 16, 16 )
+		icon:set_image("guis/textures/pd2/hud_icons", 64, 0, 32, 32 )
 
 		while self._voice_com_active do
 			local T = 2
