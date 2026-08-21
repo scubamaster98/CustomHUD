@@ -1,6 +1,4 @@
 --Dynamic updates
---figure out how to add new settings
-
 local menu_prefix = "customHUD_menu_"
 local localization_file = ModPath .. "Localization/menu.json"
 local settings_file = ModPath .. "saved_settings.json"

@@ -873,9 +873,14 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 
 		self._settings = settings
 
+		local icon_texture = "guis/textures/pd2/cn_miniskull"
+		if not DB:has("texture", icon_texture) then
+			icon_texture = "guis/textures/pd2/crimenet_skull"
+		end
+
 		self._icon = self._panel:bitmap({
 			name = "icon",
-			texture = "guis/textures/pd2/cn_miniskull", --might not exist below u24?
+			texture = icon_texture,
 			color = Color.white,
 			h = height,
 			w = height,
@@ -1054,12 +1059,12 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			self._icon:animate(callback(self, self, "_animate_voice_com"))
 		end
 	end
---note: possibly dangerous to keep around for these old versions as i believe these dont have this icon.. unable to test
+
 	function PlayerInfoComponent.Callsign:_animate_voice_com(icon)
 		self._animating_voice_com = true
 		local x = self._panel:w() / 2
 		local y = self._panel:h() / 2
-		icon:set_image("guis/textures/pd2/jukebox_playing", 0, 0, 16, 16 )
+		icon:set_image("guis/textures/pd2/hud_icons", 64, 0, 32, 32 )
 
 		while self._voice_com_active do
 			local T = 2
