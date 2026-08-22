@@ -10,7 +10,7 @@ if RequiredScript == "lib/units/enemies/cop/copdamage" then
 		local attacker = alive(data.attacker_unit) and data.attacker_unit
 
 		if attacker then
-			if attacker:in_slot(3) or attacker:in_slot(5) then	
+			if attacker:in_slot(3) or attacker:in_slot(5) then
 				--Teammate
 				killer = attacker
 			elseif attacker:in_slot(2) then
@@ -64,24 +64,13 @@ if RequiredScript == "lib/units/equipment/sentry_gun/sentrygunbase" then
 		sync_setup_original(self, upgrade_lvl, peer_id, ...)
 		self._owner_id = self._owner_id or peer_id
 	end
-
 end
 
 if RequiredScript == "lib/managers/hudmanagerpd2" then
 
 	HUDManager.KILL_COUNTER_PLUGIN = true
 	HUDManager.SHOW_BOT_KILLS = true
---i dont like how this looks
-	HUDManager.increment_teammate_kill_count = HUDManager.increment_teammate_kill_count or function (self, i, is_special)
-
-	end
-
-	HUDManager.reset_teammate_kill_count = HUDManager.reset_teammate_kill_count or function(self, i)
-
-	end
-
-	HUDManager.increment_teammate_kill_count_detailed = HUDManager.increment_teammate_kill_count_detailed or function(self, i, unit, weapon_type, weapon_slot)
-
-	end
-
+	HUDManager.increment_teammate_kill_count = HUDManager.increment_teammate_kill_count or function (self, i, is_special) end
+	HUDManager.reset_teammate_kill_count = HUDManager.reset_teammate_kill_count or function(self, i) end
+	HUDManager.increment_teammate_kill_count_detailed = HUDManager.increment_teammate_kill_count_detailed or function(self, i, unit, weapon_type, weapon_slot) end
 end

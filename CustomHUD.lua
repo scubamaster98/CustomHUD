@@ -2800,8 +2800,9 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 
 	function HUDManager:add_weapon(data, ...)
 		local wbase = data.unit:base()
+		local silencer = wbase.got_silencer and wbase:got_silencer() or wbase._silencer or false
 
-		self:set_teammate_weapon(HUDManager.PLAYER_PANEL, data.inventory_index, wbase.name_id, wbase:got_silencer())
+		self:set_teammate_weapon(HUDManager.PLAYER_PANEL, data.inventory_index, wbase.name_id, silencer)
 
 		local active_mode = wbase:fire_mode()
 		local fire_modes = {}

@@ -11,7 +11,6 @@ if RequiredScript == "lib/units/beings/player/huskplayermovement" then
 
 		return _start_bleedout_original(self, ...)
 	end
-
 end
 
 if RequiredScript == "lib/network/handlers/unitnetworkhandler" then
@@ -29,7 +28,6 @@ if RequiredScript == "lib/network/handlers/unitnetworkhandler" then
 
 		return sync_doctor_bag_taken_original(self, unit, amount, sender, ...)
 	end
-
 end
 
 if RequiredScript == "lib/managers/hudmanagerpd2" then
@@ -53,17 +51,8 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 
 		return set_mugshot_custody_original(self, id, ...)
 	end
---i dont like how this looks
-	HUDManager.set_player_revives = HUDManager.set_player_revives or function(self, i, value)
 
-	end
-
-	HUDManager.increment_teammate_downs = HUDManager.increment_teammate_downs or function(self, i)
-
-	end
-
-	HUDManager.reset_teammate_downs = HUDManager.reset_teammate_downs or function(self, i)
-
-	end
-
+	HUDManager.set_player_revives = HUDManager.set_player_revives or function(self, i, value) end
+	HUDManager.increment_teammate_downs = HUDManager.increment_teammate_downs or function(self, i) end
+	HUDManager.reset_teammate_downs = HUDManager.reset_teammate_downs or function(self, i) end
 end
