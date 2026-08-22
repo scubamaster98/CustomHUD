@@ -70,7 +70,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 				end
 			end
 
-
 			h = h + h_row
 			w = math.max(w, w_row)
 		end

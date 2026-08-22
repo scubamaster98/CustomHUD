@@ -4,7 +4,7 @@
 	"author" : "s",
 	"color" : "1 0 1",
 	"contact" : "https://github.com/scubamaster98/CustomHUD",
-	"version": "1.7",
+	"version": "1.7.1",
 	"priority": "360",
 	"updates" : [
 		{
@@ -56,7 +56,7 @@
 		{
 			"keybind_id": "force_ready",
 			"name": "Force Ready",
-			"description": "Force Ready"
+			"description": "Force Ready",
 			"script_path": "Plugins/force_ready.lua",
 			"run_in_menu": true,
 			"run_in_game": true,

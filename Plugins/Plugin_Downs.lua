@@ -51,16 +51,8 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 
 		return set_mugshot_custody_original(self, id, ...)
 	end
---i dont like how this looks
-	HUDManager.set_player_revives = HUDManager.set_player_revives or function(self, i, value)
 
-	end
-
-	HUDManager.increment_teammate_downs = HUDManager.increment_teammate_downs or function(self, i)
-
-	end
-
-	HUDManager.reset_teammate_downs = HUDManager.reset_teammate_downs or function(self, i)
-
-	end
+	HUDManager.set_player_revives = HUDManager.set_player_revives or function(self, i, value) end
+	HUDManager.increment_teammate_downs = HUDManager.increment_teammate_downs or function(self, i) end
+	HUDManager.reset_teammate_downs = HUDManager.reset_teammate_downs or function(self, i) end
 end

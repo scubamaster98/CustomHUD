@@ -40,8 +40,6 @@ if string.lower(RequiredScript) == "lib/managers/hud/hudassaultcorner" then
 	end
 
 	function HUDAssaultCorner:locked_assault(status)
-		if self._assault_locked == status then return end
-		local assault_panel = self._hud_panel:child("assault_panel")
 		self._assault_locked = status
 	end
 
@@ -66,18 +64,23 @@ elseif string.lower(RequiredScript) == "lib/managers/localizationmanager" then
 			managers.hud:_locked_assault(true)
 			return self:text("hud_assault_assault")
 		else
-			local phase = "Assault Phase: " .. managers.groupai:state()._task_data.assault.phase
+			local assault_data = managers.groupai:state()._task_data.assault
+			if not assault_data or not assault_data.active then
+				return "OVERDUE"
+			end
+			local phase = "Assault Phase: " .. tostring(assault_data.phase)
 			local spawns = managers.groupai:state():_get_difficulty_dependent_value(tweak_data.group_ai.besiege.assault.force_pool) * managers.groupai:state():_get_balancing_multiplier(tweak_data.group_ai.besiege.assault.force_pool_balance_mul)
-			local spawns_left = "Spawns Left: " .. math.round(math.max(spawns - managers.groupai:state()._task_data.assault.force_spawned, 0))
-			local time_left = managers.groupai:state()._task_data.assault.phase_end_t + math.lerp(managers.groupai:state():_get_difficulty_dependent_value(tweak_data.group_ai.besiege.assault.sustain_duration_min), managers.groupai:state():_get_difficulty_dependent_value(tweak_data.group_ai.besiege.assault.sustain_duration_max), math.random()) * managers.groupai:state():_get_balancing_multiplier(tweak_data.group_ai.besiege.assault.sustain_duration_balance_mul) + tweak_data.group_ai.besiege.assault.fade_duration * 2
-			if time_left < 0 then --i dont think this actually works, instead it freezes the banner until assault ends
+			local spawns_left = "Spawns Left: " .. math.round(math.max(spawns - (assault_data.force_spawned or 0), 0))
+			local time_left = (assault_data.phase_end_t or 0) - managers.groupai:state()._t + 350 + math.lerp(managers.groupai:state():_get_difficulty_dependent_value(tweak_data.group_ai.besiege.assault.sustain_duration_min), managers.groupai:state():_get_difficulty_dependent_value(tweak_data.group_ai.besiege.assault.sustain_duration_max), math.random()) * managers.groupai:state():_get_balancing_multiplier(tweak_data.group_ai.besiege.assault.sustain_duration_balance_mul) + tweak_data.group_ai.besiege.assault.fade_duration * 2
+			if time_left < 0 then
 				time_left = "OVERDUE"
 			else
-				time_left = "Time Left: " .. string.format("%.2f", time_left + 350 - managers.groupai:state()._t)
+				time_left = "Time Left: " .. string.format("%.2f", time_left)
 			end
 			local sep = "          " .. self:text("hud_assault_end_line") .. "          "
-			local text = phase .. sep .. spawns_left .. sep .. time_left --phase, separator, spawns, separator, time left
+			local text = phase .. sep .. spawns_left .. sep .. time_left
 			return text
 		end
 	end
+
 end
