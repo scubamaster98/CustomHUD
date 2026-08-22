@@ -2738,15 +2738,6 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 	local set_teammate_carry_info_original = HUDManager.set_teammate_carry_info
 	local remove_teammate_carry_info_original = HUDManager.remove_teammate_carry_info
 
-	function HUDManager:set_teammate_ammo_amount(id, selection_index, max_clip, current_clip, current_left, max, ...)
-		local total_left = current_left - current_clip
-		if total_left >= 0 then
-			current_left = total_left
-			max = max - current_clip
-		end
-		return set_teammate_ammo_amount_orig(self, id, selection_index, max_clip, current_clip, current_left, max, ...)
-	end
-
 	function HUDManager:_create_teammates_panel(hud, ...)
 		hud = hud or managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
 
@@ -2842,6 +2833,15 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 		if not data.is_equip and (data.inventory_index == 1 or data.inventory_index == 2) then
 			self:_update_second_weapon_ammo_info(HUDManager.PLAYER_PANEL, data.unit)
 		end
+	end
+
+	function HUDManager:set_teammate_ammo_amount(id, selection_index, max_clip, current_clip, current_left, max, ...)
+		local total_left = current_left - current_clip
+		if total_left >= 0 then
+			current_left = total_left
+			max = max - current_clip
+		end
+		return set_teammate_ammo_amount_orig(self, id, selection_index, max_clip, current_clip, current_left, max, ...)
 	end
 
 	function HUDManager:set_stamina_value(...)

@@ -28,11 +28,13 @@ and some more people i might've forgotten (my bad)
 
 • Fix any remaining bugs
 
+• Fix crashes
+
 • Playing with other people
 
 • Play on versions U22-U27 and U29
 
-• Check how VC icon displays
+• Add some of the stuff that is in the main branch
 
 ## Known bugs
 

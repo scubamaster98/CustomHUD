@@ -4,9 +4,7 @@ if RequiredScript == "lib/managers/statisticsmanager" then
 
 	function StatisticsManager:shot_fired(data, ...)
 		shot_fired_original(self, data, ...)
-		
 		--Does not work well for HE rounds. It would be almost correct if you halved number of shots, but would not take into account shots that go into the void or compensate for direct hits.
-
 		local name_id = data.name_id or data.weapon_unit:base():get_name_id()
 		local slot = tweak_data.weapon[name_id].use_data.selection_index
 		local weapon_data = self._global.session.shots_by_weapon[name_id]
@@ -18,19 +16,11 @@ if RequiredScript == "lib/managers/statisticsmanager" then
 		managers.hud:set_teammate_accuracy(HUDManager.PLAYER_PANEL, self:session_hit_accuracy())
 		managers.hud:set_teammate_weapon_accuracy(HUDManager.PLAYER_PANEL, slot, weapon_accuracy)
 	end
-
 end
 
 if RequiredScript == "lib/managers/hudmanagerpd2" then
 
 	HUDManager.ACCURACY_PLUGIN = true
---i dont like how this looks
-	HUDManager.set_teammate_accuracy = HUDManager.set_teammate_accuracy or function(self, i, value)
-
-	end
-
-	HUDManager.set_teammate_weapon_accuracy = HUDManager.set_teammate_weapon_accuracy or function(self, i, slot, value)
-
-	end
-
+	HUDManager.set_teammate_accuracy = HUDManager.set_teammate_accuracy or function(self, i, value) end
+	HUDManager.set_teammate_weapon_accuracy = HUDManager.set_teammate_weapon_accuracy or function(self, i, slot, value) end
 end

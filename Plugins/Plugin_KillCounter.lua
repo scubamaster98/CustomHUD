@@ -70,16 +70,7 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 
 	HUDManager.KILL_COUNTER_PLUGIN = true
 	HUDManager.SHOW_BOT_KILLS = true
---i dont like how this looks
-	HUDManager.increment_teammate_kill_count = HUDManager.increment_teammate_kill_count or function (self, i, is_special)
-
-	end
-
-	HUDManager.reset_teammate_kill_count = HUDManager.reset_teammate_kill_count or function(self, i)
-
-	end
-
-	HUDManager.increment_teammate_kill_count_detailed = HUDManager.increment_teammate_kill_count_detailed or function(self, i, unit, weapon_type, weapon_slot)
-
-	end
+	HUDManager.increment_teammate_kill_count = HUDManager.increment_teammate_kill_count or function (self, i, is_special) end
+	HUDManager.reset_teammate_kill_count = HUDManager.reset_teammate_kill_count or function(self, i) end
+	HUDManager.increment_teammate_kill_count_detailed = HUDManager.increment_teammate_kill_count_detailed or function(self, i, unit, weapon_type, weapon_slot) end
 end
