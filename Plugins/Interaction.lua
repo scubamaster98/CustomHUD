@@ -1,3 +1,4 @@
+if not CustomHUDMenu.settings.interaction.enable_interaction then return end
 if string.lower(RequiredScript) == "lib/managers/hudmanagerpd2" then
 
 	function HUDManager:set_interaction_bar_locked(status)

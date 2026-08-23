@@ -4,7 +4,7 @@
 	"author" : "s",
 	"color" : "1 0 1",
 	"contact" : "https://github.com/scubamaster98/CustomHUD",
-	"version": "1.7.1",
+	"version": "1.8",
 	"priority": "360",
 	"updates" : [
 		{

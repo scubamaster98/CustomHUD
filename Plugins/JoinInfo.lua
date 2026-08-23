@@ -9,9 +9,9 @@ if string.lower(RequiredScript) == "lib/managers/menumanagerdialogs" then
 		self.peer_join_start_t[id] = os.clock()
 		local peer = managers.network:session():peer(id)
 		if peer then
-			if peer:rank() > 0 then
+			--if peer:rank() > 0 then --join sounds for everyone as u37.1 doesnt have them, maybe i'll make this a setting when i can
 				managers.hud:post_event("infamous_player_join_stinger")
-			end
+			--end
 			nick = "(" .. (peer:rank() > 0 and managers.experience:rank_string(peer:rank()) .. "-" or "") .. peer:level() .. ") " .. nick
 		end
 		return show_person_joining_original(self, id, nick, ...)

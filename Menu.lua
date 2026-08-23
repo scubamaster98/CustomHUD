@@ -3,6 +3,20 @@ local menu_prefix = "customHUD_menu_"
 local localization_file = ModPath .. "Localization/menu.json"
 local settings_file = ModPath .. "saved_settings.json"
 
+local function deep_merge_defaults(defaults, loaded)
+	for k, v in pairs(defaults) do
+		if type(v) == "table" then
+			if type(loaded[k]) ~= "table" then
+				loaded[k] = {}
+			end
+			deep_merge_defaults(v, loaded[k])
+		elseif loaded[k] == nil then
+			loaded[k] = v
+		end
+	end
+	return loaded
+end
+
 Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_CustomHUD", function(menu_manager, nodes)
 	local function initialize_menu(menu_id, data)
 		local prefixed_menu_id = menu_prefix .. menu_id
@@ -103,6 +117,16 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 	local function default_value_teammatepanel_settings_teammate(id)
 		return CustomHUDMenu.settings.teammatepanels.teammate[id]
 	end
+	
+	local function change_interaction_settings(id, value)
+		print("change_interaction_settings: %s / %s", tostring(id), tostring(value))
+		CustomHUDMenu.setting_changed = true
+		CustomHUDMenu.settings.interaction[id] = value
+	end
+
+	local function default_value_interaction_settings(id)
+		return CustomHUDMenu.settings.interaction[id]
+	end
 
 	local function change_hudchat_settings(id, value)
 		print("change_hudchat_settings: %s / %s", tostring(id), tostring(value))
@@ -143,6 +167,12 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 						--Items populated dynamically below
 					},
 				},
+			},
+
+			interaction_settings = {
+				change_clbk = change_interaction_settings,
+				default_value_clbk = default_value_interaction_settings,
+				{ "enable_interaction", "toggle" },
 			},
 
 			hudchat = {
@@ -243,7 +273,7 @@ CustomHUDMenu = {
 				special_equipment_rows = 3,	--Number of special equipment items in each column
 				interaction = false,	--Show interaction timer and type (not used by local player)
 				interaction_duration = 0, --Minimum interaction timer to show it (not used by local player)
-				weapon_icon = 0,	--Show/hide weapon icon. 0: off, 1: on, 2: selected only, 3: unselected only
+				weapon_icon = 1,	--Show/hide weapon icon. 0: off, 1: on, 2: selected only, 3: unselected only
 				weapon_ammo = 1,	--Show/hide weapon ammo. 0: off, 1: on, 2: selected only, 3: unselected only
 				weapon_ammo_aggregate = false,	--Aggregate weapon ammo or show magazine/total separately
 				weapon_fire_mode = 1,	--Show/hide weapon fire mode. 0: off, 1: on, 2: selected only, 3: unselected only (not used by teammates)
@@ -270,7 +300,7 @@ CustomHUDMenu = {
 				special_equipment_rows = 3,	--Number of special equipment items in each column
 				interaction = true,	--Show interaction timer and type (not used by local player)
 				interaction_duration = 1, --Minimum interaction timer to show it (not used by local player)
-				weapon_icon = 2,	--Show/hide weapon icon. 0: off, 1: on, 2: selected only, 3: unselected only
+				weapon_icon = 1,	--Show/hide weapon icon. 0: off, 1: on, 2: selected only, 3: unselected only
 				weapon_ammo = 1,	--Show/hide weapon ammo. 0: off, 1: on, 2: selected only, 3: unselected only
 				weapon_ammo_aggregate = true,	--Aggregate weapon ammo or show magazine/total separately
 				weapon_fire_mode = 1,	--Show/hide weapon fire mode. 0: off, 1: on, 2: selected only, 3: unselected only (not used by teammates)
@@ -279,6 +309,10 @@ CustomHUDMenu = {
 				kill_counter_specials = true,	--Separate special kills from other units
 				kill_counter_bots = true,	--Show kill counts for team AI (not used by local player)
 			},
+		},
+
+		interaction = {
+			enable_interaction = false, 		--Enable interaction timer and text stuff
 		},
 
 		hudchat = {
@@ -304,10 +338,13 @@ CustomHUDMenu = {
 	end,
 
 	load_settings = function()
+		local defaults = CustomHUDMenu.settings
 		local file = io.open(settings_file, "r")
 		if file then
-			CustomHUDMenu.settings = json.decode(file:read("*all"))
+			local loaded = json.decode(file:read("*all"))
 			file:close()
+			CustomHUDMenu.settings = deep_merge_defaults(defaults, loaded)
+			CustomHUDMenu.save_settings(true)
 		else
 			CustomHUDMenu.save_settings(true)
 		end
