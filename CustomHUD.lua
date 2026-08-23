@@ -60,7 +60,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 				end
 			end
 
-
 			h = h + h_row
 			w = math.max(w, w_row)
 		end
@@ -1023,20 +1022,51 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			h = size * 0.75,
 			w = size * 0.75,
 		})
+--thanks wolfhud
+		self._condition_icon = self._panel:bitmap({
+			name = "condition_icon",
+			visible = false,
+			color = Color.white,
+			h = size,
+			w = size,
+			layer = 11,
+		})
+
 		self._icon:set_center(self._panel:w() / 2, self._panel:h() / 2)
 
 		self._owner:register_listener("Callsign", { "callsign" }, callback(self, self, "set_id"), false)
 		self._owner:register_listener("Callsign", { "voice_com" }, callback(self, self, "set_voice_com_active"), false)
+		self._owner:register_listener("Callsign", { "condition" }, callback(self, self, "set_condition"), false)
 	end
 
 	function PlayerInfoComponent.Callsign:destroy()
-		self._owner:unregister_listener("Callsign", { "callsign", "voice_com" })
+		self._owner:unregister_listener("Callsign", { "callsign", "voice_com", "condition" })
 		PlayerInfoComponent.Callsign.super.destroy(self)
+	end
+
+	function PlayerInfoComponent.Callsign:set_is_ai(state)
+		if PlayerInfoComponent.PlayerStatus.super.set_is_ai(self, state) then
+			
+			self._owner:arrange()
+		end
 	end
 
 	function PlayerInfoComponent.Callsign:update_settings()
 		if self:set_enabled("setting", self._settings.callsign) then
 			self._owner:arrange()
+		end
+	end
+
+	function PlayerInfoComponent.Callsign:set_enabled(reason, status)
+		PlayerInfoComponent.Callsign.super.set_enabled(self, reason, status)
+		if not self._panel:visible() then
+			self._panel:set_visible(true)
+			self._icon:set_alpha(0)
+			self._disabled = true
+			return true
+		else
+			self._panel:set_alpha(1)
+			self._disabled = false
 		end
 	end
 
@@ -1074,6 +1104,17 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		icon:set_center(x, y)
 		icon:set_size(self:w(), self:h())
 		self._animating_voice_com = false
+	end
+
+	function PlayerInfoComponent.Callsign:set_condition(icon_data)
+		local visible = (icon_data ~= "mugshot_normal" and self._is_ai)
+		
+		if visible then
+			local icon, texture_rect = tweak_data.hud_icons:get_icon_data(icon_data)
+			self._condition_icon:set_image(icon, unpack(texture_rect))
+		end
+		
+		self._condition_icon:set_visible(visible)
 	end
 
 	PlayerInfoComponent.PlayerStatus = PlayerInfoComponent.PlayerStatus or class(PlayerInfoComponent.Base)
@@ -1195,6 +1236,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			blend_mode = "normal",
 		})
 --ty claude
+		self._downs_counter:set_text("0")
 		self._downs_panel:set_center(size / 2, size / 2)
 
 		self._condition_icon = self._panel:bitmap({
@@ -1298,7 +1340,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	function PlayerInfoComponent.PlayerStatus:set_downs(amount)
 		if self._downs ~= amount then
 			self._downs = amount
-			self._downs_panel:set_visible(self._downs > 0)
+			self._downs_panel:set_visible(true)
 			self._downs_counter:set_text(tostring(self._downs))
 			self._downs_counter:set_color((self._downs < self._max_downs - 1) and  Color.black or Color.red)
 		end
@@ -1307,7 +1349,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	function PlayerInfoComponent.PlayerStatus:set_revives(value)
 		if self._player_lives ~= value then
 			self._player_lives = value
-			self._downs_panel:set_visible(self._player_lives < self._player_max_lives and self._player_lives > 0)
+			self._downs_panel:set_visible(self._player_lives > 0)
 			self._downs_counter:set_text(tostring(self._player_lives - 1))
 			self._downs_counter:set_color((self._player_lives <= 1) and Color.red or Color.black)
 
@@ -2726,15 +2768,6 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 	local set_teammate_carry_info_original = HUDManager.set_teammate_carry_info
 	local remove_teammate_carry_info_original = HUDManager.remove_teammate_carry_info
 
-	function HUDManager:set_teammate_ammo_amount(id, selection_index, max_clip, current_clip, current_left, max, ...)
-		local total_left = current_left - current_clip
-		if total_left >= 0 then
-			current_left = total_left
-			max = max - current_clip
-		end
-		return set_teammate_ammo_amount_orig(self, id, selection_index, max_clip, current_clip, current_left, max, ...)
-	end
-
 	function HUDManager:_create_teammates_panel(hud, ...)
 		hud = hud or managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
 
@@ -2831,6 +2864,15 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 		if not data.is_equip and (data.inventory_index == 1 or data.inventory_index == 2) then
 			self:_update_second_weapon_ammo_info(HUDManager.PLAYER_PANEL, data.unit)
 		end
+	end
+
+	function HUDManager:set_teammate_ammo_amount(id, selection_index, max_clip, current_clip, current_left, max, ...)
+		local total_left = current_left - current_clip
+		if total_left >= 0 then
+			current_left = total_left
+			max = max - current_clip
+		end
+		return set_teammate_ammo_amount_orig(self, id, selection_index, max_clip, current_clip, current_left, max, ...)
 	end
 
 	function HUDManager:set_stamina_value(...)
