@@ -117,6 +117,16 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 	local function default_value_teammatepanel_settings_teammate(id)
 		return CustomHUDMenu.settings.teammatepanels.teammate[id]
 	end
+
+	local function change_joininfo_settings(id, value)
+		print("change_joininfo_settings: %s / %s", tostring(id), tostring(value))
+		CustomHUDMenu.setting_changed = true
+		CustomHUDMenu.settings.joininfo[id] = value
+	end
+
+	local function default_value_joininfo_settings(id)
+		return CustomHUDMenu.settings.joininfo[id]
+	end
 	
 	local function change_interaction_settings(id, value)
 		print("change_interaction_settings: %s / %s", tostring(id), tostring(value))
@@ -173,6 +183,15 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 				change_clbk = change_interaction_settings,
 				default_value_clbk = default_value_interaction_settings,
 				{ "enable_interaction", "toggle" },
+				{ "circle_scale", "slider", { min = 0, max = 1.5, step = 0.05 }},
+				{ "text_scale", "slider", { min = 0, max = 1.5, step = 0.05 }},
+			},
+
+			joininfo = {
+				change_clbk = change_joininfo_settings,
+				default_value_clbk = default_value_joininfo_settings,
+				{ "enable_joininfo", "toggle" },
+				{ "joinsound", "multichoice", { items = { "option_off", "option_infamy", "option_all" }}},
 			},
 
 			hudchat = {
@@ -311,8 +330,15 @@ CustomHUDMenu = {
 			},
 		},
 
+		joininfo = {
+			enable_joininfo = true, 		--Enable joininfo stuff
+			joinsound = 1,					--Join sound (uses infamy sound). 0: off, 1: only players with infamy, 2: all players
+		},
+
 		interaction = {
-			enable_interaction = false, 		--Enable interaction timer and text stuff
+			enable_interaction = true, 		--Enable interaction timer and text stuff
+			circle_scale = 0.9,					--Scale of the interaction circle
+			text_scale = 0.9,						--Scale of the interaction text
 		},
 
 		hudchat = {
