@@ -2649,102 +2649,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._progress_bar:set_gradient_points({ 0, Color(r_max, g_min, b), 0.5, Color(r_max, g_max, b), 1, Color(r_min, g_max, b) })
 	end
 
-	--Unused, remember to update arrange handling
-	PlayerInfoComponent.Throwable = PlayerInfoComponent.Throwable or class(PlayerInfoComponent.Base)
-	function PlayerInfoComponent.Throwable:init(panel, owner, height)
-		PlayerInfoComponent.Throwable.super.init(self, panel, owner, "throwable", 0, height)
-
-		self._icon_panel = self._panel:panel({
-			name = "icon_panel",
-			w = self._panel:h() * 2,
-			h = self._panel:h(),
-		})
-
-		local icon = self._icon_panel:bitmap({
-			name = "icon",
-			w = self._icon_panel:w(),
-			h = self._icon_panel:h(),
-		})
-
-		local label = self._icon_panel:text({
-			name = "label",
-			text = "N/A",
-			color = Color.white,
-			align = "center",
-			vertical = "top",
-			h = self._icon_panel:h(),
-			w = self._icon_panel:w(),
-			font_size = self._icon_panel:h() * 0.2,
-			font = tweak_data.hud_players.name_font,
-			layer = weapon_icon:layer() + 1,
-			wrap = true,
-			word_wrap = true,
-		})
-
-		local amount = self._icon_panel:text({
-			name = "amount",
-			text = "0",
-			color = Color.white,
-			layer = weapon_icon:layer() + 1,
-			w = self._icon_panel:w(),
-			h = self._icon_panel:h() * 0.35,
-			vertical = "center",
-			align = "right",
-			font_size = self._icon_panel:h() * 0.35,
-			font = tweak_data.hud_players.ammo_font
-		})
-		amount:set_bottom(self._icon_panel:h())
-	end
-
-	function PlayerInfoComponent.Throwable:add_statistics_panel()
-		self._statistics_panel = self._panel:panel({
-			name = "statistics_panel",
-			h = self._panel:h(),
-			w = 0,
-		})
-
-	--Update statisticspanel width
-		self:arrange()
-	end
-
-	function PlayerInfoComponent.Throwable:arrange()
-		local MARGIN = self._panel:h() * 0.1
-
-		local w = 0
-		local h = self:h()
-
-		if self._icon_panel:visible() then
-			self._icon_panel:set_left(w)
-			w = w + MARGIN + self._icon_panel:w()
-		end
-
-		if self._statistics_panel and self._statistics_panel:visible() then
-			self._statistics_panel:set_left(w)
-			w = w + MARGIN + self._statistics_panel:w()
-		end
-
-		if w > 0 then
-			w = w - MARGIN
-		end
-
-		PlayerInfoComponent.Throwable.super.arrange(self, w, h)
-		if self._owner then
-			self._owner:arrange()
-		end
-	end
-
-	function PlayerInfoComponent.Throwable:set_icon(id)
-		local texture, text = PlayerInfoComponent.Base.get_item_icon_data("throwable", id)
-
-		self._icon_panel:child("icon"):set_image(texture)
-		self._icon_panel:child("label"):set_text(text)
-	end
-
-	function PlayerInfoComponent.Throwable:set_amount(count)
-		self._icon_panel:child("amount"):set_text(tostring(count))
-	end
-
-
 	PlayerInfoComponent.Melee = PlayerInfoComponent.Melee or class(PlayerInfoComponent.Base)
 	PlayerInfoComponent.Armor = PlayerInfoComponent.Armor or class(PlayerInfoComponent.Base)
 	PlayerInfoComponent.Deployable = PlayerInfoComponent.Deployable or class(PlayerInfoComponent.Base)
@@ -2757,7 +2661,7 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 
 	local update_original = HUDManager.update
 	local add_weapon_original = HUDManager.add_weapon
-	local set_teammate_ammo_amount_orig = HUDManager.set_teammate_ammo_amount
+	local set_teammate_ammo_amount_original = HUDManager.set_teammate_ammo_amount
 	local set_stamina_value_original = HUDManager.set_stamina_value
 	local set_max_stamina_original = HUDManager.set_max_stamina
 	local set_mugshot_voice_original = HUDManager.set_mugshot_voice
@@ -2857,7 +2761,7 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 			current_left = total_left
 			max = max - current_clip
 		end
-		return set_teammate_ammo_amount_orig(self, id, selection_index, max_clip, current_clip, current_left, max, ...)
+		return set_teammate_ammo_amount_original(self, id, selection_index, max_clip, current_clip, current_left, max, ...)
 	end
 
 	function HUDManager:set_stamina_value(...)
@@ -2921,7 +2825,6 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 		end
 
 		panel:set_ai_stopped(stopped)
-
 
 		local name = panel:get_name()
 
