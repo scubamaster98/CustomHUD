@@ -6,7 +6,7 @@ Originally fixed and fully functional since 12/02/2024.
 
 This is the u0-u21 branch of CustomHUD. It's specifically made to work for these versions, however this isn't yet guaranteed to work on every one of those versions.
 
-Versions tested: u0-u2* (solo), u17 (solo)
+Versions tested: u0-u2* (mp & solo), u17 (solo)
 
 ## Credits
 

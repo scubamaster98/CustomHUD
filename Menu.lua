@@ -304,7 +304,7 @@ CustomHUDMenu = {
 				interaction_duration = 1, --Minimum interaction timer to show it (not used by local player)
 				weapon_icon = 1,	--Show/hide weapon icon. 0: off, 1: on, 2: selected only, 3: unselected only
 				weapon_ammo = 1,	--Show/hide weapon ammo. 0: off, 1: on, 2: selected only, 3: unselected only
-				weapon_ammo_aggregate = true,	--Aggregate weapon ammo or show magazine/total separately
+				weapon_ammo_aggregate = false,	--Aggregate weapon ammo or show magazine/total separately
 				weapon_fire_mode = 1,	--Show/hide weapon fire mode. 0: off, 1: on, 2: selected only, 3: unselected only (not used by teammates)
 				accuracy = true,	--Show weapon accuracy (not used by teammates)
 				kill_counter = true,	--Show kill counter
@@ -325,7 +325,7 @@ CustomHUDMenu = {
 			height = 120,				--Height of the chat window
 			use_mouse = true,		--For scrolling and stuff. Experimental
 			x_offset = 100,			--% offset from left of HUD panel
-			y_offset = 95,				--% offset from top of HUD panel
+			y_offset = 100,				--% offset from top of HUD panel
 			fade_delay = 7,			--Fade delay for chat window after inactivity
 		},
 	},

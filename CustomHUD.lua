@@ -420,7 +420,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			local peer = managers.network:session():peer(peer_id)
 			managers.hud:_parse_outfit_string(self._id, peer_id)
 			self:set_character(managers.criminals:character_name_by_peer_id(peer_id))
-			self:set_rank(peer:rank(), peer:level())
+			self:set_rank(peer:level())
 		end
 	end
 
@@ -1210,7 +1210,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._downs_panel = self._panel:panel({
 			h = size * 0.5,
 			w = size * 0.5,
-			visible = false,
+			visible = true,
 			layer = self._damage_indicator:layer() + 1,
 		})
 
