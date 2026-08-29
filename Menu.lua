@@ -1,6 +1,21 @@
+--Dynamic updates
 local menu_prefix = "customHUD_menu_"
 local localization_file = ModPath .. "Localization/menu.json"
 local settings_file = ModPath .. "saved_settings.json"
+
+local function deep_merge_defaults(defaults, loaded)
+	for k, v in pairs(defaults) do
+		if type(v) == "table" then
+			if type(loaded[k]) ~= "table" then
+				loaded[k] = {}
+			end
+			deep_merge_defaults(v, loaded[k])
+		elseif loaded[k] == nil then
+			loaded[k] = v
+		end
+	end
+	return loaded
+end
 
 Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_CustomHUD", function(menu_manager, nodes)
 	local function initialize_menu(menu_id, data)
@@ -103,6 +118,16 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 		return CustomHUDMenu.settings.teammatepanels.teammate[id]
 	end
 
+	local function change_interaction_settings(id, value)
+		print("change_interaction_settings: %s / %s", tostring(id), tostring(value))
+		CustomHUDMenu.setting_changed = true
+		CustomHUDMenu.settings.interaction[id] = value
+	end
+
+	local function default_value_interaction_settings(id)
+		return CustomHUDMenu.settings.interaction[id]
+	end
+
 	local function change_hudchat_settings(id, value)
 		print("change_hudchat_settings: %s / %s", tostring(id), tostring(value))
 		CustomHUDMenu.setting_changed = true
@@ -142,6 +167,14 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 						--Items populated dynamically below
 					},
 				},
+			},
+
+			interaction_settings = {
+				change_clbk = change_interaction_settings,
+				default_value_clbk = default_value_interaction_settings,
+				{ "enable_interaction", "toggle" },
+				{ "circle_scale", "slider", { min = 0, max = 1.5, step = 0.05 }},
+				{ "text_scale", "slider", { min = 0, max = 1.5, step = 0.05 }},
 			},
 
 			hudchat = {
@@ -229,7 +262,7 @@ CustomHUDMenu = {
 				scale = 0.85,	--Scale of all elements of the panel
 				opacity = 0.85,	--Transparency/alpha of panel (1 is solid, 0 is invisible)
 				name = true,	--Show name
-				rank = true,	--Show level
+				rank = true,	--Show infamy/level
 				character = false,	--Show character name
 				latency = false,	--Show latency (not used by local player)
 				build = false,	--Show build; skill/perk breakdown (not used by local player)
@@ -256,7 +289,7 @@ CustomHUDMenu = {
 				scale = 0.75,	--Scale of all elements of the panel
 				opacity = 0.75,	--Transparency/alpha of panel (1 is solid, 0 is invisible)
 				name = true,	--Show name
-				rank = true,	--Show level
+				rank = true,	--Show infamy/level
 				character = false,	--Show character name
 				latency = true,	--Show latency (not used by player panel)
 				build = true,	--Show build; skill/perk breakdown (not used by local player)
@@ -280,6 +313,12 @@ CustomHUDMenu = {
 			},
 		},
 
+		interaction = {
+			enable_interaction = true, 		--Enable interaction timer and text stuff
+			circle_scale = 0.9,					--Scale of the interaction circle
+			text_scale = 0.9,						--Scale of the interaction text
+		},
+
 		hudchat = {
 			line_height = 14,			--Size of each line in chat (and hence the text size)
 			width = 420,				--Width of the chat window
@@ -287,7 +326,7 @@ CustomHUDMenu = {
 			use_mouse = true,		--For scrolling and stuff. Experimental
 			x_offset = 100,			--% offset from left of HUD panel
 			y_offset = 95,				--% offset from top of HUD panel
-			fade_delay = 8,			--Fade delay for chat window after inactivity
+			fade_delay = 7,			--Fade delay for chat window after inactivity
 		},
 	},
 
@@ -303,10 +342,13 @@ CustomHUDMenu = {
 	end,
 
 	load_settings = function()
+		local defaults = CustomHUDMenu.settings
 		local file = io.open(settings_file, "r")
 		if file then
-			CustomHUDMenu.settings = json.decode(file:read("*all"))
+			local loaded = json.decode(file:read("*all"))
 			file:close()
+			CustomHUDMenu.settings = deep_merge_defaults(defaults, loaded)
+			CustomHUDMenu.save_settings(true)
 		else
 			CustomHUDMenu.save_settings(true)
 		end

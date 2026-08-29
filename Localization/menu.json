@@ -66,7 +66,18 @@
 	"customHUD_menu_interaction_settings_title" : "Interaction Settings",
 	"customHUD_menu_interaction_settings_desc" : "Settings for the interaction circle",
 	"customHUD_menu_enable_interaction_title" : "Enable Interaction Tweaks",
-	"customHUD_menu_enable_interaction_desc" : "",
+	"customHUD_menu_enable_interaction_desc" : "Enables the Interaction timer circle and text scale.",
+	"customHUD_menu_circle_scale_title" : "Circle Scale",
+	"customHUD_menu_circle_scale_desc" : "Scale of the interaction circle (requires interaction tweaks enabled)",
+	"customHUD_menu_text_scale_title" : "Text Scale",
+	"customHUD_menu_text_scale_desc" : "Scale of the interaction text (requires interaction tweaks enabled)",
+
+	"customHUD_menu_joininfo_title" : "Joininfo options",
+	"customHUD_menu_joininfo_desc" : "Settings for the joininfo plugin",
+	"customHUD_menu_enable_joininfo_title" : "Enable Joininfo",
+	"customHUD_menu_enable_joininfo_desc" : "Enable info about players joining",
+	"customHUD_menu_joinsound_title" : "Join Sound",
+	"customHUD_menu_joinsound_desc" : "Join sound (uses infamy sound). 0: off, 1: only players with infamy, 2: all players (requires Joininfo enabled)",
 
 	"customHUD_menu_line_height_title" : "Line height",
 	"customHUD_menu_line_height_desc" : "Size of each line in chat (and hence the text size)",
@@ -83,6 +94,8 @@
 	"customHUD_menu_use_mouse_title" : "Enable mouse",
 	"customHUD_menu_use_mouse_desc" : "Enable mouse in chat.",
 
+	"customHUD_menu_option_infamy" : "Infamy",
+	"customHUD_menu_option_all" : "All",
 	"customHUD_menu_option_off" : "Off",
 	"customHUD_menu_option_on" : "On",
 	"customHUD_menu_option_selected" : "Selected only",
