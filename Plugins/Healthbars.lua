@@ -148,10 +148,10 @@ if RequiredScript == "lib/managers/hudmanager" then
 			self._unit_health_panel:stop()
 			self._unit_health_panel:animate(function(p)
 				if self._unit_health_panel:alpha() >= 0.9 then
-					over(0.5, function(o) end)
+					over(0.3, function(o) end)
 				end
 
-				over(1.5, function(o)
+				over(0.8, function(o)
 					self._unit_health_panel:set_alpha(math.lerp(self._unit_health_panel:alpha(), 0, o))
 				end)
 
@@ -227,10 +227,16 @@ if RequiredScript == "lib/units/beings/player/states/playerstandard" then
 				unit = unit:parent()
 			end
 
-			if alive(unit) and unit:character_damage() and not unit:character_damage()._dead and not managers.enemy:is_civilian(unit) and unit:base() and unit:base()._tweak_table and CharacterData[unit:base()._tweak_table] ~= nil then
-				self._last_unit = unit
-				managers.hud:set_unit_health_visible(true)
-				managers.hud:set_unit_health(unit:character_damage()._health or 0, unit:character_damage()._HEALTH_INIT or 0, unit:base()._tweak_table or "cop")
+			if alive(unit) and unit:character_damage() and not managers.enemy:is_civilian(unit) and unit:base() and unit:base()._tweak_table and CharacterData[unit:base()._tweak_table] ~= nil then
+				if unit:character_damage()._dead then
+					managers.hud:set_unit_health(0, unit:character_damage()._HEALTH_INIT or 1, unit:base()._tweak_table or "cop")
+					managers.hud:set_unit_health_visible(false)
+					self._last_unit = nil
+				else
+					self._last_unit = unit
+					managers.hud:set_unit_health_visible(true)
+					managers.hud:set_unit_health(unit:character_damage()._health or 0, unit:character_damage()._HEALTH_INIT or 0, unit:base()._tweak_table or "cop")
+				end
 			else
 				managers.hud:set_unit_health_visible(false)
 			end

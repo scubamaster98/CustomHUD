@@ -1031,20 +1031,51 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			h = size * 0.75,
 			w = size * 0.75,
 		})
+		--thanks wolfhud
+		self._condition_icon = self._panel:bitmap({
+			name = "condition_icon",
+			visible = false,
+			color = Color.white,
+			h = size,
+			w = size,
+			layer = 11,
+		})
+
 		self._icon:set_center(self._panel:w() / 2, self._panel:h() / 2)
 
 		self._owner:register_listener("Callsign", { "callsign" }, callback(self, self, "set_id"), false)
 		self._owner:register_listener("Callsign", { "voice_com" }, callback(self, self, "set_voice_com_active"), false)
+		self._owner:register_listener("Callsign", { "condition" }, callback(self, self, "set_condition"), false)
 	end
 
 	function PlayerInfoComponent.Callsign:destroy()
-		self._owner:unregister_listener("Callsign", { "callsign", "voice_com" })
+		self._owner:unregister_listener("Callsign", { "callsign", "voice_com", "condition" })
 		PlayerInfoComponent.Callsign.super.destroy(self)
+	end
+
+	function PlayerInfoComponent.Callsign:set_is_ai(state)
+		if PlayerInfoComponent.PlayerStatus.super.set_is_ai(self, state) then
+			
+			self._owner:arrange()
+		end
 	end
 
 	function PlayerInfoComponent.Callsign:update_settings()
 		if self:set_enabled("setting", self._settings.callsign) then
 			self._owner:arrange()
+		end
+	end
+
+	function PlayerInfoComponent.Callsign:set_enabled(reason, status)
+		PlayerInfoComponent.Callsign.super.set_enabled(self, reason, status)
+		if not self._panel:visible() then
+			self._panel:set_visible(true)
+			self._icon:set_alpha(0)
+			self._disabled = true
+			return true
+		else
+			self._panel:set_alpha(1)
+			self._disabled = false
 		end
 	end
 
@@ -1065,24 +1096,28 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		local x = self._panel:w() / 2
 		local y = self._panel:h() / 2
 		icon:set_image("guis/textures/pd2/hud_icons", 64, 0, 32, 32 )
+		icon:set_size(self:w(), self:h())
+		icon:set_center(x, y)
 
 		while self._voice_com_active do
-			local T = 2
-			local t = 0
-
-			while t < T do
-				local r = (math.sin(t * 360)) * 0.15
-				icon:set_size(self:w() * (1+r), self:h() * (1+r))
-				icon:set_center(x, y)
-
-				t = t + coroutine.yield()
-			end
+			coroutine.yield()
 		end
 
 		icon:set_image("guis/textures/pd2/hud_tabs", 84, 34, 19, 19)
 		icon:set_center(x, y)
 		icon:set_size(self:w(), self:h())
 		self._animating_voice_com = false
+	end
+
+	function PlayerInfoComponent.Callsign:set_condition(icon_data)
+		local visible = (icon_data ~= "mugshot_normal" and self._is_ai)
+		
+		if visible then
+			local icon, texture_rect = tweak_data.hud_icons:get_icon_data(icon_data)
+			self._condition_icon:set_image(icon, unpack(texture_rect))
+		end
+		
+		self._condition_icon:set_visible(visible)
 	end
 
 	PlayerInfoComponent.PlayerStatus = PlayerInfoComponent.PlayerStatus or class(PlayerInfoComponent.Base)
@@ -1107,19 +1142,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			render_template = "VertexColorTexturedRadial",
 			blend_mode = "add",
 			alpha = 1,
-			color = Color(1, 1, 1),
-			h = size,
-			w = size,
-			layer = health_bg:layer() + 1,
-		})
-
-		self._health_radial_old = self._panel:bitmap({
-			name = "health_radial_old",
-			texture = "guis/textures/pd2/hud_health",
-			texture_rect = { 0, 0, -0, 0 },
-			render_template = "VertexColorTexturedRadial",
-			blend_mode = "add",
-			alpha = 0.4,
 			color = Color(1, 1, 1),
 			h = size,
 			w = size,
@@ -1178,7 +1200,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._downs_panel = self._panel:panel({
 			h = size * 0.5,
 			w = size * 0.5,
-			visible = false,
+			visible = true,
 			layer = self._damage_indicator:layer() + 1,
 		})
 
@@ -1204,6 +1226,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			blend_mode = "normal",
 		})
 --ty claude
+		self._downs_counter:set_text("0")
 		self._downs_panel:set_center(size / 2, size / 2)
 
 		self._condition_icon = self._panel:bitmap({
@@ -1287,13 +1310,8 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	end
 
 	function PlayerInfoComponent.PlayerStatus:set_health(current, total)
-		local old_ratio = self._health_ratio
 		self._health_ratio = current / total
-
-		if old_ratio ~= self._health_ratio then
-			self._health_radial:stop()
-			self._health_radial:animate(callback(self, self, "_animate_health_damage"), old_ratio, self._health_ratio)
-		end
+		self._health_radial:set_color(Color(self._health_ratio, 1, 1))
 	end
 
 	function PlayerInfoComponent.PlayerStatus:set_stored_health(amount)
@@ -1309,7 +1327,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	function PlayerInfoComponent.PlayerStatus:set_downs(amount)
 		if self._downs ~= amount then
 			self._downs = amount
-			self._downs_panel:set_visible(self._downs > 0)
+			self._downs_panel:set_visible(true)
 			self._downs_counter:set_text(tostring(self._downs))
 			self._downs_counter:set_color((self._downs < self._max_downs - 1) and  Color.black or Color.red)
 		end
@@ -1318,17 +1336,12 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	function PlayerInfoComponent.PlayerStatus:set_revives(value)
 		if self._player_lives ~= value then
 			self._player_lives = value
-			self._downs_panel:set_visible(self._player_lives < self._player_max_lives and self._player_lives > 0)
+			self._downs_panel:set_visible(self._player_lives > 0)
 			self._downs_counter:set_text(tostring(self._player_lives - 1))
 			self._downs_counter:set_color((self._player_lives <= 1) and Color.red or Color.black)
 
-			if self._player_lives == 1 then
-				self._downs_counter:stop()
-				self._downs_counter:animate(callback(self, self, "_animate_low_life"), self._downs_panel:h() * 0.50, self._downs_panel:h() * 0.80)
-			else
-				self._downs_counter:stop()
-				self._downs_counter:set_font_size(self._downs_panel:h() * 0.65)
-			end
+			self._downs_counter:stop()
+			self._downs_counter:set_font_size(self._downs_panel:h() * 0.65)
 		end
 	end
 
@@ -1436,53 +1449,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		end
 
 		timer:set_text("0")
-	end
-
-	function PlayerInfoComponent.PlayerStatus:_animate_low_life(text, min_size, max_size)
-		local t = 0
-
-		while alive(text) do
-			local r = math.sin(t * 360) * 0.5 + 0.5
-			text:set_font_size(math.lerp(min_size, max_size, r))
-			t = t + coroutine.yield()
-		end
-	end
-
-	function PlayerInfoComponent.PlayerStatus:_animate_health_damage(o, old, new)
-		local decrease = old > new
-		local dr = old - new
-		local T = math.clamp(math.abs(dr), 0.1, 0.3)
-		local t = T
-
-		self._health_radial_old:set_color(Color(old, 1, 1))
-
-		while t > 0 do
-			t = math.max(0, t - coroutine.yield())
-			local r = new + t/T * dr
-
-			self:set_stored_health_max(1-r)
-			self._health_radial:set_color(Color(r, 1, 1))
-			self._stored_health_radial:set_rotation(-r * 360)
-			if not decrease then
-				self._health_radial_old:set_color(Color(r, 1, 1))
-			end
-		end
-
-		self._health_radial_old:set_color(Color(new, 1, 1))
-	end
-
-	function PlayerInfoComponent.PlayerStatus:_animate_radial_ability(radial, duration)
-		local T = duration
-		local t = 0
-
-		radial:show()
-
-		while t < T do
-			radial:set_color(Color(1-t/T, 1, 1))
-			t = t + coroutine.yield()
-		end
-
-		radial:hide()
 	end
 
 	PlayerInfoComponent.Carry = PlayerInfoComponent.Carry or class(PlayerInfoComponent.Base)
@@ -2623,101 +2589,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._progress_bar:set_w(self._progress_bar_bg:w())
 		self._progress_bar:set_gradient_points({ 0, Color(r_max, g_min, b), 0.5, Color(r_max, g_max, b), 1, Color(r_min, g_max, b) })
 	end
-	--Unused, remember to update arrange handling
-	PlayerInfoComponent.Throwable = PlayerInfoComponent.Throwable or class(PlayerInfoComponent.Base)
-	function PlayerInfoComponent.Throwable:init(panel, owner, height)
-		PlayerInfoComponent.Throwable.super.init(self, panel, owner, "throwable", 0, height)
-
-		self._icon_panel = self._panel:panel({
-			name = "icon_panel",
-			w = self._panel:h() * 2,
-			h = self._panel:h(),
-		})
-
-		local icon = self._icon_panel:bitmap({
-			name = "icon",
-			w = self._icon_panel:w(),
-			h = self._icon_panel:h(),
-		})
-
-		local label = self._icon_panel:text({
-			name = "label",
-			text = "N/A",
-			color = Color.white,
-			align = "center",
-			vertical = "top",
-			h = self._icon_panel:h(),
-			w = self._icon_panel:w(),
-			font_size = self._icon_panel:h() * 0.2,
-			font = tweak_data.hud_players.name_font,
-			layer = weapon_icon:layer() + 1,
-			wrap = true,
-			word_wrap = true,
-		})
-
-		local amount = self._icon_panel:text({
-			name = "amount",
-			text = "0",
-			color = Color.white,
-			layer = weapon_icon:layer() + 1,
-			w = self._icon_panel:w(),
-			h = self._icon_panel:h() * 0.35,
-			vertical = "center",
-			align = "right",
-			font_size = self._icon_panel:h() * 0.35,
-			font = tweak_data.hud_players.ammo_font
-		})
-		amount:set_bottom(self._icon_panel:h())
-	end
-
-	function PlayerInfoComponent.Throwable:add_statistics_panel()
-		self._statistics_panel = self._panel:panel({
-			name = "statistics_panel",
-			h = self._panel:h(),
-			w = 0,
-		})
-
-	--Update statisticspanel width
-		self:arrange()
-	end
-
-	function PlayerInfoComponent.Throwable:arrange()
-		local MARGIN = self._panel:h() * 0.1
-
-		local w = 0
-		local h = self:h()
-
-		if self._icon_panel:visible() then
-			self._icon_panel:set_left(w)
-			w = w + MARGIN + self._icon_panel:w()
-		end
-
-		if self._statistics_panel and self._statistics_panel:visible() then
-			self._statistics_panel:set_left(w)
-			w = w + MARGIN + self._statistics_panel:w()
-		end
-
-		if w > 0 then
-			w = w - MARGIN
-		end
-
-		PlayerInfoComponent.Throwable.super.arrange(self, w, h)
-		if self._owner then
-			self._owner:arrange()
-		end
-	end
-
-	function PlayerInfoComponent.Throwable:set_icon(id)
-		local texture, text = PlayerInfoComponent.Base.get_item_icon_data("throwable", id)
-
-		self._icon_panel:child("icon"):set_image(texture)
-		self._icon_panel:child("label"):set_text(text)
-	end
-
-	function PlayerInfoComponent.Throwable:set_amount(count)
-		self._icon_panel:child("amount"):set_text(tostring(count))
-	end
-
 
 	PlayerInfoComponent.Melee = PlayerInfoComponent.Melee or class(PlayerInfoComponent.Base)
 	PlayerInfoComponent.Armor = PlayerInfoComponent.Armor or class(PlayerInfoComponent.Base)
@@ -2731,7 +2602,7 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 
 	local update_original = HUDManager.update
 	local add_weapon_original = HUDManager.add_weapon
-	local set_teammate_ammo_amount_orig = HUDManager.set_teammate_ammo_amount
+	local set_teammate_ammo_amount_original = HUDManager.set_teammate_ammo_amount
 	local set_stamina_value_original = HUDManager.set_stamina_value
 	local set_max_stamina_original = HUDManager.set_max_stamina
 	local set_mugshot_voice_original = HUDManager.set_mugshot_voice
@@ -2841,7 +2712,7 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 			current_left = total_left
 			max = max - current_clip
 		end
-		return set_teammate_ammo_amount_orig(self, id, selection_index, max_clip, current_clip, current_left, max, ...)
+		return set_teammate_ammo_amount_original(self, id, selection_index, max_clip, current_clip, current_left, max, ...)
 	end
 
 	function HUDManager:set_stamina_value(...)
@@ -3107,6 +2978,180 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 		managers.hud:set_player_carry_info(self._carry_id, self._carry_value)
 	end
 
+end
+
+if RequiredScript == "lib/managers/hud/hudobjectives" then
+
+	HUDObjectives._TEXT_MARGIN = 8
+
+	function HUDObjectives:init(hud)
+		if hud.panel:child("objectives_panel") then
+			hud.panel:remove(self._panel:child("objectives_panel"))
+		end
+
+		self._panel = hud.panel:panel({
+			visible = false,
+			name = "objectives_panel",
+			h = 100,
+			w = 500,
+			x = 80,
+			valign = "top"
+		})
+
+		self._bg_box = HUDBGBox_create(self._panel, {
+			w = 500,
+			h = 38,
+		})
+
+		self._objective_text = self._bg_box:text({
+			name = "objective_text",
+			visible = false,
+			layer = 2,
+			color = Color.white,
+			text = "",
+			font_size = tweak_data.hud.active_objective_title_font_size,
+			font = tweak_data.hud.medium_font_noshadow,
+			align = "left",
+			vertical = "center",
+			w = self._bg_box:w(),
+			x = HUDObjectives._TEXT_MARGIN
+		})
+
+		self._amount_text = self._bg_box:text({
+			name = "amount_text",
+			visible = false,
+			layer = 2,
+			color = Color.white,
+			text = "",
+			font_size = tweak_data.hud.active_objective_title_font_size,
+			font = tweak_data.hud.medium_font_noshadow,
+			align = "left",
+			vertical = "center",
+			w = self._bg_box:w(),
+			x = HUDObjectives._TEXT_MARGIN
+		})
+	end
+
+	function HUDObjectives:activate_objective(data)
+		self._active_objective_id = data.id
+
+		self._panel:set_visible(true)
+		self._objective_text:set_text(utf8.to_upper(data.text))
+		self._objective_text:set_visible(true)
+		self._amount_text:set_visible(false)
+
+		local width = self:_get_text_width(self._objective_text)
+
+		if data.amount then
+			self:update_amount_objective(data)
+			self._amount_text:set_left(width + HUDObjectives._TEXT_MARGIN)
+			width = width + self:_get_text_width(self._amount_text)
+		else
+			self._amount_text:set_text("")
+		end
+
+		self._bg_box:set_w(HUDObjectives._TEXT_MARGIN * 2 + width)
+		self._bg_box:stop()
+		self._bg_box:animate(callback(self, self, "_animate_update_objective"))
+	end
+
+	function HUDObjectives:update_amount_objective(data)
+		if data.id ~= self._active_objective_id then
+			return
+		end
+
+		self._amount_text:set_visible(true)
+		self._amount_text:set_text(": " .. (data.current_amount or 0) .. "/" .. data.amount)
+		self._amount_text:set_x(self:_get_text_width(self._objective_text) + HUDObjectives._TEXT_MARGIN)
+		self._bg_box:set_w(HUDObjectives._TEXT_MARGIN * 2 + self:_get_text_width(self._objective_text) + self:_get_text_width(self._amount_text))
+		self._bg_box:stop()
+		self._bg_box:animate(callback(self, self, "_animate_update_objective"))
+	end
+
+	function HUDObjectives:remind_objective(id)
+		if id ~= self._active_objective_id then
+			return
+		end
+
+		self._bg_box:stop()
+		self._bg_box:animate(callback(self, self, "_animate_update_objective"))
+	end
+
+	function HUDObjectives:complete_objective(data)
+		if data.id ~= self._active_objective_id then
+			return
+		end
+
+		self._amount_text:set_visible(false)
+		self._objective_text:set_visible(false)
+		self._panel:set_visible(false)
+		self._bg_box:set_w(0)
+	end
+
+	function HUDObjectives:_animate_new_objective(object)
+		local TOTAL_T = 2
+		local t = TOTAL_T
+		object:set_color(Color(1, 1, 1, 1))
+		while t > 0 do
+			local dt = coroutine.yield()
+			t = t - dt
+			object:set_color(Color(1, 1 - (0.5 * math.sin(t * 360) + 0.5), 1, 1 - (0.5 * math.sin(t * 360) + 0.5)))
+		end
+		object:set_color(Color(1, 1, 1, 1))
+	end
+
+	function HUDObjectives:_animate_update_objective(object)
+		local TOTAL_T = 2
+		local t = TOTAL_T
+		object:set_y(0)
+		while t > 0 do
+			local dt = coroutine.yield()
+			t = t - dt
+			object:set_y(math.round((1 + math.sin((TOTAL_T - t) * 450 * 2)) * (12 * (t / TOTAL_T))))
+		end
+		object:set_y(0)
+	end
+
+	function HUDObjectives:_get_text_width(obj)
+		local _, _, w, _ = obj:text_rect()
+		return w
+	end
+
+end
+
+if RequiredScript == "lib/managers/hud/hudheisttimer" then
+
+	function HUDHeistTimer:init(hud, tweak_hud, ...)
+		tweak_hud = tweak_data.hud
+		self._enabled = not tweak_hud.no_timer
+
+		self._hud_panel = hud.panel
+		if self._hud_panel:child("heist_timer_panel") then
+			self._hud_panel:remove(self._hud_panel:child("heist_timer_panel"))
+		end
+
+		self._heist_timer_panel = self._hud_panel:panel({
+			visible = self._enabled and true or false,
+			name = "heist_timer_panel",
+			h = 40,
+			w = 80,
+			valign = "top",
+			layer = 0
+		})
+		self._timer_text = self._heist_timer_panel:text({
+			name = "timer_text",
+			text = "00:00:00",
+			font_size = 28,
+			font = tweak_data.hud.medium_font_noshadow,
+			color = Color.white,
+			align = "center",
+			vertical = "center",
+			layer = 1,
+			wrap = false,
+			word_wrap = false
+		})
+		self._last_time = 0
+	end
 end
 
 if RequiredScript == "lib/managers/hud/hudtemp" then
