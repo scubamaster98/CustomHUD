@@ -1081,23 +1081,17 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			self._icon:animate(callback(self, self, "_animate_voice_com"))
 		end
 	end
+
 	function PlayerInfoComponent.Callsign:_animate_voice_com(icon)
 		self._animating_voice_com = true
 		local x = self._panel:w() / 2
 		local y = self._panel:h() / 2
 		icon:set_image("guis/textures/pd2/hud_icons", 64, 0, 32, 32 )
+		icon:set_size(self:w(), self:h())
+		icon:set_center(x, y)
 
 		while self._voice_com_active do
-			local T = 2
-			local t = 0
-
-			while t < T do
-				local r = (math.sin(t * 360)) * 0.15
-				icon:set_size(self:w() * (1+r), self:h() * (1+r))
-				icon:set_center(x, y)
-
-				t = t + coroutine.yield()
-			end
+			coroutine.yield()
 		end
 
 		icon:set_image("guis/textures/pd2/hud_tabs", 84, 34, 19, 19)
@@ -1139,19 +1133,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			render_template = "VertexColorTexturedRadial",
 			blend_mode = "add",
 			alpha = 1,
-			color = Color(1, 1, 1),
-			h = size,
-			w = size,
-			layer = health_bg:layer() + 1,
-		})
-
-		self._health_radial_old = self._panel:bitmap({
-			name = "health_radial_old",
-			texture = "guis/textures/pd2/hud_health",
-			texture_rect = { 0, 0, -0, 0 },
-			render_template = "VertexColorTexturedRadial",
-			blend_mode = "add",
-			alpha = 0.4,
 			color = Color(1, 1, 1),
 			h = size,
 			w = size,
@@ -1210,7 +1191,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._downs_panel = self._panel:panel({
 			h = size * 0.5,
 			w = size * 0.5,
-			visible = true,
+			visible = false,
 			layer = self._damage_indicator:layer() + 1,
 		})
 
@@ -1318,13 +1299,8 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	end
 
 	function PlayerInfoComponent.PlayerStatus:set_health(current, total)
-		local old_ratio = self._health_ratio
 		self._health_ratio = current / total
-
-		if old_ratio ~= self._health_ratio then
-			self._health_radial:stop()
-			self._health_radial:animate(callback(self, self, "_animate_health_damage"), old_ratio, self._health_ratio)
-		end
+		self._health_radial:set_color(Color(self._health_ratio, 1, 1))
 	end
 
 	function PlayerInfoComponent.PlayerStatus:set_stored_health(amount)
@@ -1352,14 +1328,8 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			self._downs_panel:set_visible(self._player_lives > 0)
 			self._downs_counter:set_text(tostring(self._player_lives - 1))
 			self._downs_counter:set_color((self._player_lives <= 1) and Color.red or Color.black)
-
-			if self._player_lives == 1 then
-				self._downs_counter:stop()
-				self._downs_counter:animate(callback(self, self, "_animate_low_life"), self._downs_panel:h() * 0.50, self._downs_panel:h() * 0.80)
-			else
-				self._downs_counter:stop()
-				self._downs_counter:set_font_size(self._downs_panel:h() * 0.65)
-			end
+			self._downs_counter:stop()
+			self._downs_counter:set_font_size(self._downs_panel:h() * 0.65)
 		end
 	end
 
@@ -1467,39 +1437,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		end
 
 		timer:set_text("0")
-	end
-
-	function PlayerInfoComponent.PlayerStatus:_animate_low_life(text, min_size, max_size)
-		local t = 0
-
-		while alive(text) do
-			local r = math.sin(t * 360) * 0.5 + 0.5
-			text:set_font_size(math.lerp(min_size, max_size, r))
-			t = t + coroutine.yield()
-		end
-	end
-
-	function PlayerInfoComponent.PlayerStatus:_animate_health_damage(o, old, new)
-		local decrease = old > new
-		local dr = old - new
-		local T = math.clamp(math.abs(dr), 0.1, 0.3)
-		local t = T
-
-		self._health_radial_old:set_color(Color(old, 1, 1))
-
-		while t > 0 do
-			t = math.max(0, t - coroutine.yield())
-			local r = new + t/T * dr
-
-			self:set_stored_health_max(1-r)
-			self._health_radial:set_color(Color(r, 1, 1))
-			self._stored_health_radial:set_rotation(-r * 360)
-			if not decrease then
-				self._health_radial_old:set_color(Color(r, 1, 1))
-			end
-		end
-
-		self._health_radial_old:set_color(Color(new, 1, 1))
 	end
 
 	PlayerInfoComponent.Carry = PlayerInfoComponent.Carry or class(PlayerInfoComponent.Base)

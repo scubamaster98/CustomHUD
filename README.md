@@ -39,3 +39,5 @@ and some more people i might've forgotten (my bad)
 ## Known bugs
 
 • Some interaction text being wrong on teammate panels
+
+• Down counter doesn't change for clients
