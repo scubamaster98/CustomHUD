@@ -5,28 +5,28 @@ local settings_file = ModPath .. "saved_settings.json"
 Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_CustomHUD", function(menu_manager, nodes)
 	local function initialize_menu(menu_id, data)
 		local prefixed_menu_id = menu_prefix .. menu_id
-		
+
 		MenuHelper:NewMenu(prefixed_menu_id)
-		
+
 		for i, item in ipairs(data) do
 			local id = item[1]
 			local item_type = item[2]
 			local item_data = item[3] or {}
-			
+
 			local default = data.default_value_clbk(id)
 			local clbk_id = string.format("%s_%s_clbk", prefixed_menu_id, id)
 			local title = string.format("%s%s_title", menu_prefix, id)
 			local desc = string.format("%s%s_desc", menu_prefix, id)
-			
+
 			if item_type == "toggle" then
 				MenuHelper:AddToggle({ id = id, title = title, desc = desc, callback = clbk_id, menu_id = prefixed_menu_id, priority = -i, value = default and true or false })
-				
+
 				MenuCallbackHandler[clbk_id] = function(self, item)
 					data.change_clbk(id, item:value() == "on")
 				end
 			elseif item_type == "slider" then
-    MenuHelper:AddSlider({ id = id, title = title, desc = desc, callback = clbk_id, min = item_data.min, max = item_data.max, step = item_data.step, show_value = true, menu_id = prefixed_menu_id, priority = -i, value = default or 0 })
-				
+	MenuHelper:AddSlider({ id = id, title = title, desc = desc, callback = clbk_id, min = item_data.min, max = item_data.max, step = item_data.step, show_value = true, menu_id = prefixed_menu_id, priority = -i, value = default or 0 })
+
 				MenuCallbackHandler[clbk_id] = function(self, item)
 					if item_data.round then item:set_value(math.round(item:value())) end
 					data.change_clbk(id, item:value())
@@ -36,9 +36,9 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 				for _, item in ipairs(item_data.items) do
 					table.insert(items, string.format("%s%s", menu_prefix, item))
 				end
-				
+
 				MenuHelper:AddMultipleChoice({ id = id, title = title, desc = desc, callback = clbk_id, items = items, menu_id = prefixed_menu_id, priority = -i, value = (default or 0) + 1 })
-				
+
 				MenuCallbackHandler[clbk_id] = function(self, item)
 					data.change_clbk(id, item:value() - 1)
 				end
@@ -46,12 +46,12 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 				MenuHelper:AddDivider({ id = id, size = item_data.size, menu_id = prefixed_menu_id, priority = -i })
 			end
 		end
-		
+
 		for sub_menu_id, sub_menu_data in pairs(data.sub_menus or {}) do
 			initialize_menu(sub_menu_id, sub_menu_data)
 		end
 	end
-	
+
 	local function finalize_menu(menu_id, data, parent, back_clbk)
 		local prefixed_menu_id = menu_prefix .. menu_id
 		
@@ -62,47 +62,47 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 			finalize_menu(sub_menu_id, sub_menu_data, prefixed_menu_id, back_clbk)
 		end
 	end
-	
+
 	local function change_module_enabled_setting(id, value)
 		print("change_module_enabled_setting: %s / %s", tostring(id), tostring(value))
 		CustomHUDMenu.setting_changed = true
 		CustomHUDMenu.settings[id] = value
 	end
-	
+
 	local function default_value_module_enabled_setting(id)
 		return CustomHUDMenu.settings[id]
 	end
-	
+
 	local function change_teammatepanel_settings(id, value)
 		print("change_teammatepanel_settings: %s / %s", tostring(id), tostring(value))
 		CustomHUDMenu.setting_changed = true
 		CustomHUDMenu.settings.teammatepanels[id] = value
 	end
-	
+
 	local function default_value_teammatepanel_settings(id)
 		return CustomHUDMenu.settings.teammatepanels[id]
 	end
-	
+
 	local function change_teammatepanel_settings_player(id, value)
 		print("change_teammatepanel_settings_player: %s / %s", tostring(id), tostring(value))
 		CustomHUDMenu.setting_changed = true
 		CustomHUDMenu.settings.teammatepanels.player[id] = value
 	end
-	
+
 	local function default_value_teammatepanel_settings_player(id)
 		return CustomHUDMenu.settings.teammatepanels.player[id]
 	end
-	
+
 	local function change_teammatepanel_settings_teammate(id, value)
 		print("change_teammatepanel_settings_teammate: %s / %s", tostring(id), tostring(value))
 		CustomHUDMenu.setting_changed = true
 		CustomHUDMenu.settings.teammatepanels.teammate[id] = value
 	end
-	
+
 	local function default_value_teammatepanel_settings_teammate(id)
 		return CustomHUDMenu.settings.teammatepanels.teammate[id]
 	end
-	
+
 	local function change_hudchat_settings(id, value)
 		print("change_hudchat_settings: %s / %s", tostring(id), tostring(value))
 		CustomHUDMenu.setting_changed = true
@@ -112,11 +112,11 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 			managers.hud:change_custom_chat_settings(CustomHUDMenu.settings.hudchat)
 		end
 	end
-	
+
 	local function default_value_hudchat_settings(id)
 		return CustomHUDMenu.settings.hudchat[id]
 	end
-	
+
 	--Menu structure
 	local main_menu = {
 		change_clbk = change_module_enabled_setting,
@@ -143,7 +143,7 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 					},
 				},
 			},
-			
+
 			hudchat = {
 				change_clbk = change_hudchat_settings,
 				default_value_clbk = default_value_hudchat_settings,
@@ -157,7 +157,7 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 			}
 		},
 	}
-	
+
 	--Populate teammatepanels options
 	local teammatepanels_items = {
 		{ data = { "scale", "slider", { min = 0.25, max = 3, step = 0.05 }}},
@@ -200,8 +200,7 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 			end
 		end
 	end
-	
-	
+
 	local back_clbk = menu_prefix .. "back_clbk"
 	MenuCallbackHandler[back_clbk] = function(self, item)
 		CustomHUDMenu.save_settings()
@@ -217,19 +216,18 @@ Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInit_CustomHUD_
 	LocalizationManager:load_localization_file(localization_file)
 end)
 
-
 CustomHUDMenu = {
 	--Default settings, written to initial settings file and then ignored
 	settings = {
 		enable_teammatepanels = true,
 		enable_chat = true,
-		
+
 		teammatepanels = {
 			MAX_WEAPONS = 2,	--Number of carried guns (don't change this)
 			
 			player = {
-				scale = 0.8,	--Scale of all elements of the panel
-				opacity = 0.8,	--Transparency/alpha of panel (1 is solid, 0 is invisible)
+				scale = 0.9,	--Scale of all elements of the panel
+				opacity = 0.9,	--Transparency/alpha of panel (1 is solid, 0 is invisible)
 				name = true,	--Show name
 				rank = true,	--Show infamy/level
 				character = false,	--Show character name
@@ -244,7 +242,7 @@ CustomHUDMenu = {
 				special_equipment_rows = 3,	--Number of special equipment items in each column
 				interaction = false,	--Show interaction timer and type (not used by local player)
 				interaction_duration = 0, --Minimum interaction timer to show it (not used by local player)
-				weapon_icon = 0,	--Show/hide weapon icon. 0: off, 1: on, 2: selected only, 3: unselected only
+				weapon_icon = 1,	--Show/hide weapon icon. 0: off, 1: on, 2: selected only, 3: unselected only
 				weapon_ammo = 1,	--Show/hide weapon ammo. 0: off, 1: on, 2: selected only, 3: unselected only
 				weapon_ammo_aggregate = false,	--Aggregate weapon ammo or show magazine/total separately
 				weapon_fire_mode = 1,	--Show/hide weapon fire mode. 0: off, 1: on, 2: selected only, 3: unselected only (not used by teammates)
@@ -253,10 +251,10 @@ CustomHUDMenu = {
 				kill_counter_specials = true,	--Separate special kills from other units
 				kill_counter_bots = true,	--Show kill counts for team AI (not used by local player)
 			},
-			
+
 			teammate = {
-				scale = 0.7,	--Scale of all elements of the panel
-				opacity = 0.7,	--Transparency/alpha of panel (1 is solid, 0 is invisible)
+				scale = 0.8,	--Scale of all elements of the panel
+				opacity = 0.8,	--Transparency/alpha of panel (1 is solid, 0 is invisible)
 				name = true,	--Show name
 				rank = true,	--Show infamy/level
 				character = false,	--Show character name
@@ -271,9 +269,9 @@ CustomHUDMenu = {
 				special_equipment_rows = 3,	--Number of special equipment items in each column
 				interaction = true,	--Show interaction timer and type (not used by local player)
 				interaction_duration = 1, --Minimum interaction timer to show it (not used by local player)
-				weapon_icon = 2,	--Show/hide weapon icon. 0: off, 1: on, 2: selected only, 3: unselected only
+				weapon_icon = 1,	--Show/hide weapon icon. 0: off, 1: on, 2: selected only, 3: unselected only
 				weapon_ammo = 1,	--Show/hide weapon ammo. 0: off, 1: on, 2: selected only, 3: unselected only
-				weapon_ammo_aggregate = true,	--Aggregate weapon ammo or show magazine/total separately
+				weapon_ammo_aggregate = false,	--Aggregate weapon ammo or show magazine/total separately
 				weapon_fire_mode = 1,	--Show/hide weapon fire mode. 0: off, 1: on, 2: selected only, 3: unselected only (not used by teammates)
 				accuracy = true,	--Show weapon accuracy (not used by teammates)
 				kill_counter = true,	--Show kill counter
@@ -281,18 +279,18 @@ CustomHUDMenu = {
 				kill_counter_bots = true,	--Show kill counts for team AI (not used by local player)
 			},
 		},
-		
+
 		hudchat = {
 			line_height = 14,			--Size of each line in chat (and hence the text size)
 			width = 420,				--Width of the chat window
 			height = 120,				--Height of the chat window
 			use_mouse = true,		--For scrolling and stuff. Experimental
 			x_offset = 100,			--% offset from left of HUD panel
-			y_offset = 80,				--% offset from top of HUD panel
-			fade_delay = 8,			--Fade delay for chat window after inactivity
+			y_offset = 100,				--% offset from top of HUD panel
+			fade_delay = 7,			--Fade delay for chat window after inactivity
 		},
 	},
-	
+
 	save_settings = function(force)
 		if force or CustomHUDMenu.setting_changed then
 			local file = io.open(settings_file, "w+")
@@ -303,7 +301,7 @@ CustomHUDMenu = {
 			end
 		end
 	end,
-	
+
 	load_settings = function()
 		local file = io.open(settings_file, "r")
 		if file then

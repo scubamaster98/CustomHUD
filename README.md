@@ -1,12 +1,12 @@
 # About
 
-This is the compatibility branch of CustomHUD, it is identical to the original fixed version from 12/02/2024 aside from a few fixes, extra files or file name changes. This is meant for versions that might not work with the base branch. This will most likely not get any major updates.
+CustomHUD is a HUD mod for old versions of PAYDAY 2. (primarily for u37.1)
 
-CustomHUD is a HUD mod for old versions of PAYDAY 2 (primarily for u37.1)
+Originally fixed and fully functional since 12/02/2024.
 
-It should work on every other version above it just fine.
+This is the compatibility branch of CustomHUD. This is identical to the original fixed version from 12/02/2024 aside from a few fixes, extra files or file name changes. This is meant for versions way above u37.1 that don't support WolfHUD.
 
-Incompatible with u0-u23 (and possibly a few more versions after it)
+This won't receive many updates, so don't expect any fixes unless it's something that prevents you from playing the game or with other players.
 
 ## Credits
 
@@ -22,14 +22,12 @@ James - slider fix
 
 and some more people i might've forgotten (my bad)
 
-## Compat Todo
-
-None
-
 ## Known bugs
 
-Some interaction text being wrong on teammate panels
+• Some interaction text being wrong on teammate panels
 
-Callsigns change size after VC activation and deactivation (and drop-in too apparently?)
+• Some stuff is just ugly or nonexistent
 
-Few more i probably missed
+• Callsigns change size after VC activation and deactivation (and drop-in too apparently?)
+
+• Few more i probably missed
