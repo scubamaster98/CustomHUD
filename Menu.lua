@@ -1,7 +1,7 @@
 --Dynamic updates
 local menu_prefix = "customHUD_menu_"
 local localization_file = ModPath .. "Localization/menu.json"
-local settings_file = ModPath .. "saved_settings.json"
+local settings_file = SavePath .. "CustomHUD_saved_settings.json"
 
 local function deep_merge_defaults(defaults, loaded)
 	for k, v in pairs(defaults) do
