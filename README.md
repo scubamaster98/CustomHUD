@@ -1,12 +1,12 @@
 # About
 
-This is the U22-U29 branch of CustomHUD. It's specifically made to work for these versions, however this is not guaranteed to work on every one of those versions.
-
-Versions tested: u28 (solo)
-
 CustomHUD is a HUD mod for old versions of PAYDAY 2. (primarily for u37.1)
 
 Originally fixed and fully functional since 12/02/2024.
+
+This is the u22-u29 branch of CustomHUD. It's specifically made to work for these versions, however this isn't yet guaranteed to work on every one of those versions.
+
+Versions tested: u28 (solo)
 
 ## Credits
 
@@ -32,9 +32,7 @@ and some more people i might've forgotten (my bad)
 
 • Playing with other people
 
-• Play on versions U22-U27 and U29
-
-• Add some of the stuff that is in the main branch
+• Playing on versions U22-U27 and U29
 
 ## Known bugs
 
