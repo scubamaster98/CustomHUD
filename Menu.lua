@@ -1,6 +1,6 @@
 local menu_prefix = "customHUD_menu_"
 local localization_file = ModPath .. "Localization/menu.json"
-local settings_file = ModPath .. "saved_settings.json"
+local settings_file = SavePath .. "CustomHUD_saved_settings.json"
 
 Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_CustomHUD", function(menu_manager, nodes)
 	local function initialize_menu(menu_id, data)
@@ -226,8 +226,8 @@ CustomHUDMenu = {
 			MAX_WEAPONS = 2,	--Number of carried guns (don't change this)
 			
 			player = {
-				scale = 0.9,	--Scale of all elements of the panel
-				opacity = 0.9,	--Transparency/alpha of panel (1 is solid, 0 is invisible)
+				scale = 0.85,	--Scale of all elements of the panel
+				opacity = 0.85,	--Transparency/alpha of panel (1 is solid, 0 is invisible)
 				name = true,	--Show name
 				rank = true,	--Show infamy/level
 				character = false,	--Show character name
@@ -253,8 +253,8 @@ CustomHUDMenu = {
 			},
 
 			teammate = {
-				scale = 0.8,	--Scale of all elements of the panel
-				opacity = 0.8,	--Transparency/alpha of panel (1 is solid, 0 is invisible)
+				scale = 0.75,	--Scale of all elements of the panel
+				opacity = 0.75,	--Transparency/alpha of panel (1 is solid, 0 is invisible)
 				name = true,	--Show name
 				rank = true,	--Show infamy/level
 				character = false,	--Show character name
