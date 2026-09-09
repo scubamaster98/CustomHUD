@@ -1,9 +1,9 @@
-local hudsuspicion_init_original = HUDSuspicion.init
-local hudsuspicions_animate_eye_original = HUDSuspicion.animate_eye
-local hudsuspicion_hide_original = HUDSuspicion.hide
- 
+local init_original = HUDSuspicion.init
+local animate_eye_original = HUDSuspicion.animate_eye
+local hide_original = HUDSuspicion.hide
+
 function HUDSuspicion:init(hud, sound_source)
-	hudsuspicion_init_original(self, hud, sound_source)
+	init_original(self, hud, sound_source)
 	local _suspicion_text_panel = self._suspicion_panel:panel({
 		name = "suspicion_text_panel",
 		visible = true,
@@ -64,13 +64,13 @@ function HUDSuspicion:_animate_detection_text(_suspicion_panel, param_2)
 end
 
 function HUDSuspicion:animate_eye()
-	hudsuspicions_animate_eye_original(self)
+	animate_eye_original(self)
 	self._animating_text = true
 	self._text_animation = self._suspicion_panel:child("suspicion_text_panel"):animate(callback(self, self, "_animate_detection_text"))
 end
 
 function HUDSuspicion:hide()
-	hudsuspicion_hide_original(self)
+	hide_original(self)
 	self._animating_text = false
 	if self._text_animation then
 		self._suspicion_panel:child("suspicion_text_panel"):stop()

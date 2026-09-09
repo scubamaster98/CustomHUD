@@ -40,7 +40,7 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 					data.change_clbk(id, item:value() == "on")
 				end
 			elseif item_type == "slider" then
-	MenuHelper:AddSlider({ id = id, title = title, desc = desc, callback = clbk_id, min = item_data.min, max = item_data.max, step = item_data.step, show_value = true, menu_id = prefixed_menu_id, priority = -i, value = default or 0 })
+				MenuHelper:AddSlider({ id = id, title = title, desc = desc, callback = clbk_id, min = item_data.min, max = item_data.max, step = item_data.step, show_value = true, menu_id = prefixed_menu_id, priority = -i, value = default or 0 })
 
 				MenuCallbackHandler[clbk_id] = function(self, item)
 					if item_data.round then item:set_value(math.round(item:value())) end
@@ -76,16 +76,6 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 		for sub_menu_id, sub_menu_data in pairs(data.sub_menus or {}) do
 			finalize_menu(sub_menu_id, sub_menu_data, prefixed_menu_id, back_clbk)
 		end
-	end
-
-	local function change_module_enabled_setting(id, value)
-		print("change_module_enabled_setting: %s / %s", tostring(id), tostring(value))
-		CustomHUDMenu.setting_changed = true
-		CustomHUDMenu.settings[id] = value
-	end
-
-	local function default_value_module_enabled_setting(id)
-		return CustomHUDMenu.settings[id]
 	end
 
 	local function change_teammatepanel_settings(id, value)
@@ -154,17 +144,13 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 
 	--Menu structure
 	local main_menu = {
-		change_clbk = change_module_enabled_setting,
-		default_value_clbk = default_value_module_enabled_setting,
-		{ "enable_teammatepanels", "toggle" },
-		{ "enable_chat", "toggle" },
 
 		sub_menus = {
 			teammatepanels = {
 				change_clbk = change_teammatepanel_settings,
 				default_value_clbk = default_value_teammatepanel_settings,
-				--General stuff here if any
-				
+				{ "enable_teammatepanels", "toggle" },
+
 				sub_menus = {
 					player = {
 						change_clbk = change_teammatepanel_settings_player,
@@ -183,8 +169,8 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 				change_clbk = change_interaction_settings,
 				default_value_clbk = default_value_interaction_settings,
 				{ "enable_interaction", "toggle" },
-				{ "circle_scale", "slider", { min = 0, max = 1.5, step = 0.05 }},
-				{ "text_scale", "slider", { min = 0, max = 1.5, step = 0.05 }},
+				{ "circle_scale", "slider", { min = 0.1, max = 1.0, step = 0.05 }},
+				{ "text_scale", "slider", { min = 0.1, max = 1.0, step = 0.05 }},
 			},
 
 			joininfo = {
@@ -197,6 +183,7 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 			hudchat = {
 				change_clbk = change_hudchat_settings,
 				default_value_clbk = default_value_hudchat_settings,
+				{ "enable_chat", "toggle" },
 				{ "line_height", "slider", { min = 5, max = 25, step = 1, round = true }},
 				{ "width", "slider", { min = 100, max = 800, step = 10, round = true }},
 				{ "height", "slider", { min = 100, max = 800, step = 10, round = true }},
@@ -269,11 +256,10 @@ end)
 CustomHUDMenu = {
 	--Default settings, written to initial settings file and then ignored
 	settings = {
-		enable_teammatepanels = true,
-		enable_chat = true,
 
 		teammatepanels = {
 			MAX_WEAPONS = 2,	--Number of carried guns (don't change this)
+			enable_teammatepanels = true,
 
 			player = {
 				scale = 0.85,	--Scale of all elements of the panel
@@ -342,12 +328,13 @@ CustomHUDMenu = {
 		},
 
 		hudchat = {
+			enable_chat = true,
 			line_height = 14,			--Size of each line in chat (and hence the text size)
 			width = 420,				--Width of the chat window
 			height = 120,				--Height of the chat window
 			use_mouse = true,		--For scrolling and stuff. Experimental
 			x_offset = 100,			--% offset from left of HUD panel
-			y_offset = 95,				--% offset from top of HUD panel
+			y_offset = 100,				--% offset from top of HUD panel
 			fade_delay = 7,			--Fade delay for chat window after inactivity
 		},
 	},

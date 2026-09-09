@@ -1,4 +1,4 @@
-if not CustomHUDMenu.settings.enable_teammatepanels then return end
+if not CustomHUDMenu.settings.teammatepanels.enable_teammatepanels then return end
 
 printf = printf or function(...) end
 
