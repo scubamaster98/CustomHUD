@@ -17,6 +17,7 @@ if string.lower(RequiredScript) == "lib/managers/menumanagerdialogs" then
 			local joinsound = CustomHUDMenu.settings.joininfo.joinsound
 			if joinsound == 2 or (joinsound == 1 and peer:rank() > 0) then
 				managers.hud:post_event("infamous_player_join_stinger")
+				managers.menu:post_event("infamous_player_join_stinger")
 			end
 			nick = "(" .. (peer:rank() > 0 and managers.experience:rank_string(peer:rank()) .. "-" or "") .. peer:level() .. ") " .. nick
 		end

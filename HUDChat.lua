@@ -1,4 +1,4 @@
-if not CustomHUDMenu.settings.enable_chat then return end
+if not CustomHUDMenu.settings.hudchat.enable_chat then return end
 
 if RequiredScript == "lib/managers/hudmanagerpd2" then
 

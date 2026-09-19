@@ -18,7 +18,9 @@ FishTaco - [Real ammo (this mod was also in WolfHUD)](https://modworkshop.net/mo
 
 Update 2 Overhaul - [Healthbars](https://github.com/MarcusPy/PAYDAY-2-2013-Update-2-Overhaul)
 
-GageHUD - numberic suspicion (dead mod)
+GageHUD - [Numberic Suspicion](https://github.com/mrjackv/GageHud)
+
+Simple Toggleable Interactions - [Interact toggle (an older version of this i think?)](https://modworkshop.net/mod/15742)
 
 James - slider fix
 
@@ -37,3 +39,5 @@ and some more people i might've forgotten (my bad)
 ## Known bugs
 
 • Some interaction text being wrong on teammate panels
+
+• Condition icons for bots overlap with their callsign
