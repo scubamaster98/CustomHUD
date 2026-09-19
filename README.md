@@ -18,6 +18,8 @@ FishTaco - [Real ammo (this mod was also in WolfHUD)](https://modworkshop.net/mo
 
 Update 2 Overhaul - [Healthbars](https://github.com/MarcusPy/PAYDAY-2-2013-Update-2-Overhaul)
 
+Simple Toggleable Interactions - [Interact toggle (an older version of this i think?)](https://modworkshop.net/mod/15742)
+
 GageHUD - numberic suspicion (dead mod)
 
 James - slider fix
@@ -30,14 +32,12 @@ and some more people i might've forgotten (my bad)
 
 • Fix crashes
 
-• Playing with other people
-
 • Playing on versions u3-u16 and u18-u21
-
-• Add some of the stuff that is in the main branch
 
 ## Known bugs
 
 • Some interaction text being wrong on teammate panels
 
 • Down counter doesn't change for clients
+
+• Ammo counters behave weirdly on drop-in (in some versions, shows you having less ammo like in pdth, but updating the ammo sets or fixes your ammo count?)

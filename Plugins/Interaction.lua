@@ -56,7 +56,7 @@ elseif string.lower(RequiredScript) == "lib/managers/hud/hudinteraction" then
 				valign    = "center",
 				align     = "center",
 				layer     = 1,
-				color     = Color(0, 1, 0), --change to color.white?
+				color     = Color(0, 1, 0),
 				font      = tweak_data.menu.default_font,
 				font_size = 32 * (self._circle_scale or 1),
 				h         = 64,
@@ -118,4 +118,53 @@ elseif string.lower(RequiredScript) == "lib/managers/hud/hudinteraction" then
 			invalid_text:set_center_y(interact_text:center_y())
 		end
 	end
+end
+
+if string.lower(RequiredScript) == "lib/units/beings/player/states/playerstandard" then
+
+	local PlayerStandard__check_action_interact_original = PlayerStandard._check_action_interact
+
+	function PlayerStandard:_check_action_interact(t, input)
+		if CustomHUDMenu.settings.interaction.toggleinteraction then
+			if input.btn_use_item_press and self:_interacting() then
+				self:_interupt_action_interact()
+				return false
+			elseif input.btn_interact_release and self._interact_params then
+				return false
+			end
+		end
+
+		return PlayerStandard__check_action_interact_original(self, t, input)
+	end
+
+if not _PlayerStandard__check_use_item then _PlayerStandard__check_use_item = PlayerStandard._check_use_item end
+	function PlayerStandard:_check_use_item(t, input)
+		if CustomHUDMenu.settings.interaction.toggleinteraction then
+			if input.btn_use_item_press and self:is_deploying() then
+				self:_interupt_action_use_item()
+				return false
+			elseif input.btn_use_item_release then
+				return false
+			end
+		end
+
+		return _PlayerStandard__check_use_item(self, t, input)
+	end
+
+elseif string.lower(RequiredScript) == "lib/units/beings/player/states/playermaskoff" then
+
+if not _PlayerMaskOff__check_use_item then _PlayerMaskOff__check_use_item = PlayerMaskOff._check_use_item end
+	function PlayerMaskOff:_check_use_item(t, input)
+		if CustomHUDMenu.settings.interaction.toggleinteraction then
+			if input.btn_use_item_press and self._start_standard_expire_t then
+				self:_interupt_action_start_standard()
+				return false
+			elseif input.btn_use_item_release then
+				return false
+			end
+		end
+
+		return _PlayerMaskOff__check_use_item(self, t, input)
+	end
+
 end
