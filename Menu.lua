@@ -117,7 +117,7 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 	local function default_value_joininfo_settings(id)
 		return CustomHUDMenu.settings.joininfo[id]
 	end
-	
+
 	local function change_interaction_settings(id, value)
 		print("change_interaction_settings: %s / %s", tostring(id), tostring(value))
 		CustomHUDMenu.setting_changed = true
@@ -169,6 +169,7 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 				change_clbk = change_interaction_settings,
 				default_value_clbk = default_value_interaction_settings,
 				{ "enable_interaction", "toggle" },
+				{ "toggleinteraction", "toggle" },
 				{ "circle_scale", "slider", { min = 0.1, max = 1.0, step = 0.05 }},
 				{ "text_scale", "slider", { min = 0.1, max = 1.0, step = 0.05 }},
 			},
@@ -307,7 +308,7 @@ CustomHUDMenu = {
 				interaction_duration = 1, --Minimum interaction timer to show it (not used by local player)
 				weapon_icon = 1,	--Show/hide weapon icon. 0: off, 1: on, 2: selected only, 3: unselected only
 				weapon_ammo = 1,	--Show/hide weapon ammo. 0: off, 1: on, 2: selected only, 3: unselected only
-				weapon_ammo_aggregate = true,	--Aggregate weapon ammo or show magazine/total separately
+				weapon_ammo_aggregate = false,	--Aggregate weapon ammo or show magazine/total separately
 				weapon_fire_mode = 1,	--Show/hide weapon fire mode. 0: off, 1: on, 2: selected only, 3: unselected only (not used by teammates)
 				accuracy = true,	--Show weapon accuracy (not used by teammates)
 				kill_counter = true,	--Show kill counter
@@ -323,6 +324,7 @@ CustomHUDMenu = {
 
 		interaction = {
 			enable_interaction = true, 		--Enable interaction timer and text stuff
+			toggleinteraction = false,		--Toggle interaction
 			circle_scale = 0.9,					--Scale of the interaction circle
 			text_scale = 0.9,						--Scale of the interaction text
 		},

@@ -21,6 +21,8 @@ FishTaco - [Real Ammo (this mod was also in WolfHUD)](https://modworkshop.net/mo
 
 GageHUD - [Numberic Suspicion](https://github.com/mrjackv/GageHud)
 
+These people - [Interact toggle (an older version of this i think?)](https://modworkshop.net/mod/15742)
+
 James - fix for sliders not working
 
 and some more people i might've forgotten (my bad)
