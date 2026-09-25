@@ -29,12 +29,10 @@ and some more people i might've forgotten (my bad)
 
 ## Todo
 
-• Fix any remaining bugs
+• Add support for other languages
 
 • Maybe replace callsign with the infamy icon(s) (with support for Infamy 4.0 mod)
 
 ## Known bugs
 
-• Some interaction text being wrong on teammate panels
-
-• Condition icons for bots overlap with their callsign
+• None for now

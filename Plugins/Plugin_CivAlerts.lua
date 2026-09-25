@@ -21,7 +21,7 @@ function GroupAIStateBase:_upd_criminal_suspicion_progress(...)
 							obs_susp_data._subdued_civ = nil
 							obs_susp_data._alerted_civ = true
 							waypoint.bitmap:set_color(Color.white)
-							waypoint.arrow:set_color(tweak_data.hud.detected_color:with_alpha(0.75))
+							waypoint.arrow:set_color(tweak_data.hud.detected_color:with_alpha(0.55))
 						end
 					end
 				end
