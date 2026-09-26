@@ -24,7 +24,10 @@ if string.lower(RequiredScript) == "lib/managers/hud/hudassaultcorner" then
 		self._point_of_no_return = false
 	end
 
-	function HUDAssaultCorner:set_control_info(...) end
+	local set_control_info_original = HUDAssaultCorner.set_control_info
+	function HUDAssaultCorner:set_control_info(...)
+		return set_control_info_original(self, ...)
+	end
 	function HUDAssaultCorner:show_casing(...) end
 	function HUDAssaultCorner:hide_casing(...) end
 

@@ -4,7 +4,7 @@
 	"author" : "s",
 	"color" : "1 0 1",
 	"contact" : "https://github.com/scubamaster98/CustomHUD",
-	"version": "1.3",
+	"version": "1.3.1",
 	"priority": "360",
 	"updates" : [
 		{
@@ -27,7 +27,7 @@
 		{ "hook_id": "lib/managers/statisticsmanager", "script_path": "Plugins/Plugin_Accuracy.lua" },
 		{ "hook_id": "lib/managers/hudmanagerpd2", "script_path": "Plugins/Plugin_Accuracy.lua" },
 		{ "hook_id": "lib/managers/hudmanagerpd2", "script_path": "Plugins/Plugin_Downs.lua" },
-		{ "hook_id": "lib/units/beings/player/huskplayermovement", "script_path": "Plugins/Plugin_Downs.lua" },
+		{ "hook_id": "lib/network/extensions/player/huskplayermovement", "script_path": "Plugins/Plugin_Downs.lua" },
 		{ "hook_id": "lib/network/handlers/unitnetworkhandler", "script_path": "Plugins/Plugin_Downs.lua" },
 		{ "hook_id": "lib/units/enemies/cop/copdamage", "script_path": "Plugins/Plugin_KillCounter.lua" },
 		{ "hook_id": "lib/units/equipment/sentry_gun/sentrygunbase", "script_path": "Plugins/Plugin_KillCounter.lua" },
@@ -40,6 +40,7 @@
 		{ "hook_id": "lib/units/beings/player/states/playerstandard", "script_path": "Plugins/Healthbars.lua" },
 		{ "hook_id": "lib/managers/hud/hudsuspicion", "script_path": "Plugins/NumberSus.lua" },
 		{ "hook_id": "lib/managers/menumanagerdialogs", "script_path": "Plugins/JoinInfo.lua" },
+		{ "hook_id": "lib/managers/missionassetsmanager", "script_path": "Plugins/JoinInfo.lua" },
 		{ "hook_id": "lib/network/networkgame", "script_path": "Plugins/JoinInfo.lua" },
 		{ "hook_id": "lib/managers/hudmanagerpd2", "script_path": "Plugins/Interaction.lua"},
 		{ "hook_id": "lib/managers/hud/hudinteraction", "script_path": "Plugins/Interaction.lua"},

@@ -31,6 +31,16 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 
 			self:set_latency(latency)
 			self._next_latency_update_t = t + 1
+	end
+
+		local session = managers.network:session()
+		if session and managers.trade then
+			local local_peer = session:local_peer()
+			local peer_id = self._is_player and local_peer and local_peer:id() or self._peer_id
+			if peer_id then
+				local in_custody = managers.trade:is_peer_in_custody(peer_id)
+				self:call_listeners("custody", in_custody)
+			end
 		end
 	end
 
@@ -435,7 +445,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 
 	function HUDTeammateCustom:teammate_progress(enabled, tweak_data_id, timer, success)
 		if enabled then
-			self:call_listeners("interaction_start", tweak_data_id, timer)
+			self:call_listeners("interaction_start", tweak_data_id, timer, self._progress_type_index)
 		else
 			self:call_listeners("interaction_stop", success)
 		end
@@ -1023,6 +1033,8 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			w = size * 0.75,
 		})
 --thanks wolfhud
+		self._icon_size = size * 0.75
+
 		self._condition_icon = self._panel:bitmap({
 			name = "condition_icon",
 			visible = false,
@@ -1087,7 +1099,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		local x = self._panel:w() / 2
 		local y = self._panel:h() / 2
 		icon:set_image("guis/textures/pd2/hud_icons", 64, 0, 32, 32 )
-		icon:set_size(self:w(), self:h())
+		icon:set_size(self._icon_size, self._icon_size)
 		icon:set_center(x, y)
 
 		while self._voice_com_active do
@@ -1096,7 +1108,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 
 		icon:set_image("guis/textures/pd2/hud_tabs", 84, 34, 19, 19)
 		icon:set_center(x, y)
-		icon:set_size(self:w(), self:h())
+		icon:set_size(self._icon_size, self._icon_size)
 		self._animating_voice_com = false
 	end
 
@@ -1107,8 +1119,9 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			local icon, texture_rect = tweak_data.hud_icons:get_icon_data(icon_data)
 			self._condition_icon:set_image(icon, unpack(texture_rect))
 		end
-		
+
 		self._condition_icon:set_visible(visible)
+		self._icon:set_visible(not visible)
 	end
 
 	PlayerInfoComponent.PlayerStatus = PlayerInfoComponent.PlayerStatus or class(PlayerInfoComponent.Base)
@@ -1191,7 +1204,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._downs_panel = self._panel:panel({
 			h = size * 0.5,
 			w = size * 0.5,
-			visible = false,
+			visible = true,
 			layer = self._damage_indicator:layer() + 1,
 		})
 
@@ -1257,6 +1270,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._owner:register_listener("PlayerStatus", { "set_revives" }, callback(self, self, "set_revives"), false)
 		self._owner:register_listener("PlayerStatus", { "increment_downs" }, callback(self, self, "increment_downs"), false)
 		self._owner:register_listener("PlayerStatus", { "reset_downs" }, callback(self, self, "reset_downs"), false)
+		self._owner:register_listener("PlayerStatus", { "custody" }, callback(self, self, "set_in_custody"), false)
 		self._owner:register_listener("PlayerStatus", { "armor" }, callback(self, self, "set_armor"), false)
 		self._owner:register_listener("PlayerStatus", { "stamina" }, callback(self, self, "set_stamina"), false)
 		self._owner:register_listener("PlayerStatus", { "stamina_max" }, callback(self, self, "set_stamina_max"), false)
@@ -1270,6 +1284,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	function PlayerInfoComponent.PlayerStatus:destroy()
 		self._owner:unregister_listener("PlayerStatus", {
 			"health", "stored_health", "stored_health_max", "set_revives", "increment_downs", "reset_downs",
+			"custody",
 			"armor",
 			"stamina", "stamina_max",
 			"damage_taken",
@@ -1339,6 +1354,11 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 
 	function PlayerInfoComponent.PlayerStatus:reset_downs()
 		self:set_downs(0)
+	end
+
+	function PlayerInfoComponent.PlayerStatus:set_in_custody(status)
+		self._downs_panel:set_visible(not status and self._player_lives > 0)
+		self._stamina_radial:set_visible(not status and self._is_local_player)
 	end
 
 	function PlayerInfoComponent.PlayerStatus:set_armor(current, total)
@@ -1658,10 +1678,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	end
 
 	function PlayerInfoComponent.CenterPanel:_fade_in_interaction(panel)
-		coroutine.yield()
-
-		self:arrange()
-
 		if self._interaction:visible() then
 			local rate = 2
 			local alpha = self._interaction:alpha()
@@ -2501,7 +2517,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		PlayerInfoComponent.Interaction.super.destroy(self)
 	end
 
-	function PlayerInfoComponent.Interaction:arrange()
+	function PlayerInfoComponent.Interaction:_update_size()
 		local h = self._panel:h()
 		local _, _, text_w, _ = self._text:text_rect()
 		local w = math.max(text_w * 1.3, self._min_width)
@@ -2513,6 +2529,12 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			self._progress_bar_outline:set_h(self._progress_bar_bg:w() * 1.05)
 			self._progress_bar_outline:set_center(self._progress_bar_bg:center())
 
+			return true
+		end
+	end
+
+	function PlayerInfoComponent.Interaction:arrange()
+		if self:_update_size() then
 			self._owner:arrange()
 		end
 	end
@@ -2520,21 +2542,37 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	function PlayerInfoComponent.Interaction:set_min_w(w)
 		if self._min_width ~= w then
 			self._min_width = w
-			self:arrange()
+			self:_update_size()
 		end
 	end
 
-	function PlayerInfoComponent.Interaction:start(id, timer)
+	function PlayerInfoComponent.Interaction:_get_action_text(id, type_index)
+		if type_index == 2 then
+			local equipment = tweak_data.equipments[id]
+			if equipment then
+				return managers.localization:text("hud_deploying_equipment", { EQUIPMENT = managers.localization:text(equipment.text_id) })
+			end
+		elseif type_index == 3 then
+			return managers.localization:text("hud_starting_heist")
+		end
+
+		local interaction = tweak_data.interaction[id]
+		return managers.localization:text(interaction and interaction.action_text_id or "hud_action_generic")
+	end
+
+	function PlayerInfoComponent.Interaction:start(id, timer, type_index)
 		self._panel:stop()
 
-		if self._settings.interaction and self._settings.interaction_duration <= timer then
-			local action_text_id = tweak_data.interaction[id] and tweak_data.interaction[id].action_text_id or "hud_action_generic"
-			local text = action_text_id and managers.localization:text(action_text_id) or ""
+		if self._settings.interaction and (self._settings.interaction_duration or 0) <= timer then
+			local text = self:_get_action_text(id, type_index)
 
-			self:set_enabled("active", true)
+			local enabled_changed = self:set_enabled("active", true)
 			self._text:set_color(Color.white)
 			self._text:set_text(string.format("%s (%.1fs)", utf8.to_upper(text), timer))
-			self:arrange()
+			local size_changed = self:_update_size()
+			if enabled_changed or size_changed then
+				self._owner:arrange()
+			end
 			self._panel:animate(callback(self, self, "_animate"), timer)
 		end
 	end
@@ -2543,7 +2581,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		if self:visible() then
 			self._panel:stop()
 			self._text:set_color(success and Color.green or Color.red)
-			self._text:set_text(success and "DONE" or "ABORTED")
+			self._text:set_text(utf8.to_upper(managers.localization:text(success and "customHUD_hud_interaction_done" or "customHUD_hud_interaction_aborted")))
 		end
 	end
 
@@ -2596,6 +2634,7 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 	local set_mugshot_voice_original = HUDManager.set_mugshot_voice
 	local set_teammate_carry_info_original = HUDManager.set_teammate_carry_info
 	local remove_teammate_carry_info_original = HUDManager.remove_teammate_carry_info
+	local teammate_progress_original = HUDManager.teammate_progress
 
 	function HUDManager:_create_teammates_panel(hud, ...)
 		hud = hud or managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
@@ -2739,6 +2778,16 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 		end
 
 		return remove_teammate_carry_info_original(self, i, ...)
+	end
+
+	function HUDManager:teammate_progress(peer_id, type_index, ...)
+		local character_data = managers.criminals:character_data_by_peer_id(peer_id)
+		local teammate_panel = character_data and self._teammate_panels[character_data.panel_id]
+		if teammate_panel then
+			teammate_panel._progress_type_index = type_index
+		end
+
+		return teammate_progress_original(self, peer_id, type_index, ...)
 	end
 
 	function HUDManager:reset_player_hpbar()

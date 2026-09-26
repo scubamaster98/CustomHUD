@@ -1,6 +1,6 @@
 --Dynamic updates
 local menu_prefix = "customHUD_menu_"
-local localization_file = ModPath .. "Localization/menu.json"
+local localization_file = ModPath .. "Localization/english.json"
 local settings_file = SavePath .. "CustomHUD_saved_settings.json"
 
 local function deep_merge_defaults(defaults, loaded)
@@ -108,16 +108,6 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 		return CustomHUDMenu.settings.teammatepanels.teammate[id]
 	end
 
-	local function change_joininfo_settings(id, value)
-		print("change_joininfo_settings: %s / %s", tostring(id), tostring(value))
-		CustomHUDMenu.setting_changed = true
-		CustomHUDMenu.settings.joininfo[id] = value
-	end
-
-	local function default_value_joininfo_settings(id)
-		return CustomHUDMenu.settings.joininfo[id]
-	end
-
 	local function change_interaction_settings(id, value)
 		print("change_interaction_settings: %s / %s", tostring(id), tostring(value))
 		CustomHUDMenu.setting_changed = true
@@ -172,13 +162,6 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 				{ "toggleinteraction", "toggle" },
 				{ "circle_scale", "slider", { min = 0.1, max = 1.0, step = 0.05 }},
 				{ "text_scale", "slider", { min = 0.1, max = 1.0, step = 0.05 }},
-			},
-
-			joininfo = {
-				change_clbk = change_joininfo_settings,
-				default_value_clbk = default_value_joininfo_settings,
-				{ "enable_joininfo", "toggle" },
-				{ "joinsound", "multichoice", { items = { "option_off", "option_on" }}},
 			},
 
 			hudchat = {
@@ -317,16 +300,11 @@ CustomHUDMenu = {
 			},
 		},
 
-		joininfo = {
-			enable_joininfo = true, 		--Enable joininfo stuff
-			joinsound = 1,					--Join sound (uses infamy sound). 0: off, 1: on
-		},
-
 		interaction = {
 			enable_interaction = true, 		--Enable interaction timer and text stuff
 			toggleinteraction = false,		--Toggle interaction
-			circle_scale = 0.9,					--Scale of the interaction circle
-			text_scale = 0.9,						--Scale of the interaction text
+			circle_scale = 0.9,				--Scale of the interaction circle
+			text_scale = 0.9,				--Scale of the interaction text
 		},
 
 		hudchat = {

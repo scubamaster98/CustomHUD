@@ -6,7 +6,7 @@ Originally fixed and fully functional since 12/02/2024.
 
 This is the u0-u21 branch of CustomHUD. It's specifically made to work for these versions, however this isn't yet guaranteed to work on every one of those versions.
 
-Versions tested: u0-u2* (mp & solo), u17 (solo)
+Versions tested: u0-u3* (mp & solo), u17 (solo)
 
 ## Credits
 
@@ -14,15 +14,15 @@ Seven - [Original CustomHUD (and more)](https://bitbucket.org/pjal3urb/pd2-mods/
 
 WolfHUD - [some code and files](https://github.com/Kamikaze94/WolfHUD)
 
+Update 2 Overhaul - [Healthbars](https://github.com/MarcusPy/PAYDAY-2-2013-Update-2-Overhaul)
+
 FishTaco - [Real ammo (this mod was also in WolfHUD)](https://modworkshop.net/mod/15108)
 
-Update 2 Overhaul - [Healthbars](https://github.com/MarcusPy/PAYDAY-2-2013-Update-2-Overhaul)
+GageHUD - [Numberic Suspicion](https://github.com/mrjackv/GageHud)
 
 Simple Toggleable Interactions - [Interact toggle (an older version of this i think?)](https://modworkshop.net/mod/15742)
 
-GageHUD - numberic suspicion (dead mod)
-
-James - slider fix
+James - fix for sliders not working
 
 and some more people i might've forgotten (my bad)
 
@@ -35,9 +35,5 @@ and some more people i might've forgotten (my bad)
 • Playing on versions u3-u16 and u18-u21
 
 ## Known bugs
-
-• Some interaction text being wrong on teammate panels
-
-• Down counter doesn't change for clients
 
 • Ammo counters behave weirdly on drop-in (in some versions, shows you having less ammo like in pdth, but updating the ammo sets or fixes your ammo count?)

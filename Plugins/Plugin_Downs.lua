@@ -1,4 +1,4 @@
-if RequiredScript == "lib/units/beings/player/huskplayermovement" then
+if RequiredScript == "lib/network/extensions/player/huskplayermovement" then --not changed until u35
 
 	local _start_bleedout_original = HuskPlayerMovement._start_bleedout
 	local _start_dead_original = HuskPlayerMovement._start_dead
