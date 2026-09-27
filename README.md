@@ -4,7 +4,7 @@ CustomHUD is a HUD mod for old versions of PAYDAY 2. (primarily for u37.1)
 
 Originally fixed and fully functional since 12/02/2024.
 
-This is the u22-u29 branch of CustomHUD. It's specifically made to work for these versions, however this isn't yet guaranteed to work on every one of those versions.
+This is the u22-u34 branch of CustomHUD. It's specifically made to work for these versions, however this isn't yet guaranteed to work on every one of those versions.
 
 Versions tested: u28 (solo)
 
@@ -14,15 +14,15 @@ Seven - [Original CustomHUD (and more)](https://bitbucket.org/pjal3urb/pd2-mods/
 
 WolfHUD - [some code](https://github.com/Kamikaze94/WolfHUD)
 
-FishTaco - [Real ammo (this mod was also in WolfHUD)](https://modworkshop.net/mod/15108)
-
 Update 2 Overhaul - [Healthbars](https://github.com/MarcusPy/PAYDAY-2-2013-Update-2-Overhaul)
+
+FishTaco - [Real ammo (this mod was also in WolfHUD)](https://modworkshop.net/mod/15108)
 
 GageHUD - [Numberic Suspicion](https://github.com/mrjackv/GageHud)
 
 Simple Toggleable Interactions - [Interact toggle (an older version of this i think?)](https://modworkshop.net/mod/15742)
 
-James - slider fix
+James - fix for sliders not working
 
 and some more people i might've forgotten (my bad)
 
@@ -34,10 +34,8 @@ and some more people i might've forgotten (my bad)
 
 • Playing with other people
 
-• Playing on versions U22-U27 and U29
+• Playing on versions u22-u27 and u29-u34
 
 ## Known bugs
 
-• Some interaction text being wrong on teammate panels
-
-• Condition icons for bots overlap with their callsign
+• None for now

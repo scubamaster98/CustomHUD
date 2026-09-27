@@ -3,8 +3,6 @@
 	"customHUD_menu_main_desc" : "Most settings need a level restart to apply",
 	"customHUD_menu_enable_teammatepanels_title" : "Enable Custom Teammate Panels",
 	"customHUD_menu_enable_teammatepanels_desc" : "Enable the custom teammate panels",
-	"customHUD_menu_enable_chat_title" : "Enable Custom Chat Box",
-	"customHUD_menu_enable_chat_desc" : "Enable the custom chat box",
 	"customHUD_menu_hudchat_title" : "Custom Chat Box Settings",
 	"customHUD_menu_hudchat_desc" : "Settings for the custom chat box",
 	"customHUD_menu_teammatepanels_title" : "Panel Settings",
@@ -81,6 +79,8 @@
 	"customHUD_menu_joinsound_title" : "Join Sound",
 	"customHUD_menu_joinsound_desc" : "Join sound (uses infamy sound)",
 
+	"customHUD_menu_enable_chat_title" : "Enable Custom Chat Box",
+	"customHUD_menu_enable_chat_desc" : "Enable the custom chat box",
 	"customHUD_menu_line_height_title" : "Line height",
 	"customHUD_menu_line_height_desc" : "Size of each line in chat (and hence the text size)",
 	"customHUD_menu_width_title" : "Box width",
@@ -101,5 +101,8 @@
 	"customHUD_menu_option_off" : "Off",
 	"customHUD_menu_option_on" : "On",
 	"customHUD_menu_option_selected" : "Selected only",
-	"customHUD_menu_option_unselected" : "Unselected only"
+	"customHUD_menu_option_unselected" : "Unselected only",
+
+	"customHUD_hud_interaction_aborted" : "ABORTED",
+	"customHUD_hud_interaction_done" : "DONE"
 }
