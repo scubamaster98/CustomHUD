@@ -1,12 +1,12 @@
 {
 	"name": "CustomHUD",
 	"description": "A HUD Mod.",
-	"author" : "s",
-	"color" : "1 0 1",
-	"contact" : "https://github.com/scubamaster98/CustomHUD",
-	"version": "1.8.5",
+	"author": "s",
+	"color": "1 0 1",
+	"contact": "https://github.com/scubamaster98/CustomHUD",
+	"version": "1.8.6",
 	"priority": "360",
-	"updates" : [
+	"updates": [
 		{
 			"identifier" : "cushudmain",
 			"host": {
@@ -50,8 +50,8 @@
 	],
 
 	"persist_scripts" : [
-				{ "global" : "Unlimited Ink", "script_path" : "Plugins/infpaint.lua" }
-		],
+		{ "global" : "Unlimited Ink", "script_path" : "Plugins/infpaint.lua" }
+	],
 
 	"keybinds": [
 		{
