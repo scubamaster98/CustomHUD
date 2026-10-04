@@ -103,6 +103,15 @@
 	"customHUD_menu_option_selected" : "Selected only",
 	"customHUD_menu_option_unselected" : "Unselected only",
 
+	"customHUD_hud_advassault_phase" : "Assault Phase:",
+	"customHUD_hud_advassault_spawns" : "Spawns Left:",
+	"customHUD_hud_advassault_time" : "Time Left:",
+	"customHUD_hud_advassault_phase_anticipation" : "Anticipation",
+	"customHUD_hud_advassault_phase_build" : "Build",
+	"customHUD_hud_advassault_phase_sustain" : "Sustain",
+	"customHUD_hud_advassault_phase_fade" : "Fade",
+	"customHUD_hud_advassault_timeoverdue" : "OVERDUE",
+	"customHUD_hud_advassault_inf" : "Endless Police Assault In Progress",
 	"customHUD_hud_interaction_aborted" : "ABORTED",
 	"customHUD_hud_interaction_done" : "DONE"
 }

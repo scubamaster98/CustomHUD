@@ -8,6 +8,10 @@ This is the u0-u21 branch of CustomHUD. It's specifically made to work for these
 
 Versions tested: u0-u3* (mp & solo), u17 (solo)
 
+## Other projects
+
+• [System Messages](https://github.com/scubamaster98/System-Messages)
+
 ## Credits
 
 Seven - [Original CustomHUD (and more)](https://bitbucket.org/pjal3urb/pd2-mods/src/master/)
