@@ -1,13 +1,13 @@
 [
     {
         "ident" : "cushudmain",
-        "version" : "1.8.5",
+        "version" : "1.8.6",
         "patchnotes_url" : "https://github.com/scubamaster98/CustomHUD/commits/main/",
         "download_url" : "https://github.com/scubamaster98/CustomHUD/archive/refs/heads/main.zip"
     },
     {
         "ident" : "cushudcompat",
-        "version" : "1.2.1",
+        "version" : "1.3",
         "patchnotes_url" : "https://github.com/scubamaster98/CustomHUD/commits/compat/",
         "download_url" : "https://github.com/scubamaster98/CustomHUD/archive/refs/heads/compat.zip"
     },
