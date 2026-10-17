@@ -1238,25 +1238,16 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			layer = self._damage_indicator:layer() + 1,
 		})
 
-		local downs_bg = self._downs_panel:bitmap({
-			name = "amount_bg",
-			h = self._downs_panel:h(),
-			w = self._downs_panel:w(),
-			texture = "guis/textures/pd2/equip_count",
-			color = Color.white,
-			blend_mode = "normal",
-		})
-
 		self._downs_counter = self._downs_panel:text({
 			name = "downs",
-			color = Color.black,
+			color = Color.black, --TODO:
 			align = "center",
 			vertical = "center",
-			h = downs_bg:h(),
-			w = downs_bg:w(),
-			font_size = downs_bg:h() * 0.65,
-			font = "fonts/font_medium_mf",
-			layer = downs_bg:layer() + 1,
+			h = self._downs_panel:h(),
+			w = self._downs_panel:w(),
+			font_size = self._downs_panel:h() * 0.7,
+			font = "fonts/font_medium_mf", --TODO: i dont really like this font
+			layer = 1,
 			blend_mode = "normal",
 		})
 --ty claude
@@ -1377,7 +1368,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			self._downs = amount
 			self._downs_panel:set_visible(true)
 			self._downs_counter:set_text(tostring(self._downs))
-			self._downs_counter:set_color((self._downs < self._max_downs - 1) and  Color.black or Color.red)
+			self._downs_counter:set_color((self._player_lives <= 1) and Color.white or Color.red)
 		end
 	end
 
@@ -1387,10 +1378,10 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			self._downs_panel:set_visible(self._player_lives > 0)
 			self._downs_counter:set_text(tostring(self._player_lives - 1))
 
-			self._downs_counter:set_color((self._player_lives <= 1) and Color.red or Color.black)
+			self._downs_counter:set_color((self._player_lives <= 1) and Color.red or Color.white)
 
-				self._downs_counter:stop()
-				self._downs_counter:set_font_size(self._downs_panel:h() * 0.65)
+			self._downs_counter:stop()
+			self._downs_counter:set_font_size(self._downs_panel:h() * 0.7)
 		end
 	end
 
@@ -1775,7 +1766,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._weapons = {}
 		self._aggregate_ammo = {}
 		self._settings = settings
-		self._weapon_count = CustomHUDMenu.settings.teammatepanels.MAX_WEAPONS
+		self._weapon_count = 2 --MAX_WEAPONS was here
 		self._event_callbacks = {
 			weapon_fire_mode = "set_fire_mode",
 			weapon = "set_weapon",

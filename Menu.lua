@@ -165,11 +165,25 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 				},
 			},
 
+			hudchat = {
+				change_clbk = change_hudchat_settings,
+				default_value_clbk = default_value_hudchat_settings,
+				{ "enable_chat", "toggle" },
+				{ "use_mouse", "toggle" },
+				{ "line_height", "slider", { min = 5, max = 25, step = 1, round = true }},
+				{ "width", "slider", { min = 100, max = 800, step = 10, round = true }},
+				{ "height", "slider", { min = 100, max = 800, step = 10, round = true }},
+				{ "x_offset", "slider", { min = 0, max = 100, step = 1 }},
+				{ "y_offset", "slider", { min = 0, max = 100, step = 1 }},
+				{ "fade_delay", "slider", { min = 1, max = 25, step = 1 }},
+			},
+
 			interaction_settings = {
 				change_clbk = change_interaction_settings,
 				default_value_clbk = default_value_interaction_settings,
 				{ "enable_interaction", "toggle" },
 				{ "toggleinteraction", "toggle" },
+				{ "divider", "divider", { size = 12 }},
 				{ "circle_scale", "slider", { min = 0.1, max = 1.0, step = 0.05 }},
 				{ "text_scale", "slider", { min = 0.1, max = 1.0, step = 0.05 }},
 			},
@@ -179,19 +193,6 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 				default_value_clbk = default_value_joininfo_settings,
 				{ "enable_joininfo", "toggle" },
 				{ "joinsound", "multichoice", { items = { "option_off", "option_infamy", "option_all" }}},
-			},
-
-			hudchat = {
-				change_clbk = change_hudchat_settings,
-				default_value_clbk = default_value_hudchat_settings,
-				{ "enable_chat", "toggle" },
-				{ "line_height", "slider", { min = 5, max = 25, step = 1, round = true }},
-				{ "width", "slider", { min = 100, max = 800, step = 10, round = true }},
-				{ "height", "slider", { min = 100, max = 800, step = 10, round = true }},
-				{ "x_offset", "slider", { min = 0, max = 100, step = 1 }},
-				{ "y_offset", "slider", { min = 0, max = 100, step = 1 }},
-				{ "fade_delay", "slider", { min = 1, max = 25, step = 1 }},
-				{ "use_mouse", "toggle" },
 			}
 		},
 	}
@@ -250,7 +251,7 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 	end
 end)
 
-Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInit_CustomHUD_localization", function(self)
+Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInit_CustomHUD_Localization", function(self)
 	LocalizationManager:load_localization_file(localization_file)
 end)
 
@@ -259,7 +260,6 @@ CustomHUDMenu = {
 	settings = {
 
 		teammatepanels = {
-			MAX_WEAPONS = 2,	--Number of carried guns (don't change this)
 			enable_teammatepanels = true,
 
 			player = {
@@ -317,6 +317,17 @@ CustomHUDMenu = {
 			},
 		},
 
+		hudchat = {
+			enable_chat = true,
+			use_mouse = true,		--For scrolling and stuff. Experimental
+			line_height = 14,			--Size of each line in chat (and hence the text size)
+			width = 420,				--Width of the chat window
+			height = 120,				--Height of the chat window
+			x_offset = 100,			--% offset from left of HUD panel
+			y_offset = 100,				--% offset from top of HUD panel
+			fade_delay = 7,			--Fade delay for chat window after inactivity
+		},
+
 		joininfo = {
 			enable_joininfo = true, 		--Enable joininfo stuff
 			joinsound = 1,					--Join sound (uses infamy sound). 0: off, 1: only players with infamy, 2: all players
@@ -327,17 +338,6 @@ CustomHUDMenu = {
 			toggleinteraction = false,		--Toggle interaction
 			circle_scale = 0.9,				--Scale of the interaction circle
 			text_scale = 0.9,				--Scale of the interaction text
-		},
-
-		hudchat = {
-			enable_chat = true,
-			line_height = 14,			--Size of each line in chat (and hence the text size)
-			width = 420,				--Width of the chat window
-			height = 120,				--Height of the chat window
-			use_mouse = true,		--For scrolling and stuff. Experimental
-			x_offset = 100,			--% offset from left of HUD panel
-			y_offset = 100,				--% offset from top of HUD panel
-			fade_delay = 7,			--Fade delay for chat window after inactivity
 		},
 	},
 
