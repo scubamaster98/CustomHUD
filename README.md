@@ -30,6 +30,10 @@ and some more people i might've forgotten (my bad)
 
 • Add support for other languages
 
+• Adding client support for advassault or make it sync
+
+• Add detection risk counter in place of down counter in stealth
+
 • Add more customization
 
 • Maybe replace callsign with the infamy icon(s) (with support for Infamy 4.0 mod)

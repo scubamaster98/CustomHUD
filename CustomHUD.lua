@@ -1246,7 +1246,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			h = self._downs_panel:h(),
 			w = self._downs_panel:w(),
 			font_size = self._downs_panel:h() * 0.7,
-			font = "fonts/font_medium_mf", --TODO: i dont really like this font
+			font = "fonts/font_medium_mf", --TODO: this needs a shadow
 			layer = 1,
 			blend_mode = "normal",
 		})
@@ -1292,7 +1292,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._stored_health = 0
 		self._stored_health_max = 0
 		self._reviver_count = 0
-		self._max_downs = Global.game_settings.difficulty == "sm_wish" and 2 or tweak_data.player.damage.LIVES_INIT
+		self._max_downs = tweak_data.player.damage.LIVES_INIT --bye bye od check
 		self._downs = 0
 		self._player_max_lives = self._max_downs + managers.player:upgrade_value("player", "additional_lives", 0)
 		self._player_lives = self._player_max_lives
@@ -1338,6 +1338,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	function PlayerInfoComponent.PlayerStatus:set_is_local_player(state)
 		if PlayerInfoComponent.PlayerStatus.super.set_is_local_player(self, state) then
 			self._stamina_radial:set_visible(self._is_local_player)
+			self:_update_downs_text()
 		end
 	end
 
@@ -1366,10 +1367,17 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	function PlayerInfoComponent.PlayerStatus:set_downs(amount)
 		if self._downs ~= amount then
 			self._downs = amount
-			self._downs_panel:set_visible(true)
-			self._downs_counter:set_text(tostring(self._downs))
-			self._downs_counter:set_color((self._player_lives <= 1) and Color.white or Color.red)
+			self:_update_downs_text()
 		end
+	end
+
+	function PlayerInfoComponent.PlayerStatus:_update_downs_text()
+		if self._is_local_player then return end
+
+		self._extra_lives = math.max(self._extra_lives or 0, self._downs - (self._max_downs - 1))
+		self._downs_panel:set_visible(true)
+		self._downs_counter:set_text(tostring(math.max(self._max_downs - 1 + self._extra_lives - self._downs, 0)))
+		self._downs_counter:set_color(self._downs >= self._max_downs - 1 + self._extra_lives and Color.red or Color.white)
 	end
 
 	function PlayerInfoComponent.PlayerStatus:set_revives(value)
