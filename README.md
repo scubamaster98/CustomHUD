@@ -36,7 +36,7 @@ and some more people i might've forgotten (my bad)
 
 • Fix crashes
 
-• Playing on versions u3-u16 and u18-u21
+• Playing on versions u4-u16 and u18-u21
 
 ## Known bugs
 

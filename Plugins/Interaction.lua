@@ -72,12 +72,12 @@ elseif string.lower(RequiredScript) == "lib/managers/hud/hudinteraction" then
 		return val
 	end
 
-	function HUDInteraction:hide_interaction_bar(complete, ...)		
+	function HUDInteraction:hide_interaction_bar(complete, ...)
 		if self._interact_circle_locked then
 			self._interact_circle_locked:remove()
 			self._interact_circle_locked = nil
 		end
-		
+
 		if self._interact_time then
 			self._interact_time:set_text("")
 			self._interact_time:set_visible(false)

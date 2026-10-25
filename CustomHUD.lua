@@ -1208,25 +1208,16 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			layer = self._damage_indicator:layer() + 1,
 		})
 
-		local downs_bg = self._downs_panel:bitmap({
-			name = "amount_bg",
-			h = self._downs_panel:h(),
-			w = self._downs_panel:w(),
-			texture = "guis/textures/pd2/equip_count",
-			color = Color.white,
-			blend_mode = "normal",
-		})
-
 		self._downs_counter = self._downs_panel:text({
 			name = "downs",
-			color = Color.black,
+			color = Color.black, --TODO:
 			align = "center",
 			vertical = "center",
-			h = downs_bg:h(),
-			w = downs_bg:w(),
-			font_size = downs_bg:h() * 0.65,
-			font = "fonts/font_medium_mf",
-			layer = downs_bg:layer() + 1,
+			h = self._downs_panel:h(),
+			w = self._downs_panel:w(),
+			font_size = self._downs_panel:h() * 0.7,
+			font = "fonts/font_medium_mf", --TODO: this needs a shadow
+			layer = 1,
 			blend_mode = "normal",
 		})
 --ty claude
@@ -1259,7 +1250,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._stored_health = 0
 		self._stored_health_max = 0
 		self._reviver_count = 0
-		self._max_downs = Global.game_settings.difficulty == "sm_wish" and 2 or tweak_data.player.damage.LIVES_INIT
+		self._max_downs = tweak_data.player.damage.LIVES_INIT --od will never exist on these versions anyway
 		self._downs = 0
 		self._player_max_lives = self._max_downs + managers.player:upgrade_value("player", "additional_lives", 0)
 		self._player_lives = self._player_max_lives
@@ -1303,6 +1294,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	function PlayerInfoComponent.PlayerStatus:set_is_local_player(state)
 		if PlayerInfoComponent.PlayerStatus.super.set_is_local_player(self, state) then
 			self._stamina_radial:set_visible(self._is_local_player)
+			self:_update_downs_text()
 		end
 	end
 
@@ -1331,10 +1323,17 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 	function PlayerInfoComponent.PlayerStatus:set_downs(amount)
 		if self._downs ~= amount then
 			self._downs = amount
-			self._downs_panel:set_visible(true)
-			self._downs_counter:set_text(tostring(self._downs))
-			self._downs_counter:set_color((self._downs < self._max_downs - 1) and  Color.black or Color.red)
+			self:_update_downs_text()
 		end
+	end
+
+	function PlayerInfoComponent.PlayerStatus:_update_downs_text()
+		if self._is_local_player then return end
+
+		self._extra_lives = math.max(self._extra_lives or 0, self._downs - (self._max_downs - 1))
+		self._downs_panel:set_visible(true)
+		self._downs_counter:set_text(tostring(math.max(self._max_downs - 1 + self._extra_lives - self._downs, 0)))
+		self._downs_counter:set_color(self._downs >= self._max_downs - 1 + self._extra_lives and Color.red or Color.white)
 	end
 
 	function PlayerInfoComponent.PlayerStatus:set_revives(value)
@@ -1342,9 +1341,10 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			self._player_lives = value
 			self._downs_panel:set_visible(self._player_lives > 0)
 			self._downs_counter:set_text(tostring(self._player_lives - 1))
-			self._downs_counter:set_color((self._player_lives <= 1) and Color.red or Color.black)
+			self._downs_counter:set_color((self._player_lives <= 1) and Color.red or Color.white)
+
 			self._downs_counter:stop()
-			self._downs_counter:set_font_size(self._downs_panel:h() * 0.65)
+			self._downs_counter:set_font_size(self._downs_panel:h() * 0.7)
 		end
 	end
 
@@ -1723,7 +1723,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._weapons = {}
 		self._aggregate_ammo = {}
 		self._settings = settings
-		self._weapon_count = CustomHUDMenu.settings.teammatepanels.MAX_WEAPONS
+		self._weapon_count = 2 --MAX_WEAPONS was here
 		self._event_callbacks = {
 			weapon_fire_mode = "set_fire_mode",
 			weapon = "set_weapon",

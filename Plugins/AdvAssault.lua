@@ -2,7 +2,7 @@ if string.lower(RequiredScript) == "lib/managers/hud/hudassaultcorner" then
 	local _start_assault_original = HUDAssaultCorner._start_assault
 
 	function HUDAssaultCorner:_start_assault(text_list, ...)
-		if Network:is_server() then --dont remove, it will show blank banner if client
+		if Network:is_server() then
 			for i, string_id in ipairs(text_list) do
 				if string_id == "hud_assault_assault" then
 					text_list[i] = "hud_adv_assault"
@@ -63,7 +63,7 @@ elseif string.lower(RequiredScript) == "lib/managers/localizationmanager" then
 					time_left = time_left + tweak.fade_duration
 				end
 				if time_left < 0 then
-					time_left = self:text("customHUD_hud_advassault_timeoverdue")
+					time_left = self:text("customHUD_hud_advassault_time_overdue")
 				else
 					time_left = self:text("customHUD_hud_advassault_time") .. "  " .. string.format("%.2f", time_left)
 				end

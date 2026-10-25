@@ -4,7 +4,7 @@ if string.lower(RequiredScript) == "lib/managers/menumanagerdialogs" then
 	local update_person_joining_original = MenuManager.update_person_joining
 	local close_person_joining_original  = MenuManager.close_person_joining
 
-	function MenuManager:show_person_joining( id, nick, ... )
+	function MenuManager:show_person_joining(id, nick, ...)
 		self.peer_join_start_t = self.peer_join_start_t or {}
 		self.peer_join_start_t[id] = os.clock()
 
@@ -16,7 +16,7 @@ if string.lower(RequiredScript) == "lib/managers/menumanagerdialogs" then
 		return show_person_joining_original(self, id, nick, ...)
 	end
 
-	function MenuManager:update_person_joining( id, progress_percentage, ... )
+	function MenuManager:update_person_joining(id, progress_percentage, ...)
 		local result = update_person_joining_original(self, id, progress_percentage, ...)
 		if self.peer_join_start_t and self.peer_join_start_t[id] and progress_percentage > 0 then
 			local t = os.clock() - self.peer_join_start_t[id]
