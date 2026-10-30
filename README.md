@@ -28,9 +28,7 @@ and some more people i might've forgotten (my bad)
 
 ## Todo
 
-• Add support for other languages
-
-• Adding client support for advassault or make it sync
+• Add client support for advassault or make it sync
 
 • Add detection risk counter in place of down counter in stealth
 
@@ -38,6 +36,6 @@ and some more people i might've forgotten (my bad)
 
 • Maybe replace callsign with the infamy icon(s) (with support for Infamy 4.0 mod)
 
-## Known bugs
+## Known bugs/issues
 
-• None for now
+• Nine lives doesn't sync for clients, very hard or impossible to fix, it should just keep showing 0 if someone has it on their last 2 downs

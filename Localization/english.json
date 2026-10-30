@@ -1,6 +1,6 @@
 {
 	"customHUD_menu_main_title" : "CustomHUD",
-	"customHUD_menu_main_desc" : "Most settings need a level restart to apply",
+	"customHUD_menu_main_desc" : "Configure CustomHUD",
 	"customHUD_menu_enable_teammatepanels_title" : "Enable Custom Teammate Panels",
 	"customHUD_menu_enable_teammatepanels_desc" : "Enable the custom teammate panels",
 	"customHUD_menu_hudchat_title" : "Custom Chat Box Settings",
