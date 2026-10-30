@@ -78,6 +78,12 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 		end
 	end
 
+	local function refresh_teammatepanels(category)
+		if managers.hud and managers.hud.change_custom_teammatepanel_settings then
+			managers.hud:change_custom_teammatepanel_settings(category)
+		end
+	end
+
 	local function change_teammatepanel_settings(id, value)
 		print("change_teammatepanel_settings: %s / %s", tostring(id), tostring(value))
 		CustomHUDMenu.setting_changed = true
@@ -92,6 +98,7 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 		print("change_teammatepanel_settings_player: %s / %s", tostring(id), tostring(value))
 		CustomHUDMenu.setting_changed = true
 		CustomHUDMenu.settings.teammatepanels.player[id] = value
+		refresh_teammatepanels("player")
 	end
 
 	local function default_value_teammatepanel_settings_player(id)
@@ -102,6 +109,7 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 		print("change_teammatepanel_settings_teammate: %s / %s", tostring(id), tostring(value))
 		CustomHUDMenu.setting_changed = true
 		CustomHUDMenu.settings.teammatepanels.teammate[id] = value
+		refresh_teammatepanels("teammate")
 	end
 
 	local function default_value_teammatepanel_settings_teammate(id)

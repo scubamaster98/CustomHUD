@@ -6,7 +6,7 @@ Originally fixed and fully functional since 12/02/2024.
 
 This is the u0-u21 branch of CustomHUD. It's specifically made to work for these versions, however this isn't yet guaranteed to work on every one of those versions.
 
-Versions tested: u0-u3* (mp & solo), u17 (solo)
+Versions tested: u0-u4, u14, u17 (solo)
 
 ## Other projects
 
@@ -32,12 +32,12 @@ and some more people i might've forgotten (my bad)
 
 ## Todo
 
-• Fix any remaining bugs
+• Playing on versions that i haven't tested yet
 
-• Fix crashes
+• Add client support for advassault or make it sync
 
-• Playing on versions u4-u16 and u18-u21
+## Known bugs/issues
 
-## Known bugs
+• Ammo counters behave weirdly on drop-in (shows you having less ammo like in pdth, but updating the ammo sets or fixes your ammo count?)
 
-• Ammo counters behave weirdly on drop-in (in some versions, shows you having less ammo like in pdth, but updating the ammo sets or fixes your ammo count?)
+• Nine lives doesn't sync for clients, very hard or impossible to fix, it should just keep showing 0 if someone has it on their last 2 downs
