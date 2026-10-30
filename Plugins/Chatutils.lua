@@ -1,22 +1,12 @@
 Chatutils = Chatutils or {}
 Chatutils.LIMIT = 255
 
-local ID_INSERT = Idstring("insert")
-local ID_V = Idstring("v")
-local ID_A = Idstring("a")
-local ID_C = Idstring("c")
-
-local function down(name)
-	local kb = Input:keyboard()
-	return kb:down(Idstring(name))
-end
-
 function Chatutils.ctrl()
-	return down("left ctrl") or down("right ctrl")
+	return Input:keyboard():down(Idstring("left ctrl")) or Input:keyboard():down(Idstring("right ctrl"))
 end
 
 function Chatutils.alt()
-	return down("left alt") or down("right alt")
+	return Input:keyboard():down(Idstring("left alt")) or Input:keyboard():down(Idstring("right alt"))
 end
 
 function Chatutils.shortcut_down()
@@ -39,10 +29,6 @@ function Chatutils.get_clipboard()
 	return nil
 end
 
-local function input_field(gui)
-	return gui._input_text or (gui._input_panel and gui._input_panel:child("input_text"))
-end
-
 function Chatutils.room(text)
 	local s, e = text:selection()
 	return Chatutils.LIMIT - (utf8.len(text:text()) - math.abs(e - s))
@@ -58,7 +44,7 @@ function Chatutils.filter_text(gui, s)
 	if Chatutils.shortcut_down() and (s == "v" or s == "V" or s == "a" or s == "A" or s == "c" or s == "C") then
 		return true
 	end
-	local text = input_field(gui)
+	local text = gui._input_text or (gui._input_panel and gui._input_panel:child("input_text"))
 	return text ~= nil and Chatutils.room(text) < utf8.len(s)
 end
 
@@ -93,9 +79,9 @@ function Chatutils.handle_key(gui, k)
 	if gui._chatutils_builtin then
 		return false
 	end
-	local is_paste = k == ID_INSERT or (k == ID_V and Chatutils.shortcut_down())
-	local is_select_all = k == ID_A and Chatutils.shortcut_down()
-	local is_copy = k == ID_C and Chatutils.shortcut_down()
+	local is_paste = k == Idstring("insert") or (k == Idstring("v") and Chatutils.shortcut_down())
+	local is_select_all = k == Idstring("a") and Chatutils.shortcut_down()
+	local is_copy = k == Idstring("c") and Chatutils.shortcut_down()
 	if not is_paste and not is_select_all and not is_copy then
 		return false
 	end

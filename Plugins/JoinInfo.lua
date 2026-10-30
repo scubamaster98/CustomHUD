@@ -4,7 +4,7 @@ if string.lower(RequiredScript) == "lib/managers/menumanagerdialogs" then
 	local update_person_joining_original = MenuManager.update_person_joining
 	local close_person_joining_original  = MenuManager.close_person_joining
 
-	function MenuManager:show_person_joining( id, nick, ... )
+	function MenuManager:show_person_joining(id, nick, ...)
 		if not (CustomHUDMenu and CustomHUDMenu.settings.joininfo.enable_joininfo) then
 			return show_person_joining_original(self, id, nick, ...)
 		end
@@ -25,7 +25,7 @@ if string.lower(RequiredScript) == "lib/managers/menumanagerdialogs" then
 		return show_person_joining_original(self, id, nick, ...)
 	end
 
-	function MenuManager:update_person_joining( id, progress_percentage, ... )
+	function MenuManager:update_person_joining(id, progress_percentage, ...)
 		local result = update_person_joining_original(self, id, progress_percentage, ...)
 
 		if CustomHUDMenu and CustomHUDMenu.settings.joininfo.enable_joininfo

@@ -28,14 +28,10 @@ and some more people i might've forgotten (my bad)
 
 ## Todo
 
-• Fix any remaining bugs
+• Playing on versions that i haven't tested yet
 
-• Fix crashes
+• Add client support for advassault or make it sync
 
-• Playing with other people
+## Known bugs/issues
 
-• Playing on versions u22-u27 and u29-u34
-
-## Known bugs
-
-• None for now
+• Nine lives doesn't sync for clients, very hard or impossible to fix, it should just keep showing 0 if someone has it on their last 2 downs

@@ -4,11 +4,11 @@
 	"author": "s",
 	"color": "1 0 1",
 	"contact": "https://github.com/scubamaster98/CustomHUD",
-	"version": "1.3.2",
+	"version": "1.4",
 	"priority": "360",
 	"updates": [
 		{
-			"identifier" : "cushud1929",
+			"identifier" : "cushud2014",
 			"host": {
 				"meta": "https://raw.githubusercontent.com/scubamaster98/CustomHUD/meta/meta.json"
 			}
@@ -38,7 +38,7 @@
 		{ "hook_id": "lib/managers/localizationmanager", "script_path": "Plugins/AdvAssault.lua" },
 		{ "hook_id": "lib/managers/hudmanager", "script_path": "Plugins/Healthbars.lua" },
 		{ "hook_id": "lib/units/beings/player/states/playerstandard", "script_path": "Plugins/Healthbars.lua" },
-		{ "hook_id": "lib/managers/hud/hudsuspicion", "script_path": "Plugins/NumberSus.lua" },
+		{ "hook_id": "lib/managers/hud/hudsuspicion", "script_path": "Plugins/NumbericSuspicion.lua" },
 		{ "hook_id": "lib/managers/menumanagerdialogs", "script_path": "Plugins/JoinInfo.lua" },
 		{ "hook_id": "lib/managers/hudmanagerpd2", "script_path": "Plugins/Interaction.lua"},
 		{ "hook_id": "lib/managers/hud/hudinteraction", "script_path": "Plugins/Interaction.lua"},

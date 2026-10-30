@@ -68,7 +68,7 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 		})
 		self._input_panel:set_bottom(self._panel:h())
 
-		local bg = self._input_panel:rect({
+		self._input_panel:rect({
 			alpha = 0.25,
 			color = Color.black,
 			layer = -10,
@@ -113,15 +113,15 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 	end
 
 	function HUDChat:_create_output_panel()
-		self._output_panel = ScrollablePanelNew:new(self._panel, { 
+		self._output_panel = ScrollablePanelNew:new(self._panel, {
 			name = "output_panel",
 			w = self._settings.width,
 			h = self._settings.height - self._settings.line_height,
 		})
 		self._output_panel:set_content_size(self._panel:w() - ScrollablePanelNew.SCROLL_PANEL_WIDTH, 0)
 
-		local bg = self._output_panel:view_panel():gradient({
-			gradient_points = { 0, Color.white:with_alpha(0.3), 0.3, Color.white:with_alpha(0.1), 0.5, Color.white:with_alpha(0.2) , 0.7, Color.white:with_alpha(0.1), 1, Color.white:with_alpha(0.3) },
+		self._output_panel:view_panel():gradient({
+			gradient_points = { 0, Color.white:with_alpha(0.3), 0.3, Color.white:with_alpha(0.1), 0.5, Color.white:with_alpha(0.2), 0.7, Color.white:with_alpha(0.1), 1, Color.white:with_alpha(0.3) },
 			layer = -10,
 			valign = "grow",
 			halign = "grow",
@@ -210,7 +210,7 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 
 	function HUDChat:receive_message(name, message, color, icon)
 		local msg_panel_name = "msg_" .. self._msg_index
-		local msg = { index = self._msg_index, panel_name = msg_panel_name, name = name, message = message, color = color, icon = icon }
+		local msg = { panel_name = msg_panel_name, name = name, message = message, color = color, icon = icon }
 		self._msg_index = self._msg_index + 1
 		table.insert(self._messages, msg)
 
@@ -232,7 +232,7 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 			h = self._settings.line_height,
 			w = content_panel:w(),
 		})
-		local bg = msg_panel:rect({
+		msg_panel:rect({
 			alpha = 0.25,
 			color = color,
 			layer = -1,
@@ -288,7 +288,6 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 		end
 
 		self._msg_offset = 0
-		self._msg_index = 0
 
 		for _, msg in ipairs(self._messages) do
 			self:_add_message(msg)
@@ -333,7 +332,6 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 		while self._key_pressed == k do
 			local s, e = self._input_text:selection()
 			local n = utf8.len(self._input_text:text())
-			local d = math.abs(e - s)
 
 			if k == Idstring("backspace") then
 				if s == e and s > 0 then
@@ -500,27 +498,6 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 		end
 	end
 
-	function HUDChat:set_layer(layer)
-		self._panel:set_layer(layer)
-	end
-
-	function HUDChat:set_channel_id(channel_id)
-		managers.chat:unregister_receiver(self._channel_id, self)
-		self._channel_id = channel_id
-		managers.chat:register_receiver(self._channel_id, self)
-	end
-
-	function HUDChat:input_focus()
-		return self._focus
-	end
-
-	function HUDChat:set_skip_first(skip_first)
-		self._skip_first = skip_first
-	end
-
-	function HUDChat:send_message(name, message)
-	end
-
 	function HUDChat:remove()
 		self._hud_panel:remove(self._panel)
 		managers.chat:unregister_receiver(self._channel_id, self)
@@ -672,8 +649,6 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 	ScrollablePanelNew.SCROLL_BAR_WIDTH = 5
 	ScrollablePanelNew.SCROLL_SPEED = 28
 	function ScrollablePanelNew:init(parent, params)
-		self._parent = parent
-
 		self._panel = parent:panel({
 			name = params.name or "scroll_panel_main",
 			x = params.x or 0,
@@ -707,7 +682,7 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 		})
 		self._vertical_scroll_bar:set_center_x(self._vertical_scroll_panel:w() / 2)
 
-		local vbg = self._vertical_scroll_bar:rect({ 
+		self._vertical_scroll_bar:rect({ 
 			alpha = 0.75, 
 			color = Color.white,
 			halign = "grow", 
@@ -733,49 +708,6 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 			h = self.SCROLL_PANEL_WIDTH * 0.65,
 		})
 		self._arrow_down:set_center_x(self.SCROLL_PANEL_WIDTH / 2)
-
-		self._horizontal_scroll_panel = self._panel:panel({ 
-			h = self.SCROLL_PANEL_WIDTH,
-			w = self._view_panel:w(),
-			visible = false
-		})
-		self._horizontal_scroll_panel:rect({ alpha = 0.15, color = Color.black, halign = "grow", valign = "grow" })
-
-		self._horizontal_scroll_bar = self._horizontal_scroll_panel:panel({
-			h = self.SCROLL_BAR_WIDTH
-		})
-		self._horizontal_scroll_bar:set_center_y(self._horizontal_scroll_panel:h() / 2)
-
-		local hbg = self._horizontal_scroll_bar:rect({
-			alpha = 0.75, 
-			color = Color.white,
-			halign = "grow", 
-			valign = "grow"
-		})
-
-		self._arrow_left = self._horizontal_scroll_panel:bitmap({
-			texture = arrow_texture,
-			texture_rect = arrow_rect,
-			halign = "left",
-			rotation = 270,
-			w = self.SCROLL_PANEL_WIDTH * 0.65,
-			h = self.SCROLL_PANEL_WIDTH * 0.65,
-		})
-		self._arrow_left:set_center_y(self.SCROLL_PANEL_WIDTH / 2)
-
-		self._arrow_right = self._horizontal_scroll_panel:bitmap({
-			texture = arrow_texture,
-			texture_rect = arrow_rect,
-			halign = "right",
-			rotation = 90,
-			w = self.SCROLL_PANEL_WIDTH * 0.65,
-			h = self.SCROLL_PANEL_WIDTH * 0.65,
-		})
-		self._arrow_right:set_center_y(self.SCROLL_PANEL_WIDTH / 2)
-	end
-
-	function ScrollablePanelNew:panel()
-		return self._panel
 	end
 
 	function ScrollablePanelNew:view_panel()
@@ -786,33 +718,14 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 		return self._content_panel
 	end
 
-	function ScrollablePanelNew:view_size()
-		return self._view_panel:size()
-	end
-
-	function ScrollablePanelNew:pack_content_panel(skip_width, skip_height)
-		local max_w = 0
-		local max_h = 0
-
-		for _, child in ipairs(self._content_panel:children()) do
-			max_w = math.max(max_w, child:right())
-			max_h = math.max(max_h, child:bottom())
-		end
-
-		self:set_content_size(not skip_width and max_w or nil, not skip_height and max_h or nil)
-	end
-
 	function ScrollablePanelNew:set_size(w, h)
 		local w = w or self._panel:w()
 		local h = h or self._panel:h()
 
 		self._panel:set_size(w, h)
 		self._vertical_scroll_panel:set_right(w)
-		self._horizontal_scroll_panel:set_bottom(h)
 		self._arrow_up:set_top(0)
 		self._arrow_down:set_bottom(self._vertical_scroll_panel:h())
-		self._arrow_left:set_left(0)
-		self._arrow_right:set_right(self._horizontal_scroll_panel:w())
 
 		self:_update_view_panel()
 	end
@@ -830,14 +743,11 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 		local w = self._panel:w()
 		local h = self._panel:h()
 
-		self._horizontal_scroll_panel:set_visible(self._content_panel:w() > w - self._horizontal_scroll_panel:h())
 		self._vertical_scroll_panel:set_visible(self._content_panel:h() > h - self._vertical_scroll_panel:w())
 
 		local vw = math.max(0, w - (self._vertical_scroll_panel:visible() and self._vertical_scroll_panel:w() or 0))
-		local vh = math.max(0, h - (self._horizontal_scroll_panel:visible() and self._horizontal_scroll_panel:h() or 0))
-		self._view_panel:set_size(vw, vh)
-		self._vertical_scroll_panel:set_h(vh)
-		self._horizontal_scroll_panel:set_w(vw)
+		self._view_panel:set_size(vw, h)
+		self._vertical_scroll_panel:set_h(h)
 
 		self:_update_scroll_bars()
 	end
@@ -852,19 +762,6 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 			self._vertical_scroll_bar:set_h(bar_area * r)
 			self._vertical_scroll_bar:set_top(bar_arrow_padding/2 + self._arrow_up:bottom() - self._content_panel:top() * bar_area / self._content_panel:h())
 		end
-
-		if self._horizontal_scroll_panel:visible() then
-			local bar_area = self._horizontal_scroll_panel:w() - self._arrow_left:w() - self._arrow_right:w() - bar_arrow_padding
-
-			local r = math.min(1, self._view_panel:w() / self._content_panel:w())
-			self._horizontal_scroll_bar:set_w(bar_area * r)
-			self._horizontal_scroll_bar:set_left(bar_arrow_padding/2 + self._arrow_left:right() - self._content_panel:left() * bar_area / self._content_panel:w())
-		end
-	end
-
-	function ScrollablePanelNew:scroll_to_top()
-		self._content_panel:set_top(0)
-		self:_update_scroll_bars()
 	end
 
 	function ScrollablePanelNew:scroll_to_bottom()
@@ -872,22 +769,8 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 		self:_update_scroll_bars()
 	end
 
-	function ScrollablePanelNew:scroll_to_left()
-		self._content_panel:set_left(0)
-		self:_update_scroll_bars()
-	end
-
-	function ScrollablePanelNew:scroll_to_right()
-		self._content_panel:set_right(self._view_panel:w())
-		self:_update_scroll_bars()
-	end
-
 	function ScrollablePanelNew:scroll_vertical(direction)
 		self:perform_scroll_vertical(self.SCROLL_SPEED * TimerManager:main():delta_time() * 200, direction)
-	end
-
-	function ScrollablePanelNew:scroll_horizontal(direction)
-		self:perform_scroll_horizontal(self.SCROLL_SPEED * TimerManager:main():delta_time() * 200, direction)
 	end
 
 	function ScrollablePanelNew:scroll_with_bar_vertical(target_y, current_y)
@@ -906,22 +789,6 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 		end
 	end
 
-	function ScrollablePanelNew:scroll_with_bar_horizontal(target_x, current_x)
-		local arrow_size = self._arrow_left:size()
-
-		if target_x < current_x then
-			if target_x < self._horizontal_scroll_panel:world_right() - arrow_size then
-				local mul = (self._horizontal_scroll_panel:w() - arrow_size * 2) / self._content_panel:w()
-				self:perform_scroll_horizontal((current_x - target_x) / mul, 1)
-			end
-		elseif target_x > current_x then
-			if target_x > self._horizontal_scroll_panel:world_x() + arrow_size then
-				local mul = (self._horizontal_scroll_panel:w() - arrow_size * 2) / self._content_panel:w()
-				self:perform_scroll_horizontal((target_x - current_x) / mul, -1)
-			end
-		end
-	end
-
 	function ScrollablePanelNew:perform_scroll_vertical(speed, direction)
 		if self._content_panel:h() <= self._view_panel:h() then
 			return
@@ -932,19 +799,6 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 		max_h = max_h * -1
 		local new_y = math.clamp(self._content_panel:y() + scroll_amount, max_h, 0)
 		self._content_panel:set_y(new_y)
-		self:_update_scroll_bars()
-	end
-
-	function ScrollablePanelNew:perform_scroll_horizontal(speed, direction)
-		if self._content_panel:w() <= self._view_panel:w() then
-			return
-		end
-
-		local scroll_amount = speed * direction
-		local max_w = self._content_panel:w() - self._view_panel:w()
-		max_w = max_w * -1
-		local new_x = math.clamp(self._content_panel:x() + scroll_amount, max_w, 0)
-		self._content_panel:set_x(new_x)
 		self:_update_scroll_bars()
 	end
 
@@ -960,21 +814,11 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 				self._grabbed_vertical_bar = true
 				self._current_y = y
 				return true
-			elseif self._horizontal_scroll_bar:visible() and self._horizontal_scroll_bar:inside(x, y) then
-				self._grabbed_horizontal_bar = true
-				self._current_x = x
-				return true
 			elseif self._arrow_up:inside(x, y) then
 				self._panel:animate(callback(self, self, "_update"), "perform_scroll_vertical", 1)
 				return true
 			elseif self._arrow_down:inside(x, y) then
 				self._panel:animate(callback(self, self, "_update"), "perform_scroll_vertical", -1)
-				return true
-			elseif self._arrow_left:inside(x, y) then
-				self._panel:animate(callback(self, self, "_update"), "perform_scroll_horizontal", 1)
-				return true
-			elseif self._arrow_right:inside(x, y) then
-				self._panel:animate(callback(self, self, "_update"), "perform_scroll_horizontal", -1)
 				return true
 			end
 		end
@@ -984,9 +828,8 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 		if button == Idstring("0") then
 			self._panel:stop()
 
-			if self._grabbed_vertical_bar or self._grabbed_horizontal_bar or self._grabbed_view_panel then
+			if self._grabbed_vertical_bar then
 				self._grabbed_vertical_bar = false
-				self._grabbed_horizontal_bar = false
 				return true
 			end
 		end
@@ -996,10 +839,6 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 		if self._grabbed_vertical_bar then
 			self:scroll_with_bar_vertical(y, self._current_y)
 			self._current_y = y
-			return true, "grab"
-		elseif self._grabbed_horizontal_bar then
-			self:scroll_with_bar_horizontal(x, self._current_x)
-			self._current_x = x
 			return true, "grab"
 		end
 	end

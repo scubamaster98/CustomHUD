@@ -56,7 +56,7 @@ elseif string.lower(RequiredScript) == "lib/managers/hud/hudinteraction" then
 				valign    = "center",
 				align     = "center",
 				layer     = 1,
-				color     = Color(0, 1, 0), --change to color.white?
+				color     = Color(0, 1, 0),
 				font      = tweak_data.menu.default_font,
 				font_size = 32 * (self._circle_scale or 1),
 				h         = 64,
@@ -72,12 +72,12 @@ elseif string.lower(RequiredScript) == "lib/managers/hud/hudinteraction" then
 		return val
 	end
 
-	function HUDInteraction:hide_interaction_bar(complete, ...)		
+	function HUDInteraction:hide_interaction_bar(complete, ...)
 		if self._interact_circle_locked then
 			self._interact_circle_locked:remove()
 			self._interact_circle_locked = nil
 		end
-		
+
 		if self._interact_time then
 			self._interact_time:set_text("")
 			self._interact_time:set_visible(false)
