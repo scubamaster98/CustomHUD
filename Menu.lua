@@ -1,6 +1,6 @@
 local menu_prefix = "customHUD_menu_"
 local localization_file = ModPath .. "Localization/menu.json"
-local settings_file = SavePath .. "CustomHUD_saved_settings.json"
+local settings_file = SavePath .. "CustomHUD_legacy_saved_settings.json"
 
 Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_CustomHUD", function(menu_manager, nodes)
 	local function initialize_menu(menu_id, data)
@@ -134,13 +134,13 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 				change_clbk = change_hudchat_settings,
 				default_value_clbk = default_value_hudchat_settings,
 				{ "enable_chat", "toggle" },
+				{ "use_mouse", "toggle" },
 				{ "line_height", "slider", { min = 5, max = 25, step = 1, round = true }},
 				{ "width", "slider", { min = 100, max = 800, step = 10, round = true }},
 				{ "height", "slider", { min = 100, max = 800, step = 10, round = true }},
 				{ "x_offset", "slider", { min = 0, max = 100, step = 1 }},
 				{ "y_offset", "slider", { min = 0, max = 100, step = 1 }},
 				{ "fade_delay", "slider", { min = 1, max = 25, step = 1 }},
-				{ "use_mouse", "toggle" },
 			}
 		},
 	}
@@ -199,7 +199,7 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_Cust
 	end
 end)
 
-Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInit_CustomHUD_localization", function(self)
+Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInit_CustomHUD_Localization", function(self)
 	LocalizationManager:load_localization_file(localization_file)
 end)
 
@@ -246,7 +246,7 @@ CustomHUDMenu = {
 				character = false,	--Show character name
 				latency = true,	--Show latency (not used by player panel)
 				build = true,	--Show build; skill/perk breakdown (not used by local player)
-				build_duration = 30,	--Show build for duration; 0 is permanent (not used by local player)
+				build_duration = 10,	--Show build for duration; 0 is permanent (not used by local player)
 				status = true,	--Show health/armor/condition etc.
 				callsign = true,	--Show the callsign and voice chat icon
 				carry = true,	--Show currently carried bag
@@ -271,10 +271,10 @@ CustomHUDMenu = {
 			line_height = 14,			--Size of each line in chat (and hence the text size)
 			width = 420,				--Width of the chat window
 			height = 120,				--Height of the chat window
-			use_mouse = true,		--For scrolling and stuff. Experimental
-			x_offset = 100,			--% offset from left of HUD panel
+			use_mouse = true,			--For scrolling and stuff. Experimental
+			x_offset = 100,				--% offset from left of HUD panel
 			y_offset = 100,				--% offset from top of HUD panel
-			fade_delay = 7,			--Fade delay for chat window after inactivity
+			fade_delay = 7,				--Fade delay for chat window after inactivity
 		},
 	},
 

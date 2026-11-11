@@ -732,7 +732,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 
 	function PlayerInfoComponent.PlayerInfo:set_name(name)
 		if name then
-			self._components.name:set_text(utf8.to_upper(name))
+			self._components.name:set_text(name)
 			self:arrange()
 		end
 	end
@@ -1133,11 +1133,10 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			h = size,
 			w = size,
 		})
-	--change 64 # -64 64 to 128 # -128 128 to fix it for version that changed the sizes of these
+
 		self._health_radial = self._panel:bitmap({
 			name = "health_radial",
 			texture = "guis/textures/pd2/hud_health",
-			texture_rect = { 64, 0, -64, 64 },
 			render_template = "VertexColorTexturedRadial",
 			blend_mode = "add",
 			alpha = 1,
@@ -1146,7 +1145,8 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			w = size,
 			layer = health_bg:layer() + 1,
 		})
-
+		self._health_radial:set_texture_rect(self._health_radial:texture_width(), 0, -self._health_radial:texture_width(), self._health_radial:texture_height())
+	--you can reenable this animation by setting the 1st, 3rd and 4th 0 to 64/128
 		self._health_radial_old = self._panel:bitmap({
 			name = "health_radial_old",
 			texture = "guis/textures/pd2/hud_health",
@@ -1163,7 +1163,6 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 		self._stored_health_radial = self._panel:bitmap({
 			name = "stored_health_radial",
 			texture = "guis/textures/pd2/hud_health",
-			texture_rect = { 64, 0, -64, 64 },
 			render_template = "VertexColorTexturedRadial",
 			blend_mode = "add",
 			color = Color(0, 0, 0),
@@ -1172,11 +1171,11 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			w = size,
 			layer = self._health_radial:layer() - 1,
 		})
+		self._stored_health_radial:set_texture_rect(self._stored_health_radial:texture_width(), 0, -self._stored_health_radial:texture_width(), self._stored_health_radial:texture_height())
 
 		self._armor_radial = self._panel:bitmap({
 			name = "armor_radial",
 			texture = "guis/textures/pd2/hud_shield",
-			texture_rect = { 64, 0, -64, 64 },
 			render_template = "VertexColorTexturedRadial",
 			blend_mode = "add",
 			color = Color(1, 1, 1),
@@ -1184,11 +1183,11 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			w = size,
 			layer = self._stored_health_radial:layer() + 1,
 		})
+		self._armor_radial:set_texture_rect(self._armor_radial:texture_width(), 0, -self._armor_radial:texture_width(), self._armor_radial:texture_height())
 
 		self._stamina_radial = self._panel:bitmap({
 			name = "stamina_radial",
 			texture = "guis/textures/pd2/hud_shield",
-			texture_rect = { 64, 0, -64, 64 },
 			render_template = "VertexColorTexturedRadial",
 			blend_mode = "add",
 			color = Color(1, 0, 0),
@@ -1197,6 +1196,7 @@ if RequiredScript == "lib/managers/hud/hudteammate" then
 			layer = self._stored_health_radial:layer() + 1,
 		})
 		self._stamina_radial:set_center(size / 2, size / 2)
+		self._stamina_radial:set_texture_rect(self._stamina_radial:texture_width(), 0, -self._stamina_radial:texture_width(), self._stamina_radial:texture_height())
 
 		self._damage_indicator = self._panel:bitmap({
 			name = "damage_indicator",
@@ -2941,7 +2941,6 @@ if RequiredScript == "lib/managers/hudmanagerpd2" then
 		local MARGIN = 5
 		local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
 		local hud_panel = hud.panel
-		local teammate_height = 0
 		local left_height_offset = 0
 		local right_height_offset = 0
 

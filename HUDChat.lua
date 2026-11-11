@@ -113,7 +113,7 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 	end
 
 	function HUDChat:_create_output_panel()
-		self._output_panel = ScrollablePanelNew:new(self._panel, { 
+		self._output_panel = ScrollablePanelNew:new(self._panel, {
 			name = "output_panel",
 			w = self._settings.width,
 			h = self._settings.height - self._settings.line_height,
@@ -121,7 +121,7 @@ if RequiredScript == "lib/managers/hud/hudchat" then
 		self._output_panel:set_content_size(self._panel:w() - ScrollablePanelNew.SCROLL_PANEL_WIDTH, 0)
 
 		local bg = self._output_panel:view_panel():gradient({
-			gradient_points = { 0, Color.white:with_alpha(0.3), 0.3, Color.white:with_alpha(0.1), 0.5, Color.white:with_alpha(0.2) , 0.7, Color.white:with_alpha(0.1), 1, Color.white:with_alpha(0.3) },
+			gradient_points = { 0, Color.white:with_alpha(0.3), 0.3, Color.white:with_alpha(0.1), 0.5, Color.white:with_alpha(0.2), 0.7, Color.white:with_alpha(0.1), 1, Color.white:with_alpha(0.3) },
 			layer = -10,
 			valign = "grow",
 			halign = "grow",
